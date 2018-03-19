@@ -1,0 +1,26 @@
+{
+    "name": "appoly/laravel-bootstrap-4-preset",
+    "description": "Frontend preset for Bootstrap 4 for Laravel 5.5.x",
+    "require": {
+        "laravel/framework": "5.5.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Merrix",
+            "email": "james@appoly.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Appoly\\Bootstrap4Preset\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Appoly\\Bootstrap4Preset\\Bootstrap4PresetServiceProvider"
+            ]
+        }
+    }
+}
