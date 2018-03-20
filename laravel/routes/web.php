@@ -24,7 +24,7 @@ Route::get('/test', 'TestController@index')->name('test');
 Route::get('/test/test2', 'TestController@test2')->name('test.test2');
 
 
-Route::get('/abc', 'AbcController@index')->name('abc');
+Route::get('/abc', 'AbcController@index')->name('abc'); 
 
 
 
