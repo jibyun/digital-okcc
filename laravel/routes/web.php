@@ -18,27 +18,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/test', 'TestController@index')->name('test');
 
-Auth::routes();
+Route::get('/test/test2', 'TestController@test2')->name('test.test2');
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Route::get('/abc', 'AbcController@index')->name('abc');
 
-Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
