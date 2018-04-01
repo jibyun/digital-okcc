@@ -27,9 +27,7 @@
         @yield('styles')
     </head>
     <body>
-        {{-- Floating Top Button --}}
-        <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
-        
+
         @include('layouts.header')
         @include('layouts.side')
         @include('layouts.footer')
