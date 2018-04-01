@@ -1,26 +1,14 @@
-@extends('layouts.master')
-
-@section('styles')
-    {{-- 각자의 페이지에서 일시적으로 필요한 스타일은 이곳에 넣습니다. --}}
-@endsection
+@extends('admin.layouts.master')
 
 @section('content')
-<div>
-    {{-- 컨텐츠는 이곳에 넣습니다. --}}
-    <h1>Hello, world!</h1>
-
-    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
-        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt
-        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.
-        Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
-
-    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
-        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt
-        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat.
-        Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+<div style="margin: -15px -45px;">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron jumbotron-fluid" style="background-color: #2196f3; color: whitesmoke;">
+        <div class="container">
+            <p><span class="h1-font-size">OKCC Cloud Office </span><span class="h4-font-size">for Admin</span></p>
+            <p class="lead text-justify">The LORD is the everlasting God, the Creator of the ends of the earth. He will not grow tired or weary, and his understanding no one can fathom. He gives strength to the weary and increases the power of the weak. Even youths grow tired and weary, and young men stumble and fall; but those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
+            <p style="color: orange">Isaiah 40:28-31</p>
+        </div>
+    </div>
 </div>
-@endsection
-
-@section('scripts')
-    {{-- 각자의 페이지에서 일시적으로 필요한 스크립트는 이곳에 넣습니다 --}}
 @endsection

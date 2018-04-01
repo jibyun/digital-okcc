@@ -11,7 +11,7 @@
             </li>
             <li>
                 <a href="#submenu_users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
-                <ul id="submenu_users" class="list-unstyled collapse">
+                <ul id="submenu_users" class="list-unstyled collapse show">
                     <li><a href="#">Approval</a></li>
                     <li><a href="#">Remove User</a></li>
                     <li><a href="#">Privileges</a></li>

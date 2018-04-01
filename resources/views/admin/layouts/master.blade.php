@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {{-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --}}
 
-        <meta name="description" content="{{ config('app.name', 'Application Name') }}">
+        <meta name="description" content="OKCC Cloud Office">
         <meta name="author" content="IT team of Ottawa Korean Community Church">
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
@@ -28,10 +28,10 @@
     </head>
     <body>
         {{-- Floating Top Button --}}
-        <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
+        <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()"><i class="fa fa-arrow-up"></i></button>
         
-        @include('layouts.header')
-        @include('layouts.side')
+        @include('admin.layouts.header')
+        @include('admin.layouts.side')
         @include('layouts.footer')
 
         {{-- Basic Scripts --}}

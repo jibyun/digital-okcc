@@ -3,7 +3,7 @@
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
         <a class="navbar-brand" href="#"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
     </div>
-
+    {{-- Collapse 되었을 때 나타날 버튼 --}}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="fa fa-bars"></span>
     </button>
@@ -17,7 +17,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp&nbsp&nbsp{{-- User 테이블에서 읽은 사람이름이 들어가는 곳 --}}
+                    <i class="fa fa-user"></i>&nbsp&nbsp&nbspSteve Kim {{-- User 테이블에서 읽은 사람이름이 들어가는 곳 --}}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#"><i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp Log Out</a>

@@ -41,7 +41,7 @@ h5 { font-size: 1.8em;   font-weight: 550; }
 .sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: calc(100vh - 56px);
+    min-height: calc(100vh - 102px);
     transition: all 0.3s;
     font-size: 0.85em;
 }

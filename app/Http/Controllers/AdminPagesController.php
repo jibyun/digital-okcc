@@ -10,6 +10,7 @@ class AdminPagesController extends Controller {
      * Create a new controller instance.
      */
     public function __construct() {
+        // TODO 로그인이 구현된 후 사용할 예정임 
         // $this->middleware('guest')->only('index');
         // $this->middleware('auth')->except('index');
     }
