@@ -1,1 +1,7 @@
+.env/
+.env.example/
+.gitattributes/
+.gitignore/
+vender/
+store/
 
