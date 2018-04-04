@@ -47,9 +47,9 @@ class CreateMembersTable extends Migration
 
             $table->date('register_at')->nullable()->default(Carbon::now())->comment('Date of Registration');
             $table->date('baptism_at')->nullable()->default('1990-01-01')->comment('Date of Baptism');
-
-            $table->unsignedInteger('updated_by')->comment('Foreign Key: ID of Users Table');
-
+            // TODO: 이게 있으면 데이터 입력시 User 등록이 되어야 함 나중에 로그인 생성되면 살린다.
+            // $table->unsignedInteger('updated_by')->comment('Foreign Key: ID of Users Table');
+            // $table->foreign('updated_by')->references('id')->on('users');
             $table->timestamps();
 
             $table->foreign('city_id')->references('id')->on('codes');
@@ -58,7 +58,7 @@ class CreateMembersTable extends Migration
             $table->foreign('status_id')->references('id')->on('codes');
             $table->foreign('level_id')->references('id')->on('codes');
             $table->foreign('duty_id')->references('id')->on('codes');
-            $table->foreign('updated_by')->references('id')->on('users');
+            
         });
     }
 

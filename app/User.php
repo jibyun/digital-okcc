@@ -38,9 +38,9 @@ class User extends Authenticatable
     }
 
     // Relationship with members table
-    public function members() {
-        return $this->hasMany('App\Member');
-    }
+    // public function members() {
+    //     return $this->hasMany('App\Member');
+    // }
 
     // Relationship with visits table
     public function visits() {
