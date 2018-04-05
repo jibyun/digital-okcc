@@ -12,25 +12,38 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        
         <ul class="navbar-nav mr-auto">
+            @auth
             <li class="nav-item"><a class="nav-link" href="#">Members</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Finance</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
+            @endauth 
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp&nbsp&nbsp{{-- User 테이블에서 읽은 사람이름이 들어가는 곳 --}}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp Log Out</a>
-                    {{-- After developed log out form, it should be used --}}
-                    {{-- <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form> --}}
-                </div>
-            </li>
+             <!-- Authentication Links -->
+             @guest
+             <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ __('Sign In') }}</a></li>
+            @else
+             <li class="nav-item dropdown">
+                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                     {{ Auth::user()->name }} <span class="caret"></span>
+                 </a>
+                 <!-- Dropdown menu for logout -->
+                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                     <a class="dropdown-item" href="{{ route('logout') }}"
+                         onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                         <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
+                     </a>
+
+                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                         @csrf
+                     </form>
+                 </div>
+             </li>
+            @endguest
+           
         </ul>
     </div>
 </nav>
