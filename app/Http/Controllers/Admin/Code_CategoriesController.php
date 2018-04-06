@@ -29,7 +29,10 @@ class Code_CategoriesController extends Controller
      */
     public function index() {
         $categories = Code_Category::get();
-        return response()->json($categories);
+        $max_order = Code_Category::max('order');
+        $result = array("max_order" => $max_order, "categories" => json_decode(json_encode($categories),true));
+
+        return response()->json($result);
     }
 
     /**

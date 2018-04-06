@@ -29,4 +29,4 @@ Route::get('admin', 'AdminPagesController@index')->name('admin'); // Index page
 |--------------------------------------------------------------------------
 */
 Route::get('categoryStart', 'Admin\Code_CategoriesController@start')->name('categoryStart');
-Route::resource('categories','Admin\Code_CategoriesController');
+Route::resource('categories', 'Admin\Code_CategoriesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
