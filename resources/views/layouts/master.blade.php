@@ -27,12 +27,11 @@
         @yield('styles')
     </head>
     <body>
-        
-        
+
         @include('layouts.header')
         @include('layouts.side')
         @include('layouts.footer')
-           
+
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
         {{-- Basic Scripts --}}
