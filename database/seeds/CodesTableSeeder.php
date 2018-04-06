@@ -286,6 +286,7 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 60201, 'code_category_id' => 6, 'order' => 60201, 'txt' => 'Weyburn', 'kor_txt' => 'SK' ]);
         DB::table('codes')->insert([ 'id' => 60202, 'code_category_id' => 6, 'order' => 60202, 'txt' => 'Yorkton', 'kor_txt' => 'SK' ]);
         DB::table('codes')->insert([ 'id' => 60203, 'code_category_id' => 6, 'order' => 60203, 'txt' => 'Whitehorse', 'kor_txt' => 'YT' ]);
+        DB::table('codes')->insert([ 'id' => 60204, 'code_category_id' => 6, 'order' => 60204, 'txt' => 'Carleton Place', 'kor_txt' => 'ON' ]);
 
         // Province
         DB::table('codes')->insert([ 'id' => 70001, 'code_category_id' => 7, 'order' => 70001, 'txt' => 'AB', 'kor_txt' => 'Alberta' ]);
