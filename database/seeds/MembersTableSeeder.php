@@ -31,7 +31,7 @@ class MembersTableSeeder extends Seeder
                 'photo' => '',
                 'city_id' => $canFaker->numberBetween($min = 60001, $max = 60204),
                 'province_id' => $canFaker->numberBetween($min = 70001, $max = 70013),
-                'country_id' => 1,
+                'country_id' => 80001,
                 'status_id' => $canFaker->numberBetween($min = 10001, $max = 10007),
                 'level_id' => $canFaker->numberBetween($min = 40001, $max = 40004),
                 'duty_id' => $canFaker->numberBetween($min = 20001, $max = 20014),
