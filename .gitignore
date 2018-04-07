@@ -4,4 +4,6 @@
 .gitignore/
 vender/
 store/
-
+.vscode/
+.env.example/
+.gitattributes/
