@@ -1,6 +1,10 @@
-.env/
-.env.example/
-.gitattributes/
+.env
+.env.example
+.gitattributes
+README.md
+tests/
+.vscode/
 vender/
 store/
+
 
