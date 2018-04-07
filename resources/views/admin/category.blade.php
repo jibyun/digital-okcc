@@ -17,8 +17,6 @@
         </button>
     </div>
 
-    @include('admin.includes.messages')
-
     <table id="table" class="table table-striped s1-font-size" data-side-pagination="client"
         data-search="true" data-pagination="true" data-page-size="10" data-page-list="[5, 10, 25, 50, 100, ALL]" 
         data-mobile-responsive="true" data-click-to-select="true" data-filter-control="true" data-toolbar="#toolbar"
@@ -26,13 +24,13 @@
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
-                <th data-field="enabled" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
+                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
+                <th data-field="kor_txt" data-width="10%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
+                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
                 <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
                 <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
-                <th data-field="edit" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
-                <th data-field="delete" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
             </tr>
         </thead>
     </table>
@@ -58,6 +56,10 @@
         var saveIndex; // Row index of the table
         var saveId; // Primary key of categories
         var maxOrder; // Max Order number
+
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
+        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -113,7 +115,7 @@
                 }
             });
         }  
-        
+
         // 이 페이지가 처음 로드될 때 데이터를 읽어 표시한다.
         getList();
 
@@ -127,22 +129,28 @@
             var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자 변화 꼭 해야 함
             var memo = CKEDITOR.instances['ckeditor-create'].getData();
             var order = ++maxOrder;
+            var postData = { txt:txt, kor_txt:kor_txt, order:order, enabled:enable, memo:memo };
 
             $.ajax({
                 dataType: 'json',
                 method:'POST',
                 url: form_action,
-                data:{txt:txt, kor_txt:kor_txt, order:order, enabled:enable, memo:memo},
-                success: function(response) {
-                    $('#table').bootstrapTable("append", response); // Add input data to table
-                    $('#createForm')[0].reset(); // Clear create form 
-                    CKEDITOR.instances['ckeditor-create'].setData('');
-                    $(".modal").modal('hide'); // hide model form
-                    getList();
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                data: postData,
+                success: function(data) {
+                    if (data.errors) {
+                        var message = '';
+                        for (i=0; i < data.errors.length; i++) {
+                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
+                        } 
+                        toastr.error(message, data.message);
+                    } else {
+                        toastr.success(data.message, 'Success');
+                        $('#table').bootstrapTable("append", postData); // Add input data to table
+                        $('#createForm')[0].reset(); // Clear create form 
+                        CKEDITOR.instances['ckeditor-create'].setData('');
+                        $(".modal").modal('hide'); // hide model form
+                        getList();
+                    }
                 }
             });
         });
@@ -158,22 +166,27 @@
             var memo = CKEDITOR.instances['ckeditor-edit'].getData();
             var order = formId.find("input[name='order']").val();
             var changed = { "txt": txt, "kor_txt": kor_txt, "enabled": enable, "memo": memo, "order": order };
-            $('#table').bootstrapTable('updateRow', {index: saveIndex, row: changed});
-  
+
             $.ajax({
                 dataType: 'json',
                 method: 'PUT',
                 url: form_action,
                 data: changed,
-                success: function(response) {
-                    $('#editForm')[0].reset(); // Clear create form 
-                    CKEDITOR.instances['ckeditor-edit'].setData('');
-                    $(".modal").modal('hide'); // hide model form
-                    getList();
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                success: function(data) {
+                    if (data.errors) {
+                        var message = '';
+                        for (i=0; i < data.errors.length; i++) {
+                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
+                        } 
+                        toastr.error(message, data.message);
+                    } else {
+                        toastr.success(data.message, 'Success');
+                        $('#table').bootstrapTable('updateRow', {index: saveIndex, row: changed});
+                        $('#editForm')[0].reset(); // Clear create form 
+                        CKEDITOR.instances['ckeditor-edit'].setData('');
+                        $(".modal").modal('hide'); // hide model form
+                        getList();
+                    }
                 }
             });
         });
@@ -184,14 +197,15 @@
                 dataType: 'json',
                 type:'delete',
                 url: url + '/' + saveId,
-                success: function(response) {
-                    $('#table').bootstrapTable('remove', {field: 'id', values: [saveId]});
-                    $(".modal").modal('hide'); // hide model form
-                    getList();
-                },
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    console.log(JSON.stringify(jqXHR));
-                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                success: function(data) {
+                    if (data.errors) {
+                        toastr.error(data.errors, data.message);
+                    } else {
+                        toastr.success(data.message, 'Success');
+                        $('#table').bootstrapTable('remove', {field: 'id', values: [saveId]});
+                        $(".modal").modal('hide'); // hide model form
+                        getList();
+                    }
                 }
             });
         });
@@ -203,7 +217,6 @@
                 var form = $("#edit-item");
                 form.find("input[name='txt']").val(rec.txt);
                 form.find("input[name='kor_txt']").val(rec.kor_txt);
-
                 form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
                 CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
                 form.find("input[name='order']").val(rec.order);

@@ -10,7 +10,6 @@
             <div class="modal-body" style="background-color: #e0e0e0;">
                 <form id="createForm" action="{{ route('categories.store') }}" method="post">
                     @csrf
-                    @include('admin.includes.messages')
                     {{--  Category name  --}}
                     <div class="form-group row">
                         <label for="txt" class="col-sm-3 col-form-label text-right">Category Name</label>

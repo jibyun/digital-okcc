@@ -24,7 +24,7 @@
             <li>
                 <a href="#member_top" data-toggle="collapse"><i class="fa fa-fw fa-users"></i>&nbsp;&nbsp;Members</a>
                 <ul id="member_top" class="list-unstyled collapse show">
-                    <li><a href="{{ route('categoryStart') }}">Basic Code Categories</a></li>
+                    <li><a href="{{ route('categoryStart') }}">Code Categories</a></li>
                     <a href="#member_code" data-toggle="collapse">Basic Codes</a>
                     <ul id="member_code" class="list-unstyled collapse">
                         <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Basic Code Categories</a></li>

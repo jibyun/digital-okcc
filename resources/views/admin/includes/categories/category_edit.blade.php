@@ -8,13 +8,12 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <form id="editForm" method="post">
+                <form id="editForm" action='' method="PUT">
                     {{--  Method Spoofing: Always put below two lines for updating a form
                             HTML forms do not support PUT, PATCH or DELETE actions. So, when defining PUT, PATCH or  
                             DELETE routes that are called from an HTML form, you will need to add a hidden _method field to the form.  --}}
-                    <input type="hidden" name="_method" value="PUT">
+                    <input type="hidden" name="_method" value="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    @include('admin.includes.messages')
                         {{--  Category name  --}}
                         <div class="form-group row">
                             <label for="txt" class="col-sm-3 col-form-label text-right">Category Name</label>
@@ -27,6 +26,13 @@
                             <label for="kor_txt" class="col-sm-3 col-form-label text-right">카테고리명</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="kor_txt" placeholder="카테고리명">
+                            </div>
+                        </div>
+                        {{--  order: hidden  --}}
+                        <div class="form-group row" style="display: none">
+                            <label for="kor_txt" class="col-sm-3 col-form-label text-right">Diaplay Order</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" name="order" placeholder='Diaplay Order'>
                             </div>
                         </div>
                         {{--  Enabled  --}}
