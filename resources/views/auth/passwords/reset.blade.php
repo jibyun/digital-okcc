@@ -1,4 +1,4 @@
-@extends('/layouts.master')
+@extends('/layouts.guest_master')
 
 @section('content')
 <div class="container pt-5">
