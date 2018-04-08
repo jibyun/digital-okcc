@@ -5,15 +5,18 @@
 <div class='container p-5'>
     <h4>Category List</h4>
     <div id="toolbar">
-        <button class="btn btn-info mr-2" type="button" title="Create" data-toggle="modal" data-target="#create-item">
+        <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
             <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
         </button>
         {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
-        <button id="export" class="btn btn-default" type="button" title="Export Excel" disabled>
+        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
         </button>
-        <button id="export" class="btn btn-default" type="button" title="Export PDF" disabled>
+        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
             <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
+        </button>
+        <button class="btn btn-warning mr-1" type="button" title="Make Display Order" data-toggle="modal" data-target="#make-order">
+            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
         </button>
     </div>
 
@@ -39,6 +42,7 @@
     @include('admin.includes.categories.category_edit')
     @include('admin.includes.categories.category_show')
     @include('admin.includes.categories.category_delete')
+    @include('admin.includes.categories.category_order')
 
 </div>
 {{-- End Container --}}
@@ -246,4 +250,10 @@
         });
     </script>
 
-@endsection
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        // give #workTable drag-and-drop feature
+        $('#workTable').find('tbody').sortable();
+    </script>
+    @endsection

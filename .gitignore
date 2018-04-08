@@ -1,6 +1,5 @@
 .env
 .env.example
-.gitattributes
 README.md
 tests/
 .vscode/

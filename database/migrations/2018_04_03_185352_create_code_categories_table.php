@@ -23,7 +23,7 @@ class CreateCodeCategoriesTable extends Migration
             $table->string('kor_txt', 50)->default('')->comment('카테고리의 한글 명칭');  
             $table->boolean('enabled')->default(true)->comment('카테고리가 활성화 되었는지를 식별함'); 
             $table->text('memo')->nullable()->comment('메모 사항');
-            $table->unsignedInteger('order')->unique()->comment('콤보박스에서 보여지는 순서');
+            $table->unsignedInteger('order')->comment('콤보박스에서 보여지는 순서');
         });
     }
 
