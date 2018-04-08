@@ -1,6 +1,5 @@
 .env
 .env.example
-.gitattributes
 vendor/**
 store/**
 
