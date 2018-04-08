@@ -1,9 +1,6 @@
 .env
 .env.example
-README.md
-tests/
-.vscode/
-vender/
-store/
-
-
+tests/**
+.vscode/**
+vendor/**
+store/**

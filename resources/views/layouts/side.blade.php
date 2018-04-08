@@ -1,5 +1,6 @@
 <div class="d-flex">
     <nav class="sidebar bg-dark">
+        @auth
         <ul class="list-unstyled">
             <li style="padding: 15px;">
                 <div class="input-group">
@@ -47,6 +48,7 @@
             </li>
             <li><a href="#"><i class="fa fa-fw fa-link"></i>&nbsp;&nbsp;Go To OCO</a></li>
         </ul>
+        @endauth
     </nav>
     <div class="container-fluid" style="margin: 15px 30px;">
         @yield('content')
