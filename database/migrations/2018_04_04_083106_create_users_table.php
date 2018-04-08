@@ -14,11 +14,18 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_unicode_ci';
+
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
+            // TODO: 명확하게 라라벨 auth와 문제가 없을 경우 사용할 예정임
+            // $table->integer('member_id')->unsigned()->nullable()->comment('members table의 id, TODO: 테스트 후 사용할 예정임');
+            // $table->boolean('reset')->default(false)->comment('Password Reset을 위한 스위치, TODO: 테스트 후 사용할 예정임');
             $table->timestamps();
         });
     }
