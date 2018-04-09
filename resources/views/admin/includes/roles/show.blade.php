@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" id="myModalLabel">
-                <label class="modal-title h6-font-size" style="font-weight: 600">Show Privilege</label>
+                <label class="modal-title h6-font-size" style="font-weight: 600">Show Role</label>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -10,7 +10,7 @@
             <div class="modal-body" style="background-color: #e0e0e0;">
                 <div class="container" id="showBody">
                     <div class="row">
-                        <div class="col-sm-3">Privilege Name</div>
+                        <div class="col-sm-3">Role Name</div>
                         <div class="col-sm-9"><label name="txt"></label></div>
                     </div>
                     <div class="row">

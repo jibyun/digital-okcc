@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" id="myModalLabel">
-                <label class="modal-title h6-font-size" style="font-weight: 600">Edit Privilege</label>
+                <label class="modal-title h6-font-size" style="font-weight: 600">Edit Role</label>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,11 +14,11 @@
                             DELETE routes that are called from an HTML form, you will need to add a hidden _method field to the form.  --}}
                     <input type="hidden" name="_method" value="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        {{--  Privilege name  --}}
+                        {{--  Role name  --}}
                         <div class="form-group row">
-                            <label for="txt" class="col-sm-3 col-form-label text-right">Privilege Name</label>
+                            <label for="txt" class="col-sm-3 col-form-label text-right">Role Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="txt" placeholder="Privilege Name">
+                                <input type="text" class="form-control" name="txt" placeholder="Role Name">
                             </div>
                         </div>
                         {{--  Remark  --}}
