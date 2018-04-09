@@ -12,14 +12,13 @@
 */
 Auth::routes();
 
-Auth::routes();
 
 Route::get('/', function () {
     return view('index');
 })->middleware('auth');;
 
 
-
+Route::post('apply', 'GuestController@apply')->name('apply'); 
 /*
 |--------------------------------------------------------------------------
 | Admin Web Routes
