@@ -11,7 +11,7 @@
             </li>
             <li>
                 <a href="#submenu_users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
-                <ul id="submenu_users" class="list-unstyled collapse show">
+                <ul id="submenu_users" class="list-unstyled collapse">
                     <li><a href="#">Approval</a></li>
                     <li><a href="#">Remove User</a></li>
                     <li><a href="#">Privileges</a></li>
@@ -20,11 +20,20 @@
                     <li><a href="#">Log View</a></li>
                 </ul>
             </li>
+            {{-- Side menu for Members --}}
             <li>
-                <a href="#submenu_members" data-toggle="collapse"><i class="fa fa-fw fa-users"></i>&nbsp;&nbsp;Members</a>
-                <ul id="submenu_members" class="list-unstyled collapse show">
-                    <li><a href="#">Status (구분)</a></li>
-                    <li><a href="#">Level (신급)</a></li>
+                <a href="#member_top" data-toggle="collapse"><i class="fa fa-fw fa-users"></i>&nbsp;&nbsp;Members</a>
+                <ul id="member_top" class="list-unstyled collapse show">
+                    <li><a href="{{ route('categoryStart') }}">Code Categories</a></li>
+                    <a href="#member_code" data-toggle="collapse">Basic Codes</a>
+                    <ul id="member_code" class="list-unstyled collapse">
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Basic Code Categories</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Basic Code</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Duty (직분)</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Position (직책)</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Department (부서)</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Delete Member</a></li>
+                    </ul>
                     <li><a href="#">Duty (직분)</a></li>
                     <li><a href="#">Position (직책)</a></li>
                     <li><a href="#">Department (부서)</a></li>

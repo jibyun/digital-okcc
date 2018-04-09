@@ -1,5 +1,6 @@
 .env
 .env.example
+tests/**
+.vscode/**
 vendor/**
 store/**
-

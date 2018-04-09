@@ -20,9 +20,11 @@ h1 { font-size: 4.5em;   font-weight: 900; }
 h2 { font-size: 3.7em;   font-weight: 800; }
 h3 { font-size: 3.1em;   font-weight: 700; }
 h4 { font-size: 2.3em;   font-weight: 600; }
-h5 { font-size: 1.8em;   font-weight: 550; }
+h5 { font-size: 1.8em;   font-weight: 500; }
 
 .btn-width-100 { width: 100px; }
+
+.dialog_background { background-color: #fceb7e; }
 
 /* Menu */
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-text {

@@ -25,7 +25,7 @@ class CreateCodesTable extends Migration
             $table->boolean('enabled')->default(true)->comment('이 코드가 활성화 되었는지를 식별함'); 
             $table->boolean('sysmetic')->default(false)->comment('이 코드가 활성화 되면 시스템 권한을 가진 사용자를 제외한 모든 사용자가 이 코드에 접근할 수 없음');
             $table->text('memo')->nullable()->comment('메모 사항');
-            $table->unsignedInteger('order')->unique()->comment('콤보박스에서 보여지는 순서');
+            $table->unsignedInteger('order')->comment('콤보박스에서 보여지는 순서');
 
             $table->foreign('code_category_id')->references('id')->on('code_categories');
         });
