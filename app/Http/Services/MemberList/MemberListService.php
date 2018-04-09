@@ -2,9 +2,6 @@
 
 namespace App\Http\Services\MemberList;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
 /**
  * Service layer for handling member list
  */
@@ -12,6 +9,14 @@ class MemberListService
 {
     function __construct() {
         
+    }
+
+    /**
+     * Retrieve all members
+     */
+    public function getAllMembers() {
+        // TODO: Implement the logic to get all member
+        return '';
     }
 
     /**
