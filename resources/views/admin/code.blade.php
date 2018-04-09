@@ -1,22 +1,27 @@
 @extends('admin.layouts.master')
 
 @section('content')
+
 <div class='container p-4'>
-    <h4>Category List</h4>
+    <h4>Code List </h4>
     <div id="toolbar">
-        <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
-        </button>
-        {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
-        </button>
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
-        </button>
-        <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
-            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
-        </button>
+        <div class='form-inline'>
+            <select id='categoriesCombo' class="form-group form-control mr-3">
+            </select>
+            <button class="form-group form-control btn btn-info mr-2" type="button" title="Create" data-toggle="modal" data-target="#create-item">
+                <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
+            </button>
+            {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
+            <button class="form-group btn btn-default mr-2" type="button" title="Export Excel" disabled>
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
+            </button>
+            <button class="form-group btn btn-default mr-2" type="button" title="Export PDF" disabled>
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
+            </button>
+            <button class="form-group btn btn-warning btn-modal-target mr-2" type="button" title="Make Display Order" onclick="showOrder();">
+                <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
+            </button>                    
+        </div>
     </div>
 
     <table  id="table" class="table table-striped s1-font-size" 
@@ -31,9 +36,10 @@
             data-row-style="rowStyle">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-width="10%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
+                <th data-field="sysmetic" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Sysmetic</th>
+                <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
+                <th data-field="kor_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
                 <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
                 <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
                 <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
@@ -43,11 +49,11 @@
         </thead>
     </table>
 
-    @include('admin.includes.categories.create')
-    @include('admin.includes.categories.edit')
-    @include('admin.includes.categories.show')
-    @include('admin.includes.categories.delete')
-    @include('admin.includes.categories.order')
+    @include('admin.includes.codes.create')
+    @include('admin.includes.codes.edit')
+    @include('admin.includes.codes.show')
+    @include('admin.includes.codes.delete')
+    @include('admin.includes.codes.order')
 
 </div>
 {{-- End Container --}}
@@ -61,11 +67,13 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('categories.index') !!}";
+        var url = "{!! route('codes.index') !!}";
         var saveIndex; // Row index of the table
-        var saveId; // Primary key of categories
+        var saveId; // Primary key of codes
         var maxOrder; // Max Order number
-        var categories; // cached categories
+        var maxId; // Max Id: it must be need when create a code
+        var currentCategoryId; // current id selected in categories combo box
+        var codes; // cached codes
         var displayOrder; // display order using changing order
         var $table = $('#table');
 
@@ -110,9 +118,8 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{ align: 'center' },{}, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{},{},{},{ align: 'center' },{}, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
-            // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
                 $table.bootstrapTable('resetView', {
                     height: getHeight()
@@ -124,22 +131,66 @@
         function reloadList() {
             $.ajax({
                 dataType: 'json',
-                url: url,
+                url: url + '?category_id=' + currentCategoryId,
                 success: function(data) { // What to do if we succeed
-                    maxOrder = data['max_order'];
-                    categories = data['categories'];
-                    $table.bootstrapTable( 'load', { data: categories } );
+                    if (data['codes'].length > 0) {
+                        if (data['max_order'].length != 0) { maxOrder = ++data['max_order']; } else { maxOrder = 1; }
+                        maxId = ++data['max_id'];
+                        codes = data['codes'];
+                        $table.bootstrapTable( 'load', { data: codes } );
+                    } else {
+                        maxOrder = 1;
+                        maxId = currentCategoryId * 10000 + 1;
+                        codes = '';
+                        $table.bootstrapTable( 'removeAll' );
+                    } 
+                }, 
+                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                    toastr.error("can't get codes data from server: " + JSON.stringify(jqXHR), 'Failed');
+                }
+            });
+        } 
+
+        function buildCategoriesCombo(categories) {
+            var html = '';
+            var $combo = $("#categoriesCombo");
+            for (var i=0; i < categories.length; i++) {
+                html += '<option value="' + categories[i]['id'] + '" ' + (i===0 ? 'selected' : '') + '>' + 
+                    categories[i]['txt'] + '</option>';
+            }
+            $combo.append(html);    
+            
+            // whenever change category combo 
+            $combo.change( function () {
+                $("select option:selected").each( function() {
+                    currentCategoryId = $(this).val();
+                    reloadList();
+                });
+            }).click( function() {
+                // make the combo only one selection is possible
+                if ($('select option').length == 1) {
+                    $('select').change();
+                }
+            });      
+        }
+
+        // Get list from server and show
+        function getInitList() {
+            initTable();
+            // get categories table to ID="categoriesCombo"
+            $.ajax({
+                dataType: 'json',
+                url: "{!! route('categories.index') !!}",
+                success: function(data) { // What to do if we succeed
+                    var categories = data['categories'];
+                    currentCategoryId = categories[0]['id'];
+                    buildCategoriesCombo(categories);
+                    reloadList();
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
                     toastr.error("can't get categories data from server: " + JSON.stringify(jqXHR), Failed);
                 }
             });
-        }  
-
-        // Get list from server and show
-        function getInitList() {
-            initTable();
-            reloadList();
         }  
 
         // 이 페이지가 처음 로드될 때 데이터를 읽어 표시한다.
@@ -150,12 +201,17 @@
             e.preventDefault();
             var formId = $("#create-item");
             var form_action = formId.find("form").attr("action");
-            var txt = formId.find("input[name='txt']").val();
-            var kor_txt = formId.find("input[name='kor_txt']").val();
-            var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자 변화 꼭 해야 함
-            var memo = CKEDITOR.instances['ckeditor-create'].getData();
-            var order = ++maxOrder;
-            var postData = { txt:txt, kor_txt:kor_txt, order:order, enabled:enable, memo:memo };
+
+            var postData = { 
+                id: maxId, 
+                code_category_id: currentCategoryId, 
+                txt: formId.find("input[name='txt']").val(), 
+                kor_txt: formId.find("input[name='kor_txt']").val(), 
+                order: maxOrder, 
+                enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
+                memo: CKEDITOR.instances['ckeditor-create'].getData(), 
+                sysmetic: 0 
+            };
 
             $.ajax({
                 dataType: 'json',
@@ -173,7 +229,7 @@
                         toastr.success(data.message, 'Success');
                         $table.bootstrapTable("append", postData); // Add input data to table
                         $('#createForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-create'].setData('');
+                        CKEDITOR.instances['ckeditor-create'].setData(''); // clear textarea
                         $(".modal").modal('hide'); // hide model form
                         reloadList();
                     }
@@ -186,18 +242,22 @@
             e.preventDefault();
             var formId = $("#edit-item");
             var form_action = formId.find("form").attr("action");
-            var txt = formId.find("input[name='txt']").val();
-            var kor_txt = formId.find("input[name='kor_txt']").val();
-            var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자변화 꼭 해야 함!!!
-            var memo = CKEDITOR.instances['ckeditor-edit'].getData();
-            var order = formId.find("input[name='order']").val();
-            var changed = { "txt": txt, "kor_txt": kor_txt, "enabled": enable, "memo": memo, "order": order };
+
+            var postData = { 
+                code_category_id: currentCategoryId, 
+                txt: formId.find("input[name='txt']").val(), 
+                kor_txt: formId.find("input[name='kor_txt']").val(), 
+                order: formId.find("input[name='order']").val(), 
+                enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
+                memo: CKEDITOR.instances['ckeditor-edit'].getData(), 
+                sysmetic: 0
+            };
 
             $.ajax({
                 dataType: 'json',
                 method: 'PUT',
                 url: form_action,
-                data: changed,
+                data: postData,
                 success: function(data) {
                     if (data.errors) {
                         var message = '';
@@ -207,9 +267,9 @@
                         toastr.error(message, data.message);
                     } else {
                         toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: changed});
+                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
                         $('#editForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-edit'].setData('');
+                        CKEDITOR.instances['ckeditor-edit'].setData(''); // clear textarea
                         $(".modal").modal('hide'); // hide model form
                         reloadList();
                     }
@@ -252,22 +312,21 @@
                 displayOrder.shift(); // sortable method로 리턴 받은 데이터의 배열 첫 항목이 비어있다.
 
                 // Async Ajax loop: https://stackoverflow.com/questions/18424712/how-to-loop-through-ajax-requests-inside-a-jquery-when-then-statment/18425082
-                $.each(displayOrder, function(index, dOrder){
+                $.each(displayOrder, function(index, dOrder) {
                     if (index !== dOrder - 1) {
-                        var category = categories[dOrder-1];
-                        category['order'] = index;
+                        var code = codes[dOrder-1];
+                        code['order'] = index;
                         deferreds.push(
                             $.ajax({
                                 dataType: 'json',
                                 method: 'PUT',
-                                url: url + '/' +  category['id'],
-                                data: category,
+                                url: url + '/' +  code['id'],
+                                data: code,
                             })
                         );
                     }
                 });
-
-                $.when.apply($, deferreds).then(function(){
+                $.when.apply($, deferreds).then( function() {
                     toastr.success('Display order was successfully re-arranged.', 'Success');
                     $(".modal").modal('hide'); // hide model form
                     reloadList();
@@ -293,6 +352,8 @@
                 var deleteId = $("#deleteBody");
                 deleteId.find("label[name='txt']").text(rec.txt);
                 deleteId.find("label[name='kor_txt']").text(rec.kor_txt);
+                deleteId.find("label[name='category_id']").text($('#categoriesCombo').find('option:selected').val());
+                deleteId.find("label[name='category_name']").text($('#categoriesCombo').find('option:selected').text());
                 deleteId.find("label[name='memo']").html(rec.memo);
                 deleteId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
@@ -301,6 +362,8 @@
                 var showId = $("#showBody");
                 showId.find("label[name='txt']").text(rec.txt);
                 showId.find("label[name='kor_txt']").text(rec.kor_txt);
+                showId.find("label[name='category_id']").text($('#categoriesCombo').find('option:selected').val());
+                showId.find("label[name='category_name']").text($('#categoriesCombo').find('option:selected').text());
                 showId.find("label[name='memo']").html(rec.memo);
                 showId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
@@ -320,7 +383,7 @@
         // give #workTable drag-and-drop feature
         $('#workTable').find('tbody').sortable();
         function showOrder() {
-            $('#workTbody').load("{!! route('getCategories') !!}", function() {
+            $('#workTbody').load("{!! route('getCodes') !!}", function() {
                 displayOrder = '';
                 $('#make-order').modal({show:true});
             });

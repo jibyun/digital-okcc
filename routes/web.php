@@ -33,3 +33,7 @@ Route::get('admin', 'AdminPagesController@index')->name('admin'); // Index page
 Route::get('categoryStart', 'Admin\Code_CategoriesController@start')->name('categoryStart');
 Route::get('getCategories', 'Admin\Code_CategoriesController@get_categories')->name('getCategories');
 Route::resource('categories', 'Admin\Code_CategoriesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
+
+Route::get('codeStart', 'Admin\CodesController@start')->name('codeStart');
+Route::get('getCodes', 'Admin\CodesController@get_codes')->name('getCodes');
+Route::resource('codes', 'Admin\CodesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
