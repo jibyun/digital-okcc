@@ -32,7 +32,7 @@
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
             <div style="min-width:250px; max-width:250px;">
                
-                <a class="navbar-brand" href="#"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
+                <a class="navbar-brand" href="/"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
             </div>
 
         </nav>
