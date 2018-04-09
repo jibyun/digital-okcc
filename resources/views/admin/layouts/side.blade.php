@@ -12,6 +12,15 @@
             <li>
                 <a href="#submenu_users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
                 <ul id="submenu_users" class="list-unstyled collapse">
+                    <a href="#users_privilege" data-toggle="collapse">Privileges & Roles</a>
+                    <ul id="users_privilege" class="list-unstyled collapse">
+                        <li><a href="{{ route('privilegeStart') }}"><i class="fa fa-fw fa-angle-right"></i>Privileges</a></li>
+                        <li><a href="{{ route('roleStart') }}"><i class="fa fa-fw fa-angle-right"></i>Roles</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Mapping Privileges & Roles</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Mapping Users & Privileges</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Department (부서)</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Delete Member</a></li>
+                    </ul>
                     <li><a href="#">Approval</a></li>
                     <li><a href="#">Remove User</a></li>
                     <li><a href="#">Privileges</a></li>

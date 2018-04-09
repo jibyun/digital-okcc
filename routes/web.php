@@ -37,3 +37,9 @@ Route::resource('categories', 'Admin\Code_CategoriesController', [ 'only' => [ '
 Route::get('codeStart', 'Admin\CodesController@start')->name('codeStart');
 Route::get('getCodes', 'Admin\CodesController@get_codes')->name('getCodes');
 Route::resource('codes', 'Admin\CodesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
+
+Route::get('privilegeStart', 'Admin\PrivilegesController@start')->name('privilegeStart');
+Route::resource('privileges', 'Admin\PrivilegesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
+
+Route::get('roleStart', 'Admin\RolesController@start')->name('roleStart');
+Route::resource('roles', 'Admin\RolesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
