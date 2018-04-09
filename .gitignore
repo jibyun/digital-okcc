@@ -1,5 +1,6 @@
 .env
 .env.example
-.gitattributes
+tests/**
+.vscode/**
 vendor/**
 store/**

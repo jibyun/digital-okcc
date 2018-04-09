@@ -30,7 +30,7 @@ class CreateVisitsTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            //$table->foreign('member_id')->references('id')->on('members');
+            $table->foreign('member_id')->references('id')->on('members');
             $table->foreign('updated_by')->references('id')->on('users');
         });
     }
