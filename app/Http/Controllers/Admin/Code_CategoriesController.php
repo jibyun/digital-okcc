@@ -24,11 +24,15 @@ class Code_CategoriesController extends Controller
         return view('admin.category');
     }
 
+    public function get_categories() {
+        return view('admin.includes.categories.get-categories-for-order');
+    }
+    
     /**
      * Display a listing of the resource.
      */
     public function index() {
-        $categories = Code_Category::get();
+        $categories = Code_Category::orderBy('order', 'ASC')->get();
         $max_order = Code_Category::max('order');
         $result = array("max_order" => $max_order, "categories" => json_decode(json_encode($categories),true));
 

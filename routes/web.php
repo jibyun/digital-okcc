@@ -12,8 +12,6 @@
 */
 Auth::routes();
 
-Auth::routes();
-
 Route::get('/', function () {
     return view('index');
 })->middleware('auth');;
@@ -33,4 +31,5 @@ Route::get('admin', 'AdminPagesController@index')->name('admin'); // Index page
 |--------------------------------------------------------------------------
 */
 Route::get('categoryStart', 'Admin\Code_CategoriesController@start')->name('categoryStart');
+Route::get('getCategories', 'Admin\Code_CategoriesController@get_categories')->name('getCategories');
 Route::resource('categories', 'Admin\Code_CategoriesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
