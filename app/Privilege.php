@@ -16,7 +16,12 @@ class Privilege extends Model
     protected $fillable = [
         'id', 'txt', 'memo'
     ];
- 
+  
+    // Relationship with users table
+    public function users() {
+        return $this->hasMany('App\Users');
+    }
+    
     // Relationship with privilege_role_maps table
     public function privilege_role_maps() {
         return $this->hasMany('App\Privilege_Role_Map');
