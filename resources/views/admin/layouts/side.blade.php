@@ -14,7 +14,7 @@
                 <a href="#users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
                 <ul id="users" class="list-unstyled collapse show">
                     <a href="#users_privilege" data-toggle="collapse">Privileges & Roles</a>
-                    <ul id="users_privilege" class="list-unstyled collapse">
+                    <ul id="users_privilege" class="list-unstyled collapse show">
                         <li><a href="{{ route('admin.privileges.start') }}"><i class="fa fa-fw fa-angle-right"></i>Privileges</a></li>
                         <li><a href="{{ route('admin.roles.start') }}"><i class="fa fa-fw fa-angle-right"></i>Roles</a></li>
                         <li><a href="{{ route('admin.privileges-roles.map') }}"><i class="fa fa-fw fa-angle-right"></i>Mapping Privileges & Roles</a></li>

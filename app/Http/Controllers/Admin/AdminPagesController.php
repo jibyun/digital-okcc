@@ -14,10 +14,18 @@ class AdminPagesController extends Controller {
         // $this->middleware('guest')->only('index');
         // $this->middleware('auth')->except('index');
     }
+
     /**
      * Show Admin Index page.
      */
     public function index() {
         return view('admin.index');
+    }
+
+    /**
+     * Show Privileges and Roles mapping page.
+     */
+    public function privileges_roles_map() {
+        return view('admin.p-role-map');
     }
 }

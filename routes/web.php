@@ -48,7 +48,8 @@ Route::resource('admin/privileges', 'Admin\PrivilegesController', [ 'except' => 
 Route::get('admin/roleStart', 'Admin\RolesController@start')->name('admin.roles.start');
 Route::resource('admin/roles', 'Admin\RolesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Privileges and Roles Mapping
-Route::get('admin/privileges-roles', 'Admin\AdminPagesController@index')->name('admin.privileges-roles.map');
+Route::get('admin/privileges-roles', 'Admin\AdminPagesController@privileges_roles_map')->name('admin.privileges-roles.map');
+Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'except' => [ 'create', 'update', 'show', 'edit' ], 'as' => 'admin' ] );
 // Users Registration 
 Route::get('admin/users-regist', 'Admin\AdminPagesController@index')->name('admin.users.regist');
 // Log View

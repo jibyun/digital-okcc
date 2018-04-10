@@ -12,7 +12,11 @@ class Privilege_Role_Map extends Model
     public $timestamps = true;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
-    
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'privilege_id', 'role_id'
+    ];
+
     // Relationship with privileges table
     public function privilege() {
         return $this->belongsTo('App\Privilege');
