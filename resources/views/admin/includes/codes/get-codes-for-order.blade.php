@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $.ajax({
         dataType: 'json',
-        url: "{!! route('codes.index') !!}" + '?category_id=' + currentCategoryId,
+        url: "{!! route('admin.codes.index') !!}" + '?category_id=' + currentCategoryId,
         success: function(data) { // What to do if we succeed
             codes = data['codes'];
             var html = '';

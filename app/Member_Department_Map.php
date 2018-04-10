@@ -23,11 +23,6 @@ class Member_Department_Map extends Model
         return $this->belongsTo('App\Code');
     }
 
-    // Relationship with departments table
-    public function department() {
-        return $this->belongsTo('App\Department');
-    }
-
     // Relationship with Users table
     public function user() {
         return $this->belongsTo('App\User');

@@ -47,7 +47,7 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('privileges.index') !!}";
+        var url = "{!! route('admin.privileges.index') !!}";
         var saveIndex; // Row index of the table
         var saveId; // Primary key of privileges
         var privileges; // cached privileges

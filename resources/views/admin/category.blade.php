@@ -61,7 +61,7 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('categories.index') !!}";
+        var url = "{!! route('admin.categories.index') !!}";
         var saveIndex; // Row index of the table
         var saveId; // Primary key of categories
         var maxOrder; // Max Order number
@@ -320,7 +320,7 @@
         // give #workTable drag-and-drop feature
         $('#workTable').find('tbody').sortable();
         function showOrder() {
-            $('#workTbody').load("{!! route('getCategories') !!}", function() {
+            $('#workTbody').load("{!! route('admin.categories.getCategories') !!}", function() {
                 displayOrder = '';
                 $('#make-order').modal({show:true});
             });

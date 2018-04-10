@@ -52,11 +52,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Memo');
     }
 
-    // Relationship with departments table
-    public function departments() {
-        return $this->hasMany('App\Department');
-    }
-
     // Relationship with member_department_maps table
     public function member_department_maps() {
         return $this->hasMany('App\Member_Department_Map');

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $.ajax({
         dataType: 'json',
-        url: "{!! route('categories.index') !!}",
+        url: "{!! route('admin.categories.index') !!}",
         success: function(data) { // What to do if we succeed
             maxOrder = data['max_order'];
             categories = data['categories'];

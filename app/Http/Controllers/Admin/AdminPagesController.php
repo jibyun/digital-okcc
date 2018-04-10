@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,10 +14,8 @@ class AdminPagesController extends Controller {
         // $this->middleware('guest')->only('index');
         // $this->middleware('auth')->except('index');
     }
-
     /**
      * Show Admin Index page.
-     * @return \Illuminate\Http\Response
      */
     public function index() {
         return view('admin.index');

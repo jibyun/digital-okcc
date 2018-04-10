@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <form id="createForm" action="{{ route('categories.store') }}" method="post">
+                <form id="createForm" action="{{ route('admin.categories.store') }}" method="post">
                     @csrf
                     {{--  Category name  --}}
                     <div class="form-group row">
