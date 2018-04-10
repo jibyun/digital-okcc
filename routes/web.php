@@ -14,10 +14,9 @@ Auth::routes();
 
 Route::get('/', function () {
     return view('index');
-})->middleware('auth');;
+})->middleware('auth');
 
-
-
+Route::post('apply', 'GuestController@apply')->name('apply'); 
 /*
 |--------------------------------------------------------------------------
 | Admin Web Routes
