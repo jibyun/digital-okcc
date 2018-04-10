@@ -12,6 +12,15 @@
             <li>
                 <a href="#submenu_users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
                 <ul id="submenu_users" class="list-unstyled collapse">
+                    <a href="#users_privilege" data-toggle="collapse">Privileges & Roles</a>
+                    <ul id="users_privilege" class="list-unstyled collapse">
+                        <li><a href="{{ route('privilegeStart') }}"><i class="fa fa-fw fa-angle-right"></i>Privileges</a></li>
+                        <li><a href="{{ route('roleStart') }}"><i class="fa fa-fw fa-angle-right"></i>Roles</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Mapping Privileges & Roles</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Mapping Users & Privileges</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Department (부서)</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Delete Member</a></li>
+                    </ul>
                     <li><a href="#">Approval</a></li>
                     <li><a href="#">Remove User</a></li>
                     <li><a href="#">Privileges</a></li>
@@ -25,7 +34,11 @@
                 <a href="#member_top" data-toggle="collapse"><i class="fa fa-fw fa-users"></i>&nbsp;&nbsp;Members</a>
                 <ul id="member_top" class="list-unstyled collapse show">
                     <li><a href="{{ route('categoryStart') }}">Code Categories</a></li>
-                    <a href="#member_code" data-toggle="collapse">Basic Codes</a>
+                    <li><a href="{{ route('codeStart') }}">Codes</a></li>
+                    <li><a href="#">Position (직책)</a></li>
+                    <li><a href="#">Department (부서)</a></li>
+                    <li><a href="#">Delete Member</a></li>
+                    <a href="#member_code" data-toggle="collapse">Tree Sample</a>
                     <ul id="member_code" class="list-unstyled collapse">
                         <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Basic Code Categories</a></li>
                         <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Basic Code</a></li>
@@ -34,10 +47,6 @@
                         <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Department (부서)</a></li>
                         <li><a href="#"><i class="fa fa-fw fa-angle-right"></i>Delete Member</a></li>
                     </ul>
-                    <li><a href="#">Duty (직분)</a></li>
-                    <li><a href="#">Position (직책)</a></li>
-                    <li><a href="#">Department (부서)</a></li>
-                    <li><a href="#">Delete Member</a></li>
                 </ul>
             </li>
             <li>

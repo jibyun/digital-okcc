@@ -19,11 +19,11 @@ class CreateDepartmentTreesTable extends Migration
             $table->collation = 'utf8_unicode_ci';
 
             $table->increments('id');
-            $table->unsignedInteger('parent_id')->comment('Foreign Key: ID of Departments Table');
-            $table->unsignedInteger('child_id')->comment('Foreign Key: ID of Departments Table');
+            $table->unsignedInteger('parent_id')->comment('Foreign Key: ID of Codes Table');
+            $table->unsignedInteger('child_id')->comment('Foreign Key: ID of Codes Table');
             
-            $table->foreign('parent_id')->references('id')->on('departments');
-            $table->foreign('child_id')->references('id')->on('departments');
+            $table->foreign('parent_id')->references('id')->on('codes');
+            $table->foreign('child_id')->references('id')->on('codes');
         });
     }
 

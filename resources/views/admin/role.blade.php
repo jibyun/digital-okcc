@@ -2,20 +2,10 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>Category List</h4>
+    <h4>Role List</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
             <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
-        </button>
-        {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
-        </button>
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
-        </button>
-        <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
-            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
         </button>
     </div>
 
@@ -32,22 +22,18 @@
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-width="10%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
+                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Role Name</th>
                 <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
-                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
                 <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
                 <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
             </tr>
         </thead>
     </table>
 
-    @include('admin.includes.categories.create')
-    @include('admin.includes.categories.edit')
-    @include('admin.includes.categories.show')
-    @include('admin.includes.categories.delete')
-    @include('admin.includes.categories.order')
+    @include('admin.includes.roles.create')
+    @include('admin.includes.roles.edit')
+    @include('admin.includes.roles.show')
+    @include('admin.includes.roles.delete')
 
 </div>
 {{-- End Container --}}
@@ -61,12 +47,10 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('categories.index') !!}";
+        var url = "{!! route('roles.index') !!}";
         var saveIndex; // Row index of the table
-        var saveId; // Primary key of categories
-        var maxOrder; // Max Order number
-        var categories; // cached categories
-        var displayOrder; // display order using changing order
+        var saveId; // Primary key of roles
+        var roles; // cached roles
         var $table = $('#table');
 
         toastr.options.progressBar = true;
@@ -81,11 +65,6 @@
                 classes: 'font-weight-normal',
                 css: { "color": "black", "padding": "0 10px" }
             };
-        }
-
-        // 리스트 테이블의 초기화: Enabled 컬럼이 1이면 Enabled를 0이면 Disabled로 표시한다.
-        function enabledFormatter(value, row, index) {
-            if (value === 1) { return 'Enabled'; } else { return 'Disabled'; }
         }
 
         // 리스트 테이블의 초기화: Edit 컬럼의 버튼을 구성한다.
@@ -110,7 +89,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{ align: 'center' },{}, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{},{}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -126,12 +105,11 @@
                 dataType: 'json',
                 url: url,
                 success: function(data) { // What to do if we succeed
-                    maxOrder = data['max_order'];
-                    categories = data['categories'];
-                    $table.bootstrapTable( 'load', { data: categories } );
+                    roles = data['roles'];
+                    $table.bootstrapTable( 'load', { data: roles } );
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get categories data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error("can't get roles data from server: " + JSON.stringify(jqXHR), Failed);
                 }
             });
         }  
@@ -150,12 +128,11 @@
             e.preventDefault();
             var formId = $("#create-item");
             var form_action = formId.find("form").attr("action");
-            var txt = formId.find("input[name='txt']").val();
-            var kor_txt = formId.find("input[name='kor_txt']").val();
-            var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자 변화 꼭 해야 함
-            var memo = CKEDITOR.instances['ckeditor-create'].getData();
-            var order = ++maxOrder;
-            var postData = { txt:txt, kor_txt:kor_txt, order:order, enabled:enable, memo:memo };
+
+            var postData = { 
+                txt: formId.find("input[name='txt']").val(), 
+                memo: CKEDITOR.instances['ckeditor-create'].getData(), 
+            };
 
             $.ajax({
                 dataType: 'json',
@@ -186,18 +163,17 @@
             e.preventDefault();
             var formId = $("#edit-item");
             var form_action = formId.find("form").attr("action");
-            var txt = formId.find("input[name='txt']").val();
-            var kor_txt = formId.find("input[name='kor_txt']").val();
-            var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자변화 꼭 해야 함!!!
-            var memo = CKEDITOR.instances['ckeditor-edit'].getData();
-            var order = formId.find("input[name='order']").val();
-            var changed = { "txt": txt, "kor_txt": kor_txt, "enabled": enable, "memo": memo, "order": order };
+
+            var postData = { 
+                txt: formId.find("input[name='txt']").val(), 
+                memo: CKEDITOR.instances['ckeditor-edit'].getData(), 
+            };
 
             $.ajax({
                 dataType: 'json',
                 method: 'PUT',
                 url: form_action,
-                data: changed,
+                data: postData,
                 success: function(data) {
                     if (data.errors) {
                         var message = '';
@@ -207,7 +183,7 @@
                         toastr.error(message, data.message);
                     } else {
                         toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: changed});
+                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
                         $('#editForm')[0].reset(); // Clear create form 
                         CKEDITOR.instances['ckeditor-edit'].setData('');
                         $(".modal").modal('hide'); // hide model form
@@ -236,73 +212,24 @@
             });
         });
 
-        // display order를 바꿀 때마다 발생한다. (drar & drop)
-        $(function() {
-            $('#workTbody').sortable({
-               update: function(event, ui) {
-                  displayOrder = $(this).sortable('toArray');
-               }
-            });
-         });
-
-        // Save button was pressed after changing display order.
-        $(".make-order").click(function(e){
-            if (displayOrder) { // 한번이라도 순서를 바꿨으면?
-                var deferreds = [];
-                displayOrder.shift(); // sortable method로 리턴 받은 데이터의 배열 첫 항목이 비어있다.
-
-                // Async Ajax loop: https://stackoverflow.com/questions/18424712/how-to-loop-through-ajax-requests-inside-a-jquery-when-then-statment/18425082
-                $.each(displayOrder, function(index, dOrder){
-                    if (index !== dOrder - 1) {
-                        var category = categories[dOrder-1];
-                        category['order'] = index;
-                        deferreds.push(
-                            $.ajax({
-                                dataType: 'json',
-                                method: 'PUT',
-                                url: url + '/' +  category['id'],
-                                data: category,
-                            })
-                        );
-                    }
-                });
-
-                $.when.apply($, deferreds).then(function(){
-                    toastr.success('Display order was successfully re-arranged.', 'Success');
-                    $(".modal").modal('hide'); // hide model form
-                    reloadList();
-                    displayOrder = '';
-                }).fail(function(){
-                    toastr.error('Error occured! Please Save again.', 'Failed');
-                });
-            }
-        });
-
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
             if (column === 'edit') {
                 var form = $("#edit-item");
                 form.find("input[name='txt']").val(rec.txt);
-                form.find("input[name='kor_txt']").val(rec.kor_txt);
-                form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
                 CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
-                form.find("input[name='order']").val(rec.order);
                 form.find("#editForm").attr("action", url + '/' + rec.id);
             } else if (column === 'delete') {
                 var deleteId = $("#deleteBody");
                 deleteId.find("label[name='txt']").text(rec.txt);
-                deleteId.find("label[name='kor_txt']").text(rec.kor_txt);
                 deleteId.find("label[name='memo']").html(rec.memo);
-                deleteId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
                 var showId = $("#showBody");
                 showId.find("label[name='txt']").text(rec.txt);
-                showId.find("label[name='kor_txt']").text(rec.kor_txt);
                 showId.find("label[name='memo']").html(rec.memo);
-                showId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }
@@ -314,17 +241,4 @@
         });
     </script>
 
-    {{-- to implement make display order --}}
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        // give #workTable drag-and-drop feature
-        $('#workTable').find('tbody').sortable();
-        function showOrder() {
-            $('#workTbody').load("{!! route('getCategories') !!}", function() {
-                displayOrder = '';
-                $('#make-order').modal({show:true});
-            });
-        }
-        
-    </script>
-    @endsection
+@endsection

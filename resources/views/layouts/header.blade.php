@@ -4,7 +4,11 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
     <div style="min-width:250px; max-width:250px;">
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
-        <a class="navbar-brand" href="#"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
+        @if ( strpos(url()->current(), 'admin') !== false )
+            <a class="navbar-brand" href="{{ URL::to('/') }}/admin"><i class="fa fa-code-branch"></i>{{ str_replace('Office', 'Admin', config('app.name', 'Application Name')) }}</a>
+        @else
+            <a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
+        @endif
     </div>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

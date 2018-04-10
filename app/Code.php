@@ -12,7 +12,11 @@ class Code extends Model
     public $timestamps = false;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = false;
-    
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'code_category_id', 'txt', 'kor_txt', 'enabled', 'sysmetic', 'memo', 'order'
+    ];
+
     // Relationship with code_categories table
     public function code_category() {
         return $this->belongsTo('App\Code_Category');

@@ -20,7 +20,7 @@ class CreateMemberDepartmentMapsTable extends Migration
 
             $table->increments('id');
             $table->unsignedInteger('member_id')->comment('Foreign Key: ID of Members Table');
-            $table->unsignedInteger('department_id')->comment('Foreign Key: ID of Departments Table');
+            $table->unsignedInteger('department_id')->comment('Foreign Key: ID of Codes Table');
             $table->unsignedInteger('position_id')->comment('Foreign Key: ID of Codes Table');
             $table->date('started_at')->nullable()->comment('Start Date');
             $table->date('finished_at')->nullable()->comment('End Date');
@@ -30,7 +30,7 @@ class CreateMemberDepartmentMapsTable extends Migration
             $table->timestamps();
 
             $table->foreign('member_id')->references('id')->on('members');
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('department_id')->references('id')->on('codes');
             $table->foreign('position_id')->references('id')->on('codes');
             $table->foreign('updated_by')->references('id')->on('users');
         });
