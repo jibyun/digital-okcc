@@ -12,7 +12,32 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('okcc/category', 'API\MemberList\CategoryController');
+/**
+ * Method: GET
+ * URL: /api/okcc/memberList/categories: Retrieve search categories
+ */
+Route::apiResource('okcc/memberList/categories', 'API\MemberList\CategoryController')->only([
+    'index'
+]);
+/**
+ * Method: GET
+ * URL: /api/okcc/memberList/member/{id}: Retrieve all information for the given member
+ * 
+ */
+Route::apiResource('okcc/memberList/member', 'API\MemberList\MemberController')->only([
+    'show'
+]);;
+/**
+ * Method: GET
+ * URL: /api/okcc/memberList/memberList: Retrieve all members
+ * URL: /api/okcc/memberList/memberList/{code}: Retrieve members who matched the code
+ * 
+ */
+Route::apiResource('okcc/memberList/memberList', 'API\MemberList\MemberListController')->only([
+    'index', 'show'
+]);
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
