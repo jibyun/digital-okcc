@@ -1,0 +1,131 @@
+/* 
+   Custom CSS for gijgo tree 
+   This file was modified from 
+   https://github.com/atatanasov/gijgo/blob/master/src/tree/css/tree.base.css 
+*/
+ul.gj-list li [data-role="spacer"] {
+    display: table-cell;
+}
+
+ul.gj-list li [data-role="expander"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+    cursor: pointer;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
+    width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-font-awesome-expander {
+    width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander {
+    width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander .glyphicon {
+    top: 4px;
+    height: 24px;
+}
+
+/* Bootstrap Theme */
+.gj-tree-bootstrap-4 ul.gj-list-bootstrap li {
+    border: 0px;
+    border-radius: 0px;
+    /*color: #212529;*/
+    color: rgba(255, 255, 255, .75);
+}
+
+.gj-tree-bootstrap-4 ul.gj-list-bootstrap li.active {
+    color: #fff;
+}
+
+.gj-tree-bootstrap-4 ul.gj-list-bootstrap li.disabled {
+    color: #868e96;
+}
+
+.gj-tree-bootstrap-4 ul.gj-list-bootstrap li ul.gj-list-bootstrap {
+    width: 100%;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li {
+    border: 1px solid #ddd;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li:first-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li:last-child {
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander .gj-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.list-group-item {
+    background-color: #343a40 !important;
+}
+
+.list-group-item.active, .list-group-item.active:hover {
+    color: rgba(255, 255, 255, 1.0);
+    background-color:  #272C30 !important;
+}
+.list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
+    color: rgba(255, 255, 255, .75);
+}
+
+ul.gj-list-bootstrap {
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+ul.gj-list-bootstrap li {
+    padding: 0px;
+}
+
+ul.gj-list-bootstrap li [data-role="wrapper"] {
+    padding: 0px 5px;
+}
+
+ul.gj-list-bootstrap li [data-role="checkbox"] {
+    width: 24px;
+    padding: 3px;
+}
+
+ul.gj-list-bootstrap li [data-role="image"] {
+    width: 24px;
+    height: 24px;
+}
+
+ul.gj-list-bootstrap li [data-role="display"] {
+    padding: 4px 0px 4px 2px;
+}

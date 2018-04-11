@@ -20,7 +20,7 @@ class MemberListController extends BaseController
      */
     public function index()
     {
-        return $this->sendResponse(json_encode([$this->memberListService->getAllMembers()]),
+        return $this->sendResponse(json_encode($this->memberListService->getAllMembers()),
                                     "retrieved all members successfully.");
     }
 

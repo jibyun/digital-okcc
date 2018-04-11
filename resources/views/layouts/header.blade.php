@@ -19,33 +19,33 @@
         
         <ul class="navbar-nav mr-auto">
             @auth
-            <li class="nav-item"><a class="nav-link" href="#">Members</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Finance</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
+            <li id="menu_members" class="nav-item"><a class="nav-link" href="#">Members</a></li>
+            <li id="menu_finance" class="nav-item"><a class="nav-link" href="#">Finance</a></li>
+            <li id="menu_inventory" class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
             @endauth 
         </ul>
         <ul class="navbar-nav ml-auto">
-             <!-- Authentication Links -->
-             @guest
-             <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ __('Sign In') }}</a></li>
+            <!-- Authentication Links -->
+            @guest
+            <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ __('Sign In') }}</a></li>
             @else
-             <li class="nav-item dropdown">
-                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                     {{ Auth::user()->name }} <span class="caret"></span>
-                 </a>
-                 <!-- Dropdown menu for logout -->
-                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                     <a class="dropdown-item" href="{{ route('logout') }}"
-                         onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                         <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
-                     </a>
+            <li class="nav-item dropdown">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    {{ Auth::user()->name }} <span class="caret"></span>
+                </a>
+                <!-- Dropdown menu for logout -->
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
+                    </a>
 
-                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                         @csrf
-                     </form>
-                 </div>
-             </li>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            </li>
             @endguest
            
         </ul>
