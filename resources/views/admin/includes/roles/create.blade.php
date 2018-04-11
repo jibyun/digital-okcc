@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <form id="createForm" action="{{ route('roles.store') }}" method="post">
+                <form id="createForm" action="{{ route('admin.roles.store') }}" method="post">
                     @csrf
                     {{--  Role name  --}}
                     <div class="form-group row">

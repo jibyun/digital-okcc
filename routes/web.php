@@ -27,23 +27,41 @@ Route::get('/memberList', function () {
 | Admin Web Routes
 |--------------------------------------------------------------------------
 */
-Route::get('admin', 'AdminPagesController@index')->name('admin'); // Index page
+Route::get('admin', 'Admin\AdminPagesController@index')->name('admin'); // Index page
 
 /*
 |--------------------------------------------------------------------------
 | Admin Subpages' Routes
 |--------------------------------------------------------------------------
 */
-Route::get('categoryStart', 'Admin\Code_CategoriesController@start')->name('categoryStart');
-Route::get('getCategories', 'Admin\Code_CategoriesController@get_categories')->name('getCategories');
-Route::resource('categories', 'Admin\Code_CategoriesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
-
-Route::get('codeStart', 'Admin\CodesController@start')->name('codeStart');
-Route::get('getCodes', 'Admin\CodesController@get_codes')->name('getCodes');
-Route::resource('codes', 'Admin\CodesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
-
-Route::get('privilegeStart', 'Admin\PrivilegesController@start')->name('privilegeStart');
-Route::resource('privileges', 'Admin\PrivilegesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
-
-Route::get('roleStart', 'Admin\RolesController@start')->name('roleStart');
-Route::resource('roles', 'Admin\RolesController', [ 'only' => [ 'start', 'index', 'store', 'update', 'destroy' ] ] );
+// Categories CRUD
+Route::get('admin/categoryStart', 'Admin\Code_CategoriesController@start')->name('admin.categories.start');
+Route::get('admin/getCategories', 'Admin\Code_CategoriesController@get_categories')->name('admin.categories.getCategories');
+Route::resource('admin/categories', 'Admin\Code_CategoriesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+// Codes CRUD
+Route::get('admin/codeStart', 'Admin\CodesController@start')->name('admin.codes.start');
+Route::get('admin/getCodes', 'Admin\CodesController@get_codes')->name('admin.code.getCodes');
+Route::resource('admin/codes', 'Admin\CodesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+// Members CRUD
+Route::get('admin/memberStart', 'Admin\MembersController@start')->name('admin.members.start');
+Route::resource('admin/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+//Privileges CRUD
+Route::get('admin/privilegeStart', 'Admin\PrivilegesController@start')->name('admin.privileges.start');
+Route::resource('admin/privileges', 'Admin\PrivilegesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+// Roles CRUD
+Route::get('admin/roleStart', 'Admin\RolesController@start')->name('admin.roles.start');
+Route::get('admin/getRolesNotInMap', 'Admin\RolesController@getroles_notin_map')->name('admin.roles.getroles-notin-map');
+Route::resource('admin/roles', 'Admin\RolesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+// Privileges and Roles Mapping
+Route::get('admin/privileges-roles', 'Admin\AdminPagesController@privileges_roles_map')->name('admin.privileges-roles.map');
+Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
+// Users Registration 
+Route::get('admin/users-regist', 'Admin\AdminPagesController@index')->name('admin.users.regist');
+// Log View
+Route::get('admin/log-view', 'Admin\AdminPagesController@index')->name('admin.log.view');
+// Department code Tree mapping
+Route::get('admin/dept-tree-map', 'Admin\AdminPagesController@index')->name('admin.dept-tree.map');
+// Family Mapping
+Route::get('admin/family-map', 'Admin\AdminPagesController@index')->name('admin.family.map');
+// Members and Departments Mapping
+Route::get('admin/member-dept-map', 'Admin\AdminPagesController@index')->name('admin.member-dept.map');

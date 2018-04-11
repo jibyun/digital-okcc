@@ -13,8 +13,8 @@ class Department_Tree extends Model
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
     
-    // Relationship with departments table
-    public function department() {
-        return $this->belongsTo('App\Department');
+    // Relationship with codes table
+    public function code() {
+        return $this->belongsTo('App\Code');
     }
 }

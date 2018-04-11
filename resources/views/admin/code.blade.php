@@ -67,7 +67,7 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('codes.index') !!}";
+        var url = "{!! route('admin.codes.index') !!}";
         var saveIndex; // Row index of the table
         var saveId; // Primary key of codes
         var maxOrder; // Max Order number
@@ -180,7 +180,7 @@
             // get categories table to ID="categoriesCombo"
             $.ajax({
                 dataType: 'json',
-                url: "{!! route('categories.index') !!}",
+                url: "{!! route('admin.categories.index') !!}",
                 success: function(data) { // What to do if we succeed
                     var categories = data['categories'];
                     currentCategoryId = categories[0]['id'];
@@ -383,7 +383,7 @@
         // give #workTable drag-and-drop feature
         $('#workTable').find('tbody').sortable();
         function showOrder() {
-            $('#workTbody').load("{!! route('getCodes') !!}", function() {
+            $('#workTbody').load("{!! route('admin.code.getCodes') !!}", function() {
                 displayOrder = '';
                 $('#make-order').modal({show:true});
             });

@@ -5,25 +5,13 @@ use Illuminate\Database\Seeder;
 class RolesTableSeeder extends Seeder {
 
     public function run() {
-        DB::table('roles')->insert([ 
-            'txt' => 'Global', 
-            'memo' => "<p>This access level gives a user access to all records in the organization, regardless of the business unit hierarchical level that the instance or the user belongs to. Users who have Global access automatically have Deep, Local, and Basic access, also.</p><p>Because this access level gives access to information throughout the organization, it should be restricted to match the organization's data security plan. This level of access is usually reserved for managers with authority over the organization.</p><p>The application refers to this access level as <strong>Organization</strong>.</p>"
-        ]);
-        DB::table('roles')->insert([ 
-            'txt' => 'Deep', 
-            'memo' => "<p>This access level gives a user access to records in the user's business unit and all business units subordinate to the user's business unit.</p><p>Users who have Deep access automatically have Local and Basic access, also. Because this access level gives access to information throughout the business unit and subordinate business units, it should be restricted to match the organization's data security plan. This level of access is usually reserved for managers with authority over the business units.</p><p>The application refers to this access level as  <strong>Parent: Child Business Units</strong>.</p>"
-        ]);
-        DB::table('roles')->insert([ 
-            'txt' => 'Local', 
-            'memo' => "<p>This access level gives a user access to records in the user's business unit. Users who have Local access automatically have Basic access, also.</p><p>Because this access level gives access to information throughout the business unit, it should be restricted to match the organization's data security plan. This level of access is usually reserved for managers with authority over the business unit.</p><p>The application refers to this access level as <strong>Business Unit</strong>.</p>"
-        ]);
-        DB::table('roles')->insert([ 
-            'txt' => 'Basic', 
-            'memo' => "<p>This access level gives a user access to records that the user owns, objects that are shared with the user, and objects that are shared with a team that the user is a member of.</p><p>This is the typical level of access for sales and service representatives.</p><p>The application refers to this access level as <strong>User</strong>.</p>"
-        ]);
-        DB::table('roles')->insert([ 
-            'txt' => 'None', 
-            'memo' => "<p>No access is allowed.</p>"
-        ]);
+        DB::table('roles')->insert([ 'txt' => 'SUPER_ADMIN_ROLE', 'memo' => "<p>All features are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_ADMIN_ROLE', 'memo' => "<p>All features of Members menu and limited features of Admin menu are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_SIMBANG_ROLE', 'memo' => "<p>All pastrol invitation features of Members menu are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_SEARCH_ALL_ROLE', 'memo' => "<p>All searching features of Members menu are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_SEARCH_BELONGTO_ROLE', 'memo' => "<p>Only members of the group to which you belong can be searched.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'FINANCE_ADMIN_ROLE', 'memo' => "<p>All features of Finance menu and limited features of Admin menu are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'INVENT_ADMIN_ROLE', 'memo' => "<p>All features of Inventories menu and limited features of Admin menu are allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'NONE', 'memo' => "<p>No access is allowed.</p>" ]);
     }
 }
