@@ -14,7 +14,7 @@ class Code_Category extends Model
     public $incrementing = true;
     // The attributes that are mass assignable.
     protected $fillable = [
-        'id', 'txt', 'kor_txt', 'enabled', 'memo', 'order'
+        'id', 'txt', 'kor_txt', 'enabled', 'memo', 'order', 'fieldName'
     ];
 
     // Relationship with codes table
