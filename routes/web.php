@@ -17,6 +17,11 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Route::post('apply', 'GuestController@apply')->name('apply'); 
+
+// memberList Landing page
+Route::get('/memberList', function () {
+    return view('MemberList\memberList');
+});
 /*
 |--------------------------------------------------------------------------
 | Admin Web Routes
