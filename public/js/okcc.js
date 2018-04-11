@@ -13,6 +13,11 @@ $(document).ready(function () {
         parent.prev('a').attr('aria-expanded', true);
         parent.addClass('show');
     }
+
+    // Hide Finance and Inventory menu as a default
+    // TODO: Those are visible depends on the privilege
+    $('#menu_finance').hide();
+    $('#menu_inventory').hide();
 });
 
 // When the user scrolls down 20px from the top of the document, show the button
@@ -28,4 +33,24 @@ window.onscroll = function() {
 function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+}
+
+/**
+ * Call Restful API
+ * @param {*} url  url 
+ * @param {*} method method type
+ * @param {*} param params
+ * @param {*} successFunc success function
+ * @param {*} failureFunc failure function
+ */
+function restApiCall(url, method, param, successFunc, failureFunc){
+    $.ajax({
+        url: url,
+        type: method,
+        // At this moment, we set "json" as default
+        datatype: "json",
+        param: param,
+        success: successFunc,
+        fail: failureFunc
+    });
 }

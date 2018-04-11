@@ -1,5 +1,6 @@
 .env
 .env.example
+composer.lock
 tests/**
 .vscode/**
 vendor/**
