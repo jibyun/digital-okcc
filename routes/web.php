@@ -45,10 +45,11 @@ Route::get('admin/privilegeStart', 'Admin\PrivilegesController@start')->name('ad
 Route::resource('admin/privileges', 'Admin\PrivilegesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Roles CRUD
 Route::get('admin/roleStart', 'Admin\RolesController@start')->name('admin.roles.start');
+Route::get('admin/getRolesNotInMap', 'Admin\RolesController@getroles_notin_map')->name('admin.roles.getroles-notin-map');
 Route::resource('admin/roles', 'Admin\RolesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Privileges and Roles Mapping
 Route::get('admin/privileges-roles', 'Admin\AdminPagesController@privileges_roles_map')->name('admin.privileges-roles.map');
-Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'except' => [ 'create', 'update', 'show', 'edit' ], 'as' => 'admin' ] );
+Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Users Registration 
 Route::get('admin/users-regist', 'Admin\AdminPagesController@index')->name('admin.users.regist');
 // Log View

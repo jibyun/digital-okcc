@@ -1,5 +1,15 @@
 @extends('admin.layouts.master')
 
+@section('styles')
+    {{-- IMPORTANT: OVERRIDE of selected row in Bootstrap table --}}
+    <style>
+        #addTable .selected td{
+            background-color:#031023 !important;
+            color: cornsilk;
+        }
+    </style>
+@endsection
+
 @section('content')
 
 <div class='container p-4'>
@@ -20,7 +30,7 @@
         </div>
     </div>
 
-    <table  id="mainTable" class="table table-striped s1-font-size" 
+    <table  id="mainTable" class="table table-responsive-md table-striped s1-font-size" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
@@ -41,12 +51,11 @@
         </thead>
     </table>
 
-    @include('admin.includes.codes.create')
-    @include('admin.includes.codes.edit')
-    @include('admin.includes.codes.show')
-    @include('admin.includes.codes.delete')
-    @include('admin.includes.codes.order')
-
+    @include('admin.includes.p-role-map.add')
+    @include('admin.includes.p-role-map.show')
+    @include('admin.includes.p-role-map.delete')
+    @include('admin.includes.p-role-map.deleteall')
+    <input id="signup-token" name="_token" type="hidden" value="{{csrf_token()}}">
 </div>
 {{-- End Container --}}
 @endsection
@@ -55,21 +64,17 @@
     <script type="text/javascript">
         // variables
         var $table = $('#mainTable');
+        var $addTable = $('#addTable');
         var $combo = $("#privilegesCombo");
         var privileges; // all items for combo box
         var currentPrivilegeId; // current selected id in combo box
-        var privilegesRolesUrl = "{!! route('admin.p-role-map.index') !!}";
-        var privilegesUrl = "{!! route('admin.privileges.index') !!}";
+        var currentPrivilegeTxt; // current selected text in combo box
+        var privilegeRoleMaps;
+        const privilegesRolesUrl = "{!! route('admin.p-role-map.index') !!}";
+        const privilegesRolesPostUrl = "{!! route('admin.p-role-map.store') !!}";
+        const privilegesUrl = "{!! route('admin.privileges.index') !!}";
+        const getRolesNotInMap = "{!! route('admin.roles.getroles-notin-map') !!}"
 
-
-
-        var saveIndex; // Row index of the table
-        var saveId; // Primary key of codes
-        var maxOrder; // Max Order number
-        var maxId; // Max Id: it must be need when create a code
-        var codes; // cached codes
-        var displayOrder; // display order using changing order
-        
         // define toast options
         toastr.options.progressBar = true;
         toastr.options.timeOut = 5000; // How long the toast will display without user interaction
@@ -109,11 +114,25 @@
             });
         }
 
-        /* configure popover button */
+        /* Intialize add roles table */
+
+        // Row Style of add table
+        function addTableRowStyle(row, index) {
+            return {
+                classes: 'font-weight-bold',
+                css: { "padding": "0 10px" }
+            };
+        }
+
+        $addTable.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{} ]
+        });
 
         $("#pop").popover();
         function setPopover(index) {
             $('#pop').attr('title', privileges[index]['txt']);
+            currentPrivilegeTxt = privileges[index]['txt'];
             $('#pop').attr('data-content', privileges[index]['memo']); //TODO: change HTML
         }
 
@@ -174,11 +193,12 @@
                 dataType: 'json',
                 url: privilegesRolesUrl + '?privilege_id=' + currentPrivilegeId,
                 success: function(data) { // What to do if we succeed
-                    if (data['p_role_maps'].length > 0) {
-                        $table.bootstrapTable( 'load', { data: data['p_role_maps'] } );
+                    if (data['result'].length > 0) {
+                        $table.bootstrapTable( 'load', { data: data['result'] } );
                     } else {
                         $table.bootstrapTable( 'removeAll' );
                     } 
+                    privilegeRoleMaps = data['result'];
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
                     toastr.error("can't get data from server: " + JSON.stringify(jqXHR), 'Failed');
@@ -188,99 +208,61 @@
 
         getInitList();
 
-
-
-
-
-
-
-        // Create 후 Submit 버튼을 눌렀다
-        $(".crud-submit").click(function(e){
-            e.preventDefault();
-            var formId = $("#create-item");
-            var form_action = formId.find("form").attr("action");
-
-            var postData = { 
-                id: maxId, 
-                code_category_id: currentCategoryId, 
-                txt: formId.find("input[name='txt']").val(), 
-                kor_txt: formId.find("input[name='kor_txt']").val(), 
-                order: maxOrder, 
-                enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
-                memo: CKEDITOR.instances['ckeditor-create'].getData(), 
-                sysmetic: 0 
-            };
-
+        // click addRole button
+        function addRoles() {
             $.ajax({
                 dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
+                method:'GET',
+                url: getRolesNotInMap + '?privilege_id=' + currentPrivilegeId,
                 success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
+                    if (data.length < 1) {
+                        toastr.error('There are no more data to add!', 'Warning');
                     } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#createForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-create'].setData(''); // clear textarea
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
+                        $addTable.bootstrapTable( 'load', { data: data["roles"] } );
+                        $('#add-item').modal({show:true});
                     }
                 }
             });
+        }
+
+        // Save button was pressed after selecting roles to add.
+        $(".add-roles").click(function(e){
+            event.preventDefault();
+            var selection = $addTable.bootstrapTable('getSelections');
+            if (selection) { // if selected items are more than one?
+                var deferreds = [];
+                // Async Ajax loop: https://stackoverflow.com/questions/18424712/how-to-loop-through-ajax-requests-inside-a-jquery-when-then-statment/18425082
+                $.each(selection, function(index, item) {
+                    var data = {
+                        privilege_id: currentPrivilegeId, 
+                        role_id: item['id'],
+                    };
+                    deferreds.push(
+                        $.ajax({
+                            dataType: 'json',
+                            method: 'POST',
+                            url: privilegesRolesPostUrl,
+                            data: data
+                        })
+                    );
+                });
+                $.when.apply($, deferreds).then( function() {
+                    toastr.success('Data was successfully saved.', 'Success');
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
+                }).fail(function(e){
+                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                });
+            }
         });
 
-        // Edit 후 Submit 버튼을 눌렀다
-        $(".crud-update").click(function(e){
-            e.preventDefault();
-            var formId = $("#edit-item");
-            var form_action = formId.find("form").attr("action");
-
-            var postData = { 
-                code_category_id: currentCategoryId, 
-                txt: formId.find("input[name='txt']").val(), 
-                kor_txt: formId.find("input[name='kor_txt']").val(), 
-                order: formId.find("input[name='order']").val(), 
-                enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
-                memo: CKEDITOR.instances['ckeditor-edit'].getData(), 
-                sysmetic: 0
-            };
-
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-edit'].setData(''); // clear textarea
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
-                }
-            });
-        });
-
-        // Delete 버튼을 눌렀다.
-        $("body").on("click", ".crud-delete", function() {
+        // Delete button was pressed
+        $(".crud-delete").click(function(e){
+            event.preventDefault();
             $.ajax({
                 dataType: 'json',
                 type:'delete',
-                url: url + '/' + saveId,
+                url: privilegesRolesUrl + '/' + saveId,
                 success: function(data) {
                     if (data.errors) {
                         toastr.error(data.errors, data.message);
@@ -294,35 +276,66 @@
             });
         });
 
+        // Delete all button was pressed
+        $(".crud-all").click(function(e){
+            event.preventDefault();
+            if (privilegeRoleMaps) { // if selected items are more than one?
+                var deferreds = [];
+                $.each(privilegeRoleMaps, function(index, item) {
+                    deferreds.push(
+                        $.ajax({
+                            dataType: 'json',
+                            type:'delete',
+                            url: privilegesRolesUrl + '/' + item['id'],
+                        })
+                    );
+                });
+                $.when.apply($, deferreds).then( function() {
+                    toastr.success('Data was successfully saved.', 'Success');
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
+                }).fail(function(e){
+                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                });
+            }
+        });
+
+        // Delete all
+        function clearAll() {
+            var deleteId = $("#deleteAllBody");
+            if (privilegeRoleMaps) { // if selected items are more than one?
+                var html = "";
+                $.each(privilegeRoleMaps, function(index, item) {
+                    html += '<div class="row col-sm-12">';
+                    html += '<div><label name="role_name">' + item['role_txt'] + '</label> (<label name="role_txt">' + item['role_id'] + '</label>)</div>';
+                    html += '</div>';
+                });
+                $("#deleteAllBody").prepend(html);
+                // Open Bootstrap Model without Button Click
+                $("#deleteall-item").modal('show');
+            } else {
+                toastr.error('There is nothing to delete.', 'Failed');
+            }
+        }
+        
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
-            if (column === 'edit') {
-                var form = $("#edit-item");
-                form.find("input[name='txt']").val(rec.txt);
-                form.find("input[name='kor_txt']").val(rec.kor_txt);
-                form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
-                CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
-                form.find("input[name='order']").val(rec.order);
-                form.find("#editForm").attr("action", url + '/' + rec.id);
-            } else if (column === 'delete') {
+
+            if (column === 'delete') {
                 var deleteId = $("#deleteBody");
-                deleteId.find("label[name='txt']").text(rec.txt);
-                deleteId.find("label[name='kor_txt']").text(rec.kor_txt);
-                deleteId.find("label[name='category_id']").text($('#privilegesCombo').find('option:selected').val());
-                deleteId.find("label[name='category_name']").text($('#privilegesCombo').find('option:selected').text());
-                deleteId.find("label[name='memo']").html(rec.memo);
-                deleteId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                deleteId.find("label[name='privilege_txt']").text(currentPrivilegeTxt);
+                deleteId.find("label[name='privilege_id']").text(currentPrivilegeId);
+                deleteId.find("label[name='role_txt']").text(rec.role_txt);
+                deleteId.find("label[name='role_id']").text(rec.role_id);
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
                 var showId = $("#showBody");
-                showId.find("label[name='txt']").text(rec.txt);
-                showId.find("label[name='kor_txt']").text(rec.kor_txt);
-                showId.find("label[name='category_id']").text($('#privilegesCombo').find('option:selected').val());
-                showId.find("label[name='category_name']").text($('#privilegesCombo').find('option:selected').text());
-                showId.find("label[name='memo']").html(rec.memo);
-                showId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                showId.find("label[name='privilege_txt']").text(currentPrivilegeTxt);
+                showId.find("label[name='privilege_id']").text(currentPrivilegeId);
+                showId.find("label[name='role_txt']").text(rec.role_txt);
+                showId.find("label[name='role_id']").text(rec.role_id);
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }
@@ -334,17 +347,4 @@
         });
     </script>
 
-    {{-- to implement make display order --}}
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        // give #workTable drag-and-drop feature
-        $('#workTable').find('tbody').sortable();
-        function showOrder() {
-            $('#workTbody').load("{!! route('admin.code.getCodes') !!}", function() {
-                displayOrder = '';
-                $('#make-order').modal({show:true});
-            });
-        }
-        
-    </script>
 @endsection

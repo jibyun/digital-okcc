@@ -9,7 +9,7 @@ class Privilege_Role_Map extends Model
     // Table name: If table name is different from model name, it should need.
     protected $table = "privilege_role_maps";
     // Indicates if the model should be timestamped. 
-    public $timestamps = true;
+    public $timestamps = false;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
     // The attributes that are mass assignable.

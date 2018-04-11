@@ -13,77 +13,61 @@ class Privilege_Role_MapsController extends Controller {
      */
     public function index(Request $request) {
         $privilege_id = $request->privilege_id;
-        
         // get all records of privilege_role_maps table with roles table
-        $p_role_maps = Privilege_Role_Map::where('privilege_id', $privilege_id)->with(['role'])->orderBy('id', 'ASC')->get();
-        $result = array("p_role_maps" => json_decode(json_encode($p_role_maps),true));
+        $result = Privilege_Role_Map::where('privilege_id', $privilege_id)->with(['role'])->orderBy('id', 'ASC')
+            ->get();
 
+        $p_role_maps = array();
+        foreach ($result as $value) {
+            array_push($p_role_maps, $this->reinforceTable($value));
+        }
+
+        $result = array("result" => $p_role_maps);
         return response()->json($result);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function store(Request $request) {
+        $result = Privilege_Role_Map::create($request->all());
+        return response()
+            ->json([
+                'message' => 'The item was successfully created.',
+                'result' => $result,
+                'status' => 200
+            ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        try {
+            Privilege_Role_Map::find($id)->delete();
+            return response()
+                ->json([
+                    'message' => 'The item was successfully deleted.',
+                    'status' => 200
+                ], 200);
+        } catch (\Exception $e) {
+            return response()
+                ->json([
+                    'errors' => $e->getMessage(),
+                    'message' => 'Failed',
+                    'status' => 422
+                ], 200);
+        }
+    }
+
+    /**
+     * Return reinforced table after adding elements and the name converted by code
+     */
+    private function reinforceTable($value) {
+        $temp['id'] = $value->id;
+        $temp['role_id'] = $value->role->id;
+        $temp['role_txt'] = $value->role->txt;
+        $temp['role_memo'] = $value->role->memo;
+        return $temp;
     }
 }
