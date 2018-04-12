@@ -47,7 +47,7 @@
     </script>
 
     <script type="text/javascript">
-        var url = "{!! route('roles.index') !!}";
+        var url = "{!! route('admin.roles.index') !!}";
         var saveIndex; // Row index of the table
         var saveId; // Primary key of roles
         var roles; // cached roles

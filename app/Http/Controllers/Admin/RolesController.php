@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Role;
+use App\Privilege_Role_Map;
 
 class RolesController extends Controller {
     /* 
@@ -129,4 +130,15 @@ class RolesController extends Controller {
                 ], 200);
         }
     }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function getroles_notin_map(Request $request) {
+        // get role id that was already saved
+        $p_roles_map = Privilege_Role_Map::where('privilege_id', $request->privilege_id)->pluck('role_id')->all();
+        $roles = Role::whereNotIn('id', $p_roles_map)->get();
+        return response()->json(array("roles" => json_decode(json_encode($roles), true)));
+    }
+
 }

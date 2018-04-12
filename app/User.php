@@ -37,10 +37,15 @@ class User extends Authenticatable
         return $this->hasMany('App\System_Log');
     }
 
-    // Relationship with members table
-    // public function members() {
-    //     return $this->hasMany('App\Member');
-    // }
+    // Relationship with member table
+    public function member() {
+        return $this->belongsTo('App\Member');
+    }
+    
+    // Relationship with privilege table
+    public function privilege() {
+        return $this->belongsTo('App\Privilege');
+    }
 
     // Relationship with visits table
     public function visits() {
@@ -50,11 +55,6 @@ class User extends Authenticatable
     // Relationship with memos table
     public function memos() {
         return $this->hasMany('App\Memo');
-    }
-
-    // Relationship with departments table
-    public function departments() {
-        return $this->hasMany('App\Department');
     }
 
     // Relationship with member_department_maps table
