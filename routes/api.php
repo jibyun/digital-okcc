@@ -36,6 +36,14 @@ Route::apiResource('okcc/memberList/member', 'API\MemberList\MemberController')-
 Route::apiResource('okcc/memberList/memberList', 'API\MemberList\MemberListController')->only([
     'index', 'show'
 ]);
+/**
+ * Method: GET
+ * URL: /api/okcc/memberList/search/{searchString}: Retrieve members who matched the string
+ * 
+ */
+Route::apiResource('okcc/memberList/search', 'API\MemberList\SearchController')->only([
+    'show'
+]);
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
