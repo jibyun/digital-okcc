@@ -3,6 +3,7 @@
 
 var sideMenuTree;
 var categoryUrl = 'api/okcc/memberList/categories';
+var searchUrl = 'api/okcc/memberList/search';
 
 $(document).ready(function () {
 
@@ -28,16 +29,16 @@ $(document).ready(function () {
         loadTable("api/okcc/memberList/memberList");
         
     });
-});
 
-function loadTable(url) {
-    restApiCall(url, "GET", null, memberListSuccess, null);
-}
-
-function memberListSuccess(response) {
-    var tableData = JSON.parse(response.data);
+    // search button click
+    $("#btnSearch").button().click(function(){
+        var url = searchUrl + "/" + $("#inputSearch").val();
+        restApiCall(url, "GET", null, memberListSuccess, null);
+    });
+    
     var table = $('#mainTable');
     table.bootstrapTable({
+        //TODO: need to update column
         columns: [{
             field: 'id',
             title: 'Item ID'
@@ -51,8 +52,17 @@ function memberListSuccess(response) {
             field: 'address',
             title: 'Address'
         }],
-        data: tableData,
         pagination: true,
         pageSize: 10
     });
+});
+
+function loadTable(url) {
+    restApiCall(url, "GET", null, memberListSuccess, null);
+}
+
+function memberListSuccess(response) {
+    var tableData = JSON.parse(response.data);
+    var table = $('#mainTable');
+    table.bootstrapTable('load', tableData);
 }
