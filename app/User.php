@@ -5,8 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use Notifiable;
 
     /**
@@ -15,7 +14,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'member_id', 'privilege_id'
     ];
 
     /**
@@ -26,11 +25,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    // Relationship with user_privilege_maps table
-    public function user_privilege_maps() {
-        return $this->hasMany('App\User_Privilege_Map');
-    }
 
     // Relationship with system_logs table
     public function system_logs() {
