@@ -16,7 +16,7 @@ return [
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN', 'okcc.ca'),
-        'secret' => env('MAILGUN_SECRET', 'key-47840875b9aa764cd4ed23197bf2ed26'),
+        'secret' => env('MAILGUN_SECRET', ''),
     ],
 
     'ses' => [
