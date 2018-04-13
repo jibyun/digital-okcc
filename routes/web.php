@@ -59,7 +59,9 @@ Route::resource('admin/roles', 'Admin\RolesController', [ 'except' => [ 'create'
 Route::get('admin/privileges-roles', 'Admin\AdminPagesController@privileges_roles_map')->name('admin.privileges-roles.map');
 Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Users Registration 
-Route::get('admin/users-regist', 'Admin\AdminPagesController@index')->name('admin.users.regist');
+Route::get('admin/users-regist', 'Admin\AdminPagesController@users_list')->name('admin.users.regist');
+Route::get('admin/get-users', 'Admin\UsersController@getUsers')->name('admin.users.get-users');
+Route::resource('admin/users', 'Admin\UsersController', [ 'except' => [ 'store', 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Log View
 Route::get('admin/log-view', 'Admin\AdminPagesController@index')->name('admin.log.view');
 // Department code Tree mapping

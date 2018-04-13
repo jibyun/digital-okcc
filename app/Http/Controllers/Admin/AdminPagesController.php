@@ -28,4 +28,11 @@ class AdminPagesController extends Controller {
     public function privileges_roles_map() {
         return view('admin.p-role-map');
     }
+    
+    /**
+     * Show Users list page.
+     */
+    public function users_list() {
+        return view('admin.user');
+    }
 }
