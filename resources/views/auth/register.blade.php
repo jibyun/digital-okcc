@@ -8,7 +8,13 @@
                 <div class="card-header text-center"><span class="h6-font-size">{{ __('Register') }}</span></div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('apply') }}">
+                    {{--Display message--}}
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -61,11 +67,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="tel" class="col-md-4 col-form-label text-md-right">{{ __('messages.telephone') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="tel" class="form-control" name="phone">
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
+                                @if (session('status'))
+                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/digital-okcc/public/'">
+                                        {{ __('messages.gotohome') }}
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Register') }}
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </form>
