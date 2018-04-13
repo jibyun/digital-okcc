@@ -40,6 +40,13 @@
                             </div>
                         </div>
                     </div>
+                    {{--  Field name  --}}
+                    <div class="form-group row">
+                        <label for="fieldName" class="col-sm-3 col-form-label text-right">Field Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="fieldName" name="fieldName" placeholder="Field Name">
+                        </div>
+                    </div>
                     {{--  Remark  --}}
                     <div class="form-group row">
                         <label for="memo" class="col-sm-3 col-form-label text-right">Remark</label>

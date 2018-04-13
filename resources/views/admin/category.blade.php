@@ -32,10 +32,11 @@
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-width="10%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
+                <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
+                <th data-field="kor_txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
+                <th data-field="enabled" data-width="10%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
+                <th data-field="fieldName" data-filter-control="select" data-sortable="true" scope="col">Field Name</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Memo</th>
                 <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
                 <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
                 <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
@@ -110,7 +111,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{ align: 'center' },{}, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{},{},{ align: 'center' },{},{},{},{ align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -153,9 +154,10 @@
             var txt = formId.find("input[name='txt']").val();
             var kor_txt = formId.find("input[name='kor_txt']").val();
             var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자 변화 꼭 해야 함
+            var fieldName = formId.find("input[name='fieldName']").val();
             var memo = CKEDITOR.instances['ckeditor-create'].getData();
             var order = ++maxOrder;
-            var postData = { txt:txt, kor_txt:kor_txt, order:order, enabled:enable, memo:memo };
+            var postData = { txt:txt, kor_txt:kor_txt, order:order, enabled:enable, fieldName:fieldName, memo:memo };
 
             $.ajax({
                 dataType: 'json',
@@ -189,9 +191,10 @@
             var txt = formId.find("input[name='txt']").val();
             var kor_txt = formId.find("input[name='kor_txt']").val();
             var enable = Number(formId.find("input[name='enable']:checked").val()); // 숫자변화 꼭 해야 함!!!
+            var fieldName = formId.find("input[name='fieldName']").val();
             var memo = CKEDITOR.instances['ckeditor-edit'].getData();
             var order = formId.find("input[name='order']").val();
-            var changed = { "txt": txt, "kor_txt": kor_txt, "enabled": enable, "memo": memo, "order": order };
+            var changed = { "txt": txt, "kor_txt": kor_txt, "enabled": enable, "fieldName":fieldName, "memo": memo, "order": order };
 
             $.ajax({
                 dataType: 'json',
@@ -285,6 +288,7 @@
                 var form = $("#edit-item");
                 form.find("input[name='txt']").val(rec.txt);
                 form.find("input[name='kor_txt']").val(rec.kor_txt);
+                form.find("input[name='fieldName']").val(rec.fieldName);
                 form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
                 CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
                 form.find("input[name='order']").val(rec.order);
@@ -293,6 +297,7 @@
                 var deleteId = $("#deleteBody");
                 deleteId.find("label[name='txt']").text(rec.txt);
                 deleteId.find("label[name='kor_txt']").text(rec.kor_txt);
+                deleteId.find("label[name='fieldName']").text(rec.fieldName);
                 deleteId.find("label[name='memo']").html(rec.memo);
                 deleteId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
@@ -301,6 +306,7 @@
                 var showId = $("#showBody");
                 showId.find("label[name='txt']").text(rec.txt);
                 showId.find("label[name='kor_txt']").text(rec.kor_txt);
+                showId.find("label[name='fieldName']").text(rec.fieldName);
                 showId.find("label[name='memo']").html(rec.memo);
                 showId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
