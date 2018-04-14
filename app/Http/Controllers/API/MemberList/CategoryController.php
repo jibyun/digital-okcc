@@ -21,7 +21,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        return $this->sendResponse(json_encode([$this->memberListService->getCategory()]),
+        return $this->sendResponse(json_encode($this->memberListService->getCategory()),
                                    "Category retrieved successfully.");
     }
 }
