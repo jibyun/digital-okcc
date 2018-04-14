@@ -8,7 +8,18 @@
                 <div class="card-header text-center"><span class="h6-font-size">{{ __('Register') }}</span></div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('apply') }}">
+                    {{--Display message--}}
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @else
+                        <p class="card-text">
+                            {{ __('messages.registration.signupmessage') }}
+                        </p>
+
+                    @endif
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -39,6 +50,7 @@
                             </div>
                         </div>
 
+                        {{--TODO: User doesn't need to provide password.  So, it should be removed
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
@@ -60,12 +72,27 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        --}}
+
+                        <div class="form-group row">
+                            <label for="tel" class="col-md-4 col-form-label text-md-right">{{ __('messages.registration.telephone') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="tel" class="form-control" name="phone">
+                            </div>
+                        </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
+                                @if (session('status'))
+                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/digital-okcc/public/'">
+                                        {{ __('messages.registration.gotohome') }}
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Register') }}
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </form>
