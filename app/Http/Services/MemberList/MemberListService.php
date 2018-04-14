@@ -3,6 +3,8 @@
 namespace App\Http\Services\MemberList;
 
 use App\Member;
+use App\Code_Category;
+use App\Code;
 
 /**
  * Service layer for handling member list
