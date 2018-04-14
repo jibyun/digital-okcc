@@ -26,13 +26,6 @@ class PreRegisterController extends Controller
     */
 
     /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
      * Create a new controller instance.
      *
      * @return void
@@ -62,9 +55,10 @@ class PreRegisterController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        Notification::route('mail', 'gyounlee@yahoo.ca')
+        // Send Emil to System admin
+        Notification::route('mail', config('app.SystemAdmin'))
             ->notify(new RegistrationRequest($request));
-        return back()->with('status', __('messages.receivedregister'));
+        return back()->with('status', __('messages.registration.receivedregister'));
     }
 
     /**
@@ -77,8 +71,7 @@ class PreRegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-           // 'email' => 'required|string|email|max:255|unique:users',
-           // 'password' => 'required|string|min:6|confirmed',
+            'email' => 'required|string|email|max:255|unique:users',
         ]);
     }
 }

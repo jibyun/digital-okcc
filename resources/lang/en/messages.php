@@ -14,8 +14,20 @@ return [
     */
 
     // Message for registration
-    'gotohome' => 'Go to Home',
-    'receivedregister' => 'Your request has been received and will be processed shortly.',
-    'telephone' => 'Telephone',
+    'registration' => [
+
+        'gotohome' => 'Go to Home',
+        'receivedregister' => 'Your request has been received and will be processed shortly.',
+        'telephone' => 'Telephone',
+        'signupmessage' => 'Please provide the information below and you will get an email once your request is approved',
+        'toAdminSubject' => 'User Registration Request',
+        'toAdminGreeting' => 'Hello!',
+        // TODO: Need to update the message
+        'toAdminFirstPart' => 'Here is the user registartion request',
+        'toAdminLastPart' => 'Please process it as soon as possible.',
+        'toAdminBodyName' => "Name: ",
+        'toAdminBodyEmail' => "Email: ",
+        'toAdminBodyPhone' => "Phone: ",
+    ]
 
 ];

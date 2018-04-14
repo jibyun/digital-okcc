@@ -42,13 +42,13 @@ class RegistrationRequest extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('User Registration Request')
-                    ->greeting('')
-                    ->line('Here is the user registartion request')
-                    ->line('Name: ' . $this->message['name'])
-                    ->line('Email: ' . $this->message['email'])
-                    ->line('Phone: ' . $this->message['phone'])
-                    ->line('Please process it as soon as possible.');
+                    ->subject(__('messages.registration.toAdminSubject'))
+                    ->greeting(__('messages.registration.toAdminGreeting'))
+                    ->line(__('messages.registration.toAdminFirstPart'))
+                    ->line(__('messages.registration.toAdminBodyName') . $this->message['name'])
+                    ->line(__('messages.registration.toAdminBodyEmail') . $this->message['email'])
+                    ->line(__('messages.registration.toAdminBodyPhone') . $this->message['phone'])
+                    ->line(__('messages.registration.toAdminLastPart'));
     }
 
     /**

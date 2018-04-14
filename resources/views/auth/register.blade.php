@@ -13,6 +13,11 @@
                         <div class="alert alert-success">
                             {{ session('status') }}
                         </div>
+                    @else
+                        <p class="card-text">
+                            {{ __('messages.registration.signupmessage') }}
+                        </p>
+
                     @endif
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -45,6 +50,7 @@
                             </div>
                         </div>
 
+                        {{--TODO: User doesn't need to provide password.  So, it should be removed
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
@@ -66,9 +72,10 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        --}}
 
                         <div class="form-group row">
-                            <label for="tel" class="col-md-4 col-form-label text-md-right">{{ __('messages.telephone') }}</label>
+                            <label for="tel" class="col-md-4 col-form-label text-md-right">{{ __('messages.registration.telephone') }}</label>
 
                             <div class="col-md-6">
                                 <input id="phone" type="tel" class="form-control" name="phone">
@@ -79,7 +86,7 @@
                             <div class="col-md-6 offset-md-4">
                                 @if (session('status'))
                                     <button type="button" class="btn btn-primary" onclick="window.location.href='/digital-okcc/public/'">
-                                        {{ __('messages.gotohome') }}
+                                        {{ __('messages.registration.gotohome') }}
                                     </button>
                                 @else
                                     <button type="submit" class="btn btn-primary">
