@@ -37,8 +37,8 @@ class Code extends Model
         return $this->hasMany('App\Family_Map');
     }
 
-    // Relationship with department_trees table
-    public function department_trees() {
+     // Relationship with department_trees table
+     public function department_trees() {
         return $this->hasMany('App\Department_Tree');
     }
 
@@ -46,4 +46,16 @@ class Code extends Model
     public function member_department_maps() {
         return $this->hasMany('App\Member_Department_Map');
     }
+
+    
+    public function children(){
+        return $this->belongsToMany('App\Code', 'department_trees', 'parent_id', 'child_id');
+    }
+
+    public function parents(){
+       return $this->belongsToMany('App\Code', 'department_trees', 'child_id', 'parent_id');
+    }
+
+
+
 }

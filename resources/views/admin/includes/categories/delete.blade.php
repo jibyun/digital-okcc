@@ -18,6 +18,10 @@
                         <div class="col-sm-9"><label name="enable"></label></div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-3">Field Name</div>
+                        <div class="col-sm-9"><label name="fieldName"></label></div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-3">Remark</div>
                         <div class="col-sm-9"><label name="memo"></label></div>
                     </div>

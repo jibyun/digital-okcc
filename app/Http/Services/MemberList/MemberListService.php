@@ -3,6 +3,8 @@
 namespace App\Http\Services\MemberList;
 
 use App\Member;
+use App\Code_Category;
+use App\Code;
 
 /**
  * Service layer for handling member list
@@ -54,27 +56,61 @@ class MemberListService
      * Search Category Sample
      */
     private function buildCategory() {
-        // TEST BLOCK
-        $myObj1 = (object)array();
-        $myObj2 = (object)array();
-        $myObj3 = (object)array();
-        $myObj4 = (object)array();
-        $myObj5 = (object)array();
-        $myObj1->text = "교구";
-        $myObj1->message = "This is the node1";
-        $myObj2->text = "1교구";
-        $myObj2->message = "This is the node2";
-        $myObj3->text = "2교구";
-        $myObj3->message = "Hello Dennis";
-        $myObj4->text = "1구역";
-        $myObj4->message = "Today is Tuesday";
-        $myObj4->url = "all";
-        $myObj5->text = "2구역";
-        $myObj5->message = "Good Morning!!";
-        $myObj5->url = "position";
-        $myObj1->children = array($myObj2, $myObj3);
-        $myObj2->children = array($myObj4, $myObj5);
-        return $myObj1;
-        // TEST BLOCK
+
+
+	//전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
+     $result=array();
+
+     $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
+
+     $menuList=array();
+     foreach($cates as $cate){
+        $menu=$this->makeMenu($cate);  //code_category->menu_level1
+        $children=array();
+        foreach($cate->codes as $code){
+            array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+        }
+        $menu->children=$children;
+        array_push($menuList,$menu);
+     }
+
+     return $menuList;
+
     }
+
+	//code -> menu with childrenMenu
+    private function childMenu($code)
+    {
+        $subList=$code->children()->get();
+        $menu=$this->makeMenu($code);
+
+        if($subList->count()>0){
+            $children=array();
+            foreach($subList as $child){
+               array_push($children,$this->childMenu($child));
+            }
+            $menu->children=$children;
+        }
+        else{
+            $menu->selectable=true;
+        }
+        return $menu;
+    }
+    
+    //code -> menu
+    private function makeMenu($code){
+        $menu=new MenuObject();
+        $menu->text = $code->txt;
+        $menu->code = $code->id;
+        $menu->selectable=false;
+        $menu->children=null;
+        return $menu;
+    }
+}
+
+class MenuObject {
+    public $text;
+    public $code;
+    public $selectable;
+    public $children;
 }
