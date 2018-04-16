@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <table  id="mainTable" class="table table-responsive-md table-striped s1-font-size" 
+    <table  id="mainTable" class="table table-striped table-bordered" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
@@ -45,8 +45,8 @@
                 <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
                 <th data-field="role_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Role Id</th>
                 <th data-field="role_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Role Name</th>
-                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
+                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
             </tr>
         </thead>
     </table>
@@ -61,6 +61,12 @@
 @endsection
 
 @section('scripts')
+    {{-- for Toast --}}
+    <script type="text/javascript">
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
+        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
+    </script>
     <script type="text/javascript">
         // variables
         var $table = $('#mainTable');
@@ -75,11 +81,6 @@
         const privilegesUrl = "{!! route('admin.privileges.index') !!}";
         const getRolesNotInMap = "{!! route('admin.roles.getroles-notin-map') !!}"
 
-        // define toast options
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-
         /* initialize Main table */
 
         // compute height of the table and return 
@@ -89,23 +90,20 @@
 
         // Row Style of main table
         function rowStyle(row, index) {
-            return {
-                classes: 'font-weight-normal',
-                css: { "color": "black", "padding": "0 10px" }
-            };
+            return { css: { "padding": "0px 10px" } };
         }
 
-        // compose the column for delete button on the main table
+        // compose the column for delete button
         function deleteFormatter(value, row, index) {
             return [
-                '<a href="#"><H5><span class="badge badge-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#"><span class="text-danger h6-font-size"><i class="fa fa-fw fa-times-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{}, { align: 'center', clickToSelect: false }]
+                columns: [ {},{},{ align: 'left' },{ align: 'left' }, { align: 'center', clickToSelect: false }]
             });
             $(window).resize(function () {
                 $table.bootstrapTable('resetView', {
@@ -118,22 +116,19 @@
 
         // Row Style of add table
         function addTableRowStyle(row, index) {
-            return {
-                classes: 'font-weight-bold',
-                css: { "padding": "0 10px" }
-            };
+            return { css: { "padding": "0px 10px" } };
         }
 
         $addTable.bootstrapTable({
             height: getHeight(),
-            columns: [ {},{},{} ]
+            columns: [ {},{},{ align: 'left' },{ align: 'left' } ]
         });
 
         $("#pop").popover();
         function setPopover(index) {
             $('#pop').attr('title', privileges[index]['txt']);
             currentPrivilegeTxt = privileges[index]['txt'];
-            $('#pop').attr('data-content', privileges[index]['memo']); //TODO: change HTML
+            $('#pop').attr('data-content', $.parseHTML(privileges[index]['memo'])); //TODO: change HTML
         }
 
         /* main processes */
@@ -303,11 +298,12 @@
         // Delete all
         function clearAll() {
             var deleteId = $("#deleteAllBody");
-            if (privilegeRoleMaps) { // if selected items are more than one?
+            deleteId.empty();
+            if (privilegeRoleMaps.length > 0) { // if selected items are more than one?
                 var html = "";
                 $.each(privilegeRoleMaps, function(index, item) {
-                    html += '<div class="row col-sm-12">';
-                    html += '<div><label name="role_name">' + item['role_txt'] + '</label> (<label name="role_txt">' + item['role_id'] + '</label>)</div>';
+                    html += '<div class="row py-2">';
+                    html += '<div class="rounded bg-light py-2 col-sm-12"><span class="align-middle" name="role_name">' + item['role_txt'] + ' (' + item['role_id'] + ')</span></div>';
                     html += '</div>';
                 });
                 $("#deleteAllBody").prepend(html);
@@ -317,25 +313,21 @@
                 toastr.error('There is nothing to delete.', 'Failed');
             }
         }
-        
+     
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
 
             if (column === 'delete') {
-                var deleteId = $("#deleteBody");
-                deleteId.find("label[name='privilege_txt']").text(currentPrivilegeTxt);
-                deleteId.find("label[name='privilege_id']").text(currentPrivilegeId);
-                deleteId.find("label[name='role_txt']").text(rec.role_txt);
-                deleteId.find("label[name='role_id']").text(rec.role_id);
+                var dispId = $("#deleteBody");
+                dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
+                dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
-                var showId = $("#showBody");
-                showId.find("label[name='privilege_txt']").text(currentPrivilegeTxt);
-                showId.find("label[name='privilege_id']").text(currentPrivilegeId);
-                showId.find("label[name='role_txt']").text(rec.role_txt);
-                showId.find("label[name='role_id']").text(rec.role_id);
+                var dispId = $("#showBody");
+                dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
+                dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }

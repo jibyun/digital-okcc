@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <form id="editForm" action='' method="PUT">
+                <form id="editForm" class="px-3" action='' method="PUT">
                     {{--  Method Spoofing: Always put below two lines for updating a form
                             HTML forms do not support PUT, PATCH or DELETE actions. So, when defining PUT, PATCH or  
                             DELETE routes that are called from an HTML form, you will need to add a hidden _method field to the form.  --}}

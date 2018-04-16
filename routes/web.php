@@ -65,8 +65,10 @@ Route::resource('admin/users', 'Admin\UsersController', [ 'except' => [ 'store',
 // Log View
 Route::get('admin/log-view', 'Admin\AdminPagesController@index')->name('admin.log.view');
 // Department code Tree mapping
-Route::get('admin/dept-tree-map', 'Admin\AdminPagesController@index')->name('admin.dept-tree.map');
+Route::get('admin/dept-tree-map', 'Admin\AdminPagesController@departmentTree')->name('admin.dept-tree.map');
+Route::get('admin/getCodesNotInChild', 'Admin\DepartmentTreesController@getcodes_notin_child')->name('admin.department-trees.getcodes-notin-child');
+Route::resource('admin/department-trees', 'Admin\DepartmentTreesController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Family Mapping
-Route::get('admin/family-map', 'Admin\AdminPagesController@index')->name('admin.family.map');
+Route::get('admin/family-map', 'Admin\AdminPagesController@familyTree')->name('admin.family.map');
 // Members and Departments Mapping
-Route::get('admin/member-dept-map', 'Admin\AdminPagesController@index')->name('admin.member-dept.map');
+Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');

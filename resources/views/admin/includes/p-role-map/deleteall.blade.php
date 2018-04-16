@@ -8,10 +8,12 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <div class="container" id="deleteAllBody">
+                <div class="container col-sm-11" id="deleteAllBody">
 
-                    <div class="row">
-                        <div class="text-right col-sm-12">
+                </div>
+                <div class="container col-sm-11">
+                    <div class="row py-3">
+                        <div class="col-sm-12 text-right pr-0">
                             <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
                             <button type="button" class="btn crud-all btn-danger"><span class="fa fa-thumbs-o-down"></span> Delete</button>
                         </div>

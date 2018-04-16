@@ -8,26 +8,26 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <div class="container" id="showBody">
-                    <div class="row">
-                        <div class="col-sm-3">Code Name</div>
-                        <div class="col-sm-9"><label name="txt"></label> (<label name="kor_txt"></label>)</div>
+                <div class="container col-sm-11" id="showBody">
+                    <div class="row py-2">
+                        <div class="col-sm-3 text-right py-2">Code Name</div>
+                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="txt"></span></div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3">Category Name</div>
-                        <div class="col-sm-9"><label name="category_name"></label> (<label name="category_id"></label>)</div>
+                    <div class="row py-2">
+                        <div class="col-sm-3 text-right py-2">Category Name</div>
+                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="category_name"></span></div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3">Menu Enabled</div>
-                        <div class="col-sm-9"><label name="enable"></label></div>
+                    <div class="row py-2">
+                        <div class="col-sm-3 text-right py-2">Menu Enabled</div>
+                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="enable"></span></div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-3">Remark</div>
-                        <div class="col-sm-9"><label name="memo"></label></div>
+                    <div class="row py-2">
+                        <div class="col-sm-3 text-right py-2">Remark</div>
+                        <div class="col-sm-9 rounded bg-light py-2" style="height: 200px;"><span class="align-middle" name="memo"></span></div>
                     </div>
-                    <div class="row">
+                    <div class="row py-3">
                         <div class="col-sm-3"></div>
-                        <div class="col-sm-9 text-right"><button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="fa fa-times"></span> Close</button></div>
+                        <div class="col-sm-9 text-right pr-0"><button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="fa fa-times"></span> Close</button></div>
                     </div>
                 </div>
             </div>

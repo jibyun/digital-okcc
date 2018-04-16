@@ -35,4 +35,25 @@ class AdminPagesController extends Controller {
     public function users_list() {
         return view('admin.user');
     }
+
+    /**
+     * Show department-department tree mapping.
+     */
+    public function departmentTree() {
+        return view('admin.dept-tree');
+    }
+    
+    /**
+     * Show family-family tree mapping.
+     */
+    public function familyTree() {
+        return view('admin.family-tree');
+    }
+
+    /**
+     * Show family-family tree mapping.
+     */
+    public function memberDeptMap() {
+        return view('admin.m-dept-map');
+    }
 }
