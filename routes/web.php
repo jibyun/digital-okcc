@@ -11,6 +11,9 @@
 |
 */
 Auth::routes();
+// Pre-Registration Routes...
+$this->get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('register');
+$this->post('preregister', 'Auth\PreRegisterController@sendMail');
 
 Route::get('/', function () {
     return view('index');

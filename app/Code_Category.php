@@ -19,8 +19,10 @@ class Code_Category extends Model
 
     // Relationship with codes table
     public function codes() {
-        return $this->hasMany('App\Code');
+
+        return $this->hasMany('App\Code', 'code_category_id', 'id');
+      
     }
 
-    
+   
 }
