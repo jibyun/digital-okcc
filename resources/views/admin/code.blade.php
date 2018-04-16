@@ -3,7 +3,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>Code List </h4>
+    <h4>Code List</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='categoriesCombo' class="form-group form-control mr-3">
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <table  id="table" class="table table-striped s1-font-size" 
+    <table  id="table" class="table table-striped table-bordered" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
@@ -41,10 +41,10 @@
                 <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
                 <th data-field="kor_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
                 <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
                 <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
             </tr>
         </thead>
     </table>
@@ -60,12 +60,22 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script>
+    {{--    basic - the Basic preset
+            standard - the Standard preset
+            standard-all - the Standard preset together with all other plugins created by CKSource*
+            full - the Full preset
+            full-all - the Full preset together with all other plugins created by CKSource* --}}
+    <script src="https://cdn.ckeditor.com/4.9.1/full-all/ckeditor.js"></script>
     <script type="text/javascript"> 
-        CKEDITOR.replace( 'ckeditor-create' ); 
-        CKEDITOR.replace( 'ckeditor-edit' );
+        CKEDITOR.replace( 'ckeditor-create', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
+        CKEDITOR.replace( 'ckeditor-edit',{ customConfig : '/js/ckeditor/simpleToolbar.js' }  );
     </script>
-
+    {{-- for Toast --}}
+    <script type="text/javascript">
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
+        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
+    </script>
     <script type="text/javascript">
         var url = "{!! route('admin.codes.index') !!}";
         var saveIndex; // Row index of the table
@@ -77,18 +87,11 @@
         var displayOrder; // display order using changing order
         var $table = $('#table');
 
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
         // Row Style
         function rowStyle(row, index) {
-            return {
-                classes: 'font-weight-normal',
-                css: { "color": "black", "padding": "0 10px" }
-            };
+            return { css: { "padding": "0px 10px" } };
         }
 
         // 리스트 테이블의 초기화: Enabled 컬럼이 1이면 Enabled를 0이면 Disabled로 표시한다.
@@ -96,17 +99,17 @@
             if (value === 1) { return 'Enabled'; } else { return 'Disabled'; }
         }
 
-        // 리스트 테이블의 초기화: Edit 컬럼의 버튼을 구성한다.
+        // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><H5><span class="badge badge-info"><i class="fa fa-pencil" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
-        // 리스트 테이블의 초기화: Delete 컬럼의 버튼을 구성한다.
+        // compose the column for delete button
         function deleteFormatter(value, row, index) {
             return [
-                '<a href="#"><H5><span class="badge badge-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#"><span class="text-danger h6-font-size"><i class="fa fa-fw fa-times-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -118,7 +121,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{},{ align: 'center' },{}, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'left' }, {}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             $(window).resize(function () {
                 $table.bootstrapTable('resetView', {
@@ -349,23 +352,19 @@
                 form.find("input[name='order']").val(rec.order);
                 form.find("#editForm").attr("action", url + '/' + rec.id);
             } else if (column === 'delete') {
-                var deleteId = $("#deleteBody");
-                deleteId.find("label[name='txt']").text(rec.txt);
-                deleteId.find("label[name='kor_txt']").text(rec.kor_txt);
-                deleteId.find("label[name='category_id']").text($('#categoriesCombo').find('option:selected').val());
-                deleteId.find("label[name='category_name']").text($('#categoriesCombo').find('option:selected').text());
-                deleteId.find("label[name='memo']").html(rec.memo);
-                deleteId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                var showId = $("#deleteBody");
+                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
+                showId.find("span[name='category_id']").text($('#categoriesCombo').find('option:selected').val() + '(' + $('#categoriesCombo').find('option:selected').text() + ')' );
+                showId.find("span[name='memo']").html(rec.memo);
+                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
                 var showId = $("#showBody");
-                showId.find("label[name='txt']").text(rec.txt);
-                showId.find("label[name='kor_txt']").text(rec.kor_txt);
-                showId.find("label[name='category_id']").text($('#categoriesCombo').find('option:selected').val());
-                showId.find("label[name='category_name']").text($('#categoriesCombo').find('option:selected').text());
-                showId.find("label[name='memo']").html(rec.memo);
-                showId.find("label[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
+                showId.find("span[name='category_id']").text($('#categoriesCombo').find('option:selected').val() + '(' + $('#categoriesCombo').find('option:selected').text() + ')' );
+                showId.find("span[name='memo']").html(rec.memo);
+                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }

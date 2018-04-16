@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body" style="background-color: #e0e0e0;">
-                <form id="createForm" action="{{ route('register') }}" method="post">
+                <form id="createForm" class="px-3" action="{{ route('register') }}" method="post">
                     @csrf
                     {{--  User name  --}}
                     <div class="form-group row">

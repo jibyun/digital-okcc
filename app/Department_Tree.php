@@ -13,9 +13,18 @@ class Department_Tree extends Model
     public $timestamps = false;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
-    
-    // Relationship with codes table
-    public function code() {
-        return $this->belongsTo('App\Code');
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'parent_id', 'child_id'
+    ];
+
+    // Relationship with between codes table and parent_id
+    public function codeByParentId() {
+        return $this->belongsTo('App\Code', 'parent_id', 'id');
+    }
+
+    // Relationship with between codes table and child_id
+    public function codeByChildId() {
+        return $this->belongsTo('App\Code', 'child_id', 'id');
     }
 }

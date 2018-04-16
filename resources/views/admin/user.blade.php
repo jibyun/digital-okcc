@@ -43,7 +43,7 @@
         </button>
     </div>
 
-    <table  id="table" class="table table-striped s1-font-size" 
+    <table  id="table" class="table table-striped table-bordered" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
@@ -62,8 +62,8 @@
                 <th data-field="member_name" scope="col" data-visible="false">Member Name</th>
                 <th data-field="privilege_id" scope="col" data-visible="false">Privilege Id</th>
                 <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">Privilege</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
             </tr>
         </thead>
     </table>
@@ -99,23 +99,20 @@
 
         // row style
         function rowStyle(row, index) {
-            return {
-                classes: 'font-weight-bold',
-                css: { "color": "black", "padding": "0 10px" }
-            };
+            return { css: { "padding": "0px 10px" } };
         }
 
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><H5><span class="badge badge-info"><i class="fa fa-pencil" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
         // compose the column for delete button
         function deleteFormatter(value, row, index) {
             return [
-                '<a href="#"><H5><span class="badge badge-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#"><span class="text-danger h6-font-size"><i class="fa fa-fw fa-times-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -127,7 +124,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{},{},{},{},{}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{ align: 'left' },{ align: 'left' },{},{},{},{ align: 'left' }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -314,24 +311,20 @@
                 form.find("input[name='privileges']").val(rec.privilege_name);
                 form.find("#editForm").attr("action", basicURL + '/' + rec.id);
             } else if (column === 'delete') {
-                var deleteId = $("#deleteBody");
-                deleteId.find("label[name='name']").text(rec.name);
-                deleteId.find("label[name='email']").text(rec.email);
-                deleteId.find("label[name='member_id']").text(rec.member_id);
-                deleteId.find("label[name='privilege_id']").text(rec.privilege_id);
-                deleteId.find("label[name='member_name']").text(rec.member_name);
-                deleteId.find("label[name='privilege_name']").text(rec.privilege_name);
+                var dispId = $("#deleteBody");
+                dispId.find("span[name='name']").text(rec.name);
+                dispId.find("span[name='email']").text(rec.email);
+                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
+                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
                 $("#edit-item").find("#editForm").attr("action", basicURL + '/' + rec.id);
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
-                var showId = $("#showBody");
-                showId.find("label[name='name']").text(rec.name);
-                showId.find("label[name='email']").text(rec.email);
-                showId.find("label[name='member_id']").text(rec.member_id);
-                showId.find("label[name='privilege_id']").text(rec.privilege_id);
-                showId.find("label[name='member_name']").text(rec.member_name);
-                showId.find("label[name='privilege_name']").text(rec.privilege_name);
+                var dispId = $("#showBody");
+                dispId.find("span[name='name']").text(rec.name);
+                dispId.find("span[name='email']").text(rec.email);
+                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
+                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }

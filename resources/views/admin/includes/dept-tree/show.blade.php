@@ -10,20 +10,12 @@
             <div class="modal-body" style="background-color: #e0e0e0;">
                 <div class="container col-sm-11" id="showBody">
                     <div class="row py-2">
-                        <div class="col-sm-3 text-right py-2">Code Name</div>
-                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="txt"></span></div>
+                        <div class="col-sm-3 text-right py-2">Parent Dept. Name</div>
+                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="parent_txt"></span></div>
                     </div>
                     <div class="row py-2">
-                        <div class="col-sm-3 text-right py-2">Category Name</div>
-                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="category_name"></span></div>
-                    </div>
-                    <div class="row py-2">
-                        <div class="col-sm-3 text-right py-2">Menu Enabled</div>
-                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="enable"></span></div>
-                    </div>
-                    <div class="row py-2">
-                        <div class="col-sm-3 text-right py-2">Remark</div>
-                        <div class="col-sm-9 rounded bg-light py-2" style="height: 200px;"><span class="align-middle" name="memo"></span></div>
+                        <div class="col-sm-3 text-right py-2">Child Dept. Name</div>
+                        <div class="col-sm-9 rounded bg-light py-2"><span class="align-middle" name="child_txt"></span></div>
                     </div>
                     <div class="row py-3">
                         <div class="col-sm-3"></div>

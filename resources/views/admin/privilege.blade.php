@@ -9,7 +9,7 @@
         </button>
     </div>
 
-    <table  id="table" class="table table-striped s1-font-size" 
+    <table  id="table" class="table table-striped table-bordered" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
@@ -23,9 +23,9 @@
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
                 <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Privilege Name</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col">Memo</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">EDIT</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">DEL.</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
             </tr>
         </thead>
     </table>
@@ -40,12 +40,22 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="https://cdn.ckeditor.com/4.9.1/standard/ckeditor.js"></script>
+    {{--    basic - the Basic preset
+            standard - the Standard preset
+            standard-all - the Standard preset together with all other plugins created by CKSource*
+            full - the Full preset
+            full-all - the Full preset together with all other plugins created by CKSource* --}}
+    <script src="https://cdn.ckeditor.com/4.9.1/full-all/ckeditor.js"></script>
     <script type="text/javascript"> 
-        CKEDITOR.replace( 'ckeditor-create' ); 
-        CKEDITOR.replace( 'ckeditor-edit' );
+        CKEDITOR.replace( 'ckeditor-create', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
+        CKEDITOR.replace( 'ckeditor-edit',{ customConfig : '/js/ckeditor/simpleToolbar.js' }  );
     </script>
-
+    {{-- for Toast --}}
+    <script type="text/javascript">
+        toastr.options.progressBar = true;
+        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
+        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
+    </script>
     <script type="text/javascript">
         var url = "{!! route('admin.privileges.index') !!}";
         var saveIndex; // Row index of the table
@@ -53,31 +63,24 @@
         var privileges; // cached privileges
         var $table = $('#table');
 
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
         // Row Style
         function rowStyle(row, index) {
-            return {
-                classes: 'font-weight-normal',
-                css: { "color": "black", "padding": "0 10px" }
-            };
+            return { css: { "padding": "0px 10px" } };
         }
 
-        // 리스트 테이블의 초기화: Edit 컬럼의 버튼을 구성한다.
+        // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><H5><span class="badge badge-info"><i class="fa fa-pencil" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
-        // 리스트 테이블의 초기화: Delete 컬럼의 버튼을 구성한다.
+        // compose the column for delete button
         function deleteFormatter(value, row, index) {
             return [
-                '<a href="#"><H5><span class="badge badge-danger"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></span></H5></a>'
+                '<a href="#"><span class="text-danger h6-font-size"><i class="fa fa-fw fa-times-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -89,7 +92,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{}, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{ align: 'left' },{ align: 'left' }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -221,15 +224,15 @@
                 CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
                 form.find("#editForm").attr("action", url + '/' + rec.id);
             } else if (column === 'delete') {
-                var deleteId = $("#deleteBody");
-                deleteId.find("label[name='txt']").text(rec.txt);
-                deleteId.find("label[name='memo']").html(rec.memo);
+                var dispId = $("#deleteBody");
+                dispId.find("span[name='txt']").text(rec.txt);
+                dispId.find("span[name='memo']").html(rec.memo);
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show');
             } else {
-                var showId = $("#showBody");
-                showId.find("label[name='txt']").text(rec.txt);
-                showId.find("label[name='memo']").html(rec.memo);
+                var dispId = $("#showBody");
+                dispId.find("span[name='txt']").text(rec.txt);
+                dispId.find("span[name='memo']").html(rec.memo);
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show');
             }
