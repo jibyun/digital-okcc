@@ -32,16 +32,16 @@
                     <div class="form-group row">
                         <label for="members" class="col-sm-3 col-form-label text-right">Members</label>
                         <div class="col-sm-9">
-                            <input id="memberIdEdit" hidden>
-                            <input type="text" class="form-control autocomplete" id="membersComboEdit" name="members" placeholder="Members">
+                            <select id="editMemberCombo" class="form-control" name="members" data-placeholder="Select Correct Member">
+                            </select>
                         </div>
                     </div>
                     {{-- Privilege  --}}
                     <div class="form-group row">
-                        <label for="privileges" class="col-sm-3 col-form-label text-right">Privilege</label>
+                        <label for="privileges" class="col-sm-3 col-form-label text-right">Privileges</label>
                         <div class="col-sm-9">
-                            <input id="privilegeIdEdit" hidden>
-                            <input type="text" class="form-control autocomplete" id="privilegesEdit" name="privileges" placeholder="Privilege">
+                            <select id="editPrivilegeCombo" class="form-control" name="privileges" data-placeholder="Select Privilege">
+                            </select>
                         </div>
                     </div>
                     {{-- Buttons --}}
