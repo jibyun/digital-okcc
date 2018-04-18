@@ -117,7 +117,9 @@ class UsersController extends Controller {
         } else {
             $tmp['label'] = !trim($v['first_name']) ? trim($v['last_name']) : trim($v['first_name']) . ' ' . trim($v['last_name']);
         }
-
+        $tmp['kor_name'] = $v->kor_name;
+        $tmp['tel_home'] = $v->tel_home;
+        $tmp['tel_office'] = $v->tel_office;
         return $tmp;
     }
         
