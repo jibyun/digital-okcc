@@ -70,5 +70,7 @@ Route::get('admin/getCodesNotInChild', 'Admin\DepartmentTreesController@getcodes
 Route::resource('admin/department-trees', 'Admin\DepartmentTreesController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Family Mapping
 Route::get('admin/family-map', 'Admin\AdminPagesController@familyTree')->name('admin.family.map');
+Route::get('admin/getCodesNotInChildByFamily', 'Admin\FamilyTreesController@getcodes_notin_child')->name('admin.family-trees.getcodes-notin-child');
+Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Members and Departments Mapping
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');

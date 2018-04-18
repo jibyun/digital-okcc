@@ -45,7 +45,7 @@
             standard-all - the Standard preset together with all other plugins created by CKSource*
             full - the Full preset
             full-all - the Full preset together with all other plugins created by CKSource* --}}
-    <script src="https://cdn.ckeditor.com/4.9.1/full-all/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
     <script type="text/javascript"> 
         CKEDITOR.replace( 'ckeditor-create', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
         CKEDITOR.replace( 'ckeditor-edit',{ customConfig : '/js/ckeditor/simpleToolbar.js' }  );
