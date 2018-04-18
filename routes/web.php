@@ -12,7 +12,7 @@
 */
 Auth::routes();
 // Pre-Registration Routes...
-$this->get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('register');
+$this->get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('preregister');
 $this->post('preregister', 'Auth\PreRegisterController@sendMail');
 
 Route::get('/', function () {

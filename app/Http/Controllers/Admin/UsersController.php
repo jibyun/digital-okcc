@@ -70,7 +70,7 @@ class UsersController extends Controller {
             }
             $result = array("users" => json_decode(json_encode($arr), true));
         } else if ($request->table == 'members') {
-            $memberArray = Member::get();
+            $memberArray = Member::orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->get();
             $arr = array();
             foreach ($memberArray as $value) {
                 array_push($arr, $this->reinforceMember($value));

@@ -1,37 +1,8 @@
 @extends('admin.layouts.master')
 
 @section('styles')
-{{-- jQuery user interface for autocomplete input --}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-<style>
-    /* CSS for autocomplete */
-    .ui-autocomplete {
-        max-height: 300px;
-
-        position: absolute;
-        z-index: 99999 !important;
-        cursor: default;
-        padding: 0;
-        margin-top: 2px;
-        list-style: none;
-        background-color: #ffffff;
-        border: 1px solid #ccc -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    }
-    .ui-autocomplete>li {
-        padding: 3px 20px;
-    }
-    .ui-autocomplete>li.ui-state-focus {
-        background-color: #DDD;
-    }
-    .ui-helper-hidden-accessible {
-        display: none;
-    }
-</style>
+{{-- Chosen user interface for autocomplete input --}}
+<link href="{{ asset('css/chosen.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -136,6 +107,8 @@
 
         // reload data from server and refresh table
         function reloadList() {
+            $('#createMemberCombo').val('').trigger('chosen:updated');
+            $('#createPrivilegeCombo').val('').trigger('chosen:updated');
             $.ajax({
                 dataType: 'json',
                 url: listURL + '?table=users',
@@ -149,22 +122,48 @@
             });
         } 
 
+        function fillMemberCombo(memberCombo, members) {
+            memberCombo.empty();
+            var html = '<option value=""></option>';
+            $.each(members, function( index, member ) {
+                html += '<option value="' + member['idx'] + '">' + member['label'] + '</option>';
+            });
+            memberCombo.prepend(html);
+            // The following options are available to pass into Chosen on instantiation.
+            memberCombo.chosen({
+                case_sensitive_search: false,
+                search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
+                no_results_text: "Oops, nothing found!",
+                placeholder_text_single: "Select a correct Member",
+            });
+        }
+
+        function fillPrivilegeCombo(privilegeCombo, privileges) {
+            privilegeCombo.empty();
+            var html = '<option value=""></option>';
+            $.each(privileges, function( index, privilege ) {
+                html += '<option value="' + privilege['idx'] + '">' + privilege['label'] + '</option>';
+            });
+            privilegeCombo.prepend(html);
+            // The following options are available to pass into Chosen on instantiation.
+            privilegeCombo.chosen({
+                case_sensitive_search: false,
+                search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
+                no_results_text: "Oops, nothing found!",
+                placeholder_text_single: "Select a user privilege",
+            });
+        }
+
         // fill autocomplete list of members and privilege
-        function fillAutocompleteList() {
+        function getDataforCombo() {
             var deferreds = [];
             deferreds.push(
                 $.ajax({
                     dataType: 'json',
                     url: listURL + '?table=members',
                     success: function(data) { 
-                        $("#membersCombo").autocomplete({
-                            source: data['members'],
-                            select: function(event, ui) { $('#memberId').val(ui.item.idx); }
-                        });
-                        $("#membersComboEdit").autocomplete({
-                            source: data['members'],
-                            select: function(event, ui) { $('#memberIdEdit').val(ui.item.idx); }
-                        });
+                        fillMemberCombo($('#createMemberCombo'), data['members']);
+                        fillMemberCombo($('#editMemberCombo'), data['members']);
                     },
                 })
             );
@@ -173,14 +172,8 @@
                     dataType: 'json',
                     url: listURL + '?table=privileges',
                     success: function(data) { 
-                        $("#privilegesEdit").autocomplete({
-                            source: data['privileges'],
-                            select: function(event, ui) { $('#privilegeIdEdit').val(ui.item.idx); }
-                        });
-                        $("#privileges").autocomplete({
-                            source: data['privileges'],
-                            select: function(event, ui) { $('#privilegeId').val(ui.item.idx); }
-                        });
+                        fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
+                        fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
                     },
                 })
             );
@@ -191,9 +184,8 @@
         }
 
         initTable();
-        fillAutocompleteList();
+        getDataforCombo();
         reloadList();
-
 
         // pressed save register button
         $(".crud-register").click(function(e){
@@ -204,8 +196,8 @@
                 name: formId.find("input[name='name']").val(),
                 email: formId.find("input[name='email']").val(),
                 password: 'password',
-                member_id: $('#memberId').val(),
-                privilege_id: $('#privilegeId').val() 
+                member_id: $('#createMemberCombo').val(),
+                privilege_id: $('#createPrivilegeCombo').val() 
             };
             $.ajax({
                 dataType: 'json',
@@ -238,10 +230,10 @@
             var postData = {
                 name: formId.find("input[name='name']").val(),
                 email: formId.find("input[name='email']").val(),
-                member_id: $('#memberIdEdit').val(),
-                member_name: formId.find("input[name='members']").val(),
-                privilege_id: $('#privilegeIdEdit').val(),
-                privilege_name: formId.find("input[name='privileges']").val(),
+                member_id: $('#editMemberCombo').val(),
+                member_name: $('#editMemberCombo option:selected').text(),
+                privilege_id: $('#editPrivilegeCombo').val(),
+                privilege_name: $('#editPrivilegeCombo option:selected').text(),
             };
             $.ajax({
                 dataType: 'json',
@@ -305,10 +297,9 @@
                 var form = $("#edit-item");
                 form.find("input[name='name']").val(rec.name);
                 form.find("input[name='email']").val(rec.email);
-                form.find("input[id='member_id']").val(rec.member_id);
-                form.find("input[id='privilege_id']").val(rec.privilege_id);
-                form.find("input[name='members']").val(rec.member_name);
-                form.find("input[name='privileges']").val(rec.privilege_name);
+                // VERY IMPORTANT!!! If you use chosen, when you want to change a selection, you have to add .trigger('chosen:updated')
+                $('#editMemberCombo').val(rec.member_id).trigger('chosen:updated');
+                $('#editPrivilegeCombo').val(rec.privilege_id).trigger('chosen:updated');
                 form.find("#editForm").attr("action", basicURL + '/' + rec.id);
             } else if (column === 'delete') {
                 var dispId = $("#deleteBody");
@@ -336,6 +327,6 @@
         });
     </script>
 
-    {{-- jQuery user interface CDN for autocomplete input --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    {{-- Chosen user interface CDN for autocomplete input --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
 @endsection

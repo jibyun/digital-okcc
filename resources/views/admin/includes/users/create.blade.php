@@ -28,16 +28,16 @@
                     <div class="form-group row">
                         <label for="members" class="col-sm-3 col-form-label text-right">Members</label>
                         <div class="col-sm-9">
-                            <input id="memberId" hidden>
-                            <input type="text" class="form-control autocomplete" id="membersCombo" name="members" placeholder="Members">
+                            <select id="createMemberCombo" class="form-control" name="members" data-placeholder="Select Correct Member">
+                            </select>
                         </div>
                     </div>
                     {{-- Privilege  --}}
                     <div class="form-group row">
-                        <label for="privileges" class="col-sm-3 col-form-label text-right">Privilege</label>
+                        <label for="privileges" class="col-sm-3 col-form-label text-right">Privileges</label>
                         <div class="col-sm-9">
-                            <input id="privilegeId" hidden>
-                            <input type="text" class="form-control autocomplete" id="privileges" name="privileges" placeholder="Privilege">
+                            <select id="createPrivilegeCombo" class="form-control" name="privileges" data-placeholder="Select Privilege">
+                            </select>
                         </div>
                     </div>
                     {{-- Buttons --}}
