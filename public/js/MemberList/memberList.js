@@ -2,8 +2,8 @@
 // Javascript for MemberList
 
 var sideMenuTree;
-var categoryUrl = 'api/okcc/memberList/categories';
-var searchUrl = 'api/okcc/memberList/search';
+var categoryUrl = 'okcc/memberList/categories';
+var searchUrl = 'okcc/memberList/search';
 
 $(document).ready(function () {
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
         var data = sideMenuTree.getDataById(id);
         // TODO : Implement action.
         //console.log(AuthUser);
-        loadTable("api/okcc/memberList/memberList");
+        loadTable("okcc/memberList/memberList");
         
     });
 

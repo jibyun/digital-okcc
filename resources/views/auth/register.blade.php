@@ -19,7 +19,7 @@
                         </p>
 
                     @endif
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('preregister') }}">
                         @csrf
 
                         <div class="form-group row">
