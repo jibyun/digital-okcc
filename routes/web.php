@@ -12,8 +12,8 @@
 */
 Auth::routes();
 // Pre-Registration Routes...
-$this->get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('preregister');
-$this->post('preregister', 'Auth\PreRegisterController@sendMail');
+Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('preregister');
+Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
 
 Route::get('/', function () {
     return view('index');
@@ -74,3 +74,50 @@ Route::get('admin/getCodesNotInChildByFamily', 'Admin\FamilyTreesController@getc
 Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Members and Departments Mapping
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');
+
+/*
+|--------------------------------------------------------------------------
+| MEMBER LIST RESTFUL API
+|--------------------------------------------------------------------------
+*/
+/**
+ * Method: GET
+ * URL: /okcc/memberList/categories: Retrieve search categories
+ */
+Route::resource('okcc/memberList/categories', 'Rest\MemberList\CategoryController')->only([
+    'index'
+])->middleware('auth');
+
+/**
+ * Method: GET
+ * URL: /okcc/memberList/member/{id}: Retrieve all information for the given member
+ * 
+ */
+Route::resource('okcc/memberList/member', 'Rest\MemberList\MemberController')->only([
+    'show'
+])->middleware('auth');
+/**
+ * Method: GET
+ * URL: /okcc/memberList/memberList: Retrieve all members
+ * URL: /okcc/memberList/memberList/{code}: Retrieve members who matched the code
+ * 
+ */
+Route::resource('okcc/memberList/memberList', 'Rest\MemberList\MemberListController')->only([
+    'index', 'show'
+])->middleware('auth');
+/**
+ * Method: GET
+ * URL: /okcc/memberList/search/{searchString}: Retrieve members who matched the string
+ * 
+ */
+Route::resource('okcc/memberList/search', 'Rest\MemberList\SearchController')->only([
+    'show'
+])->middleware('auth');
+
+/**
+ * Method: GET
+ * URL: /okcc/util/adduser/{id}/{password}: Add new user
+ * This temporary restful api, and it will be removed later
+ * 
+ */
+Route::get('okcc/util/adduser/{id}/{password}', 'Rest\Util\UtilsController@addUser');
