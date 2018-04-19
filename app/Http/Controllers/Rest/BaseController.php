@@ -3,7 +3,7 @@
    https://itsolutionstuff.com/post/php-laravel-56-rest-api-with-passport-tutorialexample.html
 */
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Rest;
 
 
 use Illuminate\Http\Request;
