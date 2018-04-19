@@ -99,5 +99,13 @@ class Code_CategoriesTableSeeder extends Seeder
             'fieldName' => 'LOG',
             'order' => 11
         ]);
+        // Position
+        DB::table('code_categories')->insert([ 
+            'txt' => 'Position',
+            'kor_txt' => '직책',
+            'memo' => 'A code category for using Position.',
+            'fieldName' => 'position_id',
+            'order' => 11
+        ]);
     }
 }

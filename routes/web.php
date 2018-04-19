@@ -61,6 +61,7 @@ Route::resource('admin/p-role-map', 'Admin\Privilege_Role_MapsController', [ 'ex
 // Users Registration 
 Route::get('admin/users-regist', 'Admin\AdminPagesController@users_list')->name('admin.users.regist');
 Route::get('admin/get-users', 'Admin\UsersController@getUsers')->name('admin.users.get-users');
+Route::get('admin/getCurrentUsers', 'Admin\UsersController@getCurrentUsers')->name('admin.users.get-current-users');
 Route::resource('admin/users', 'Admin\UsersController', [ 'except' => [ 'store', 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Log View
 Route::get('admin/log-view', 'Admin\AdminPagesController@index')->name('admin.log.view');
@@ -74,6 +75,8 @@ Route::get('admin/getCodesNotInChildByFamily', 'Admin\FamilyTreesController@getc
 Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' => [ 'create', 'edit', 'update', 'show' ], 'as' => 'admin' ] );
 // Members and Departments Mapping
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');
+Route::get('admin/getCodesNotInChildByMDMap', 'Admin\MemDeptMapsController@getcodes_notin_child')->name('admin.member-dept-trees.getcodes-notin-child');
+Route::resource('admin/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 
 /*
 |--------------------------------------------------------------------------

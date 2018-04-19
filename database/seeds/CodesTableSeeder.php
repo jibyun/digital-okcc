@@ -348,5 +348,19 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 110003, 'code_category_id' => 11, 'order' => 3, 'txt' => 'INSERT', 'kor_txt' => '추가' ]);
         DB::table('codes')->insert([ 'id' => 110004, 'code_category_id' => 11, 'order' => 4, 'txt' => 'UPDATE', 'kor_txt' => '수정' ]);
         DB::table('codes')->insert([ 'id' => 110005, 'code_category_id' => 11, 'order' => 5, 'txt' => 'DELETE', 'kor_txt' => '삭제' ]);
+
+        // POSITION
+        DB::table('codes')->insert([ 'id' => 120001, 'code_category_id' => 12, 'order' => 1, 'txt' => 'President', 'kor_txt' => '회장' ]);
+        DB::table('codes')->insert([ 'id' => 120002, 'code_category_id' => 12, 'order' => 2, 'txt' => 'Vice President', 'kor_txt' => '부회장' ]);
+        DB::table('codes')->insert([ 'id' => 120003, 'code_category_id' => 12, 'order' => 3, 'txt' => 'Supervisor', 'kor_txt' => '부서장' ]);
+        DB::table('codes')->insert([ 'id' => 120004, 'code_category_id' => 12, 'order' => 4, 'txt' => 'Director', 'kor_txt' => '총무' ]);
+        DB::table('codes')->insert([ 'id' => 120005, 'code_category_id' => 12, 'order' => 5, 'txt' => 'Accoundant', 'kor_txt' => '회계' ]);
+        DB::table('codes')->insert([ 'id' => 120006, 'code_category_id' => 12, 'order' => 6, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
+        DB::table('codes')->insert([ 'id' => 120007, 'code_category_id' => 12, 'order' => 7, 'txt' => 'Great Cell Leader', 'kor_txt' => '교구장' ]);
+        DB::table('codes')->insert([ 'id' => 120008, 'code_category_id' => 12, 'order' => 8, 'txt' => 'Cell Leader', 'kor_txt' => '구역장' ]);
+        DB::table('codes')->insert([ 'id' => 120009, 'code_category_id' => 12, 'order' => 9, 'txt' => 'Choir Team Leader', 'kor_txt' => '성가대장' ]);
+        DB::table('codes')->insert([ 'id' => 120010, 'code_category_id' => 12, 'order' => 10, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
+        DB::table('codes')->insert([ 'id' => 120011, 'code_category_id' => 12, 'order' => 11, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
+        DB::table('codes')->insert([ 'id' => 120012, 'code_category_id' => 12, 'order' => 12, 'txt' => 'Member', 'kor_txt' => '팀원' ]);
     }
 }

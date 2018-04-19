@@ -9,7 +9,10 @@ use App\Member;
 use App\Privilege;
 
 class UsersController extends Controller {
-
+    // Create a new controller instance.
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Update the specified resource in storage.
      * @param  \Illuminate\Http\Request  $request
@@ -85,6 +88,12 @@ class UsersController extends Controller {
             $result = array("privileges" => json_decode(json_encode($arr), true));
         }
         
+        return response()->json($result);
+    }
+
+    public function getCurrentUsers() {
+        $user = \Auth::user();
+        $result = array("user" => json_decode(json_encode($user), true));
         return response()->json($result);
     }
 

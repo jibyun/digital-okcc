@@ -1,13 +1,6 @@
 @extends('admin.layouts.master')
 
 @section('styles')
-    {{-- IMPORTANT: OVERRIDE of selected row in Bootstrap table --}}
-    <style>
-        #addTable .selected td{
-            background-color:#031023 !important;
-            color: cornsilk;
-        }
-    </style>
     {{-- chosen user interface for autocomplete input --}}
     <link href="{{ asset('css/chosen.css') }}" rel="stylesheet">
 @endsection
@@ -179,7 +172,7 @@
                     fillMemberCombo($combo, data['members']);
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
                 }
             });
         }
@@ -193,7 +186,7 @@
                     relationList = data['codes'];
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), 'Failed');
                 }
             });
         }  
