@@ -1,7 +1,7 @@
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
     <div style="min-width:250px; max-width:250px;">
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
         @if ( strpos(url()->current(), 'admin') !== false )
