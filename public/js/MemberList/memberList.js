@@ -4,6 +4,7 @@
 var sideMenuTree;
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
+var memberListUrl = 'okcc/memberList/memberList';
 
 $(document).ready(function () {
 
@@ -24,10 +25,7 @@ $(document).ready(function () {
 
     sideMenuTree.on('select', function (e, node, id) {
         var data = sideMenuTree.getDataById(id);
-        // TODO : Implement action.
-        //console.log(AuthUser);
-        loadTable("okcc/memberList/memberList");
-        
+        treeSelectionChanged(id, data);
     });
 
     // search button click
@@ -36,7 +34,7 @@ $(document).ready(function () {
         restApiCall(url, "GET", null, memberListSuccess, null);
     });
     
-    var table = $('#mainTable');
+    var table = $('#mc_table');
     table.bootstrapTable({
         //TODO: need to update column
         columns: [{
@@ -55,6 +53,8 @@ $(document).ready(function () {
         pagination: true,
         pageSize: 10
     });
+
+    showLandingContent();
 });
 
 function loadTable(url) {
@@ -63,6 +63,27 @@ function loadTable(url) {
 
 function memberListSuccess(response) {
     var tableData = JSON.parse(response.data);
-    var table = $('#mainTable');
+    var table = $('#mc_table');
     table.bootstrapTable('load', tableData);
+}
+
+function updateTitle(obj, title) {
+    obj.text(title);
+}
+
+function showLandingContent() {
+    $('#MainContent').hide();
+    $('#LandingContent').show();
+}
+
+function showMainConent() {
+    $('#LandingContent').hide();
+    $('#MainContent').show();
+}
+
+function treeSelectionChanged(id, data) {
+    showMainConent();
+    updateTitle($('#pageTitle'), data.text);
+    loadTable(memberListUrl);
+
 }
