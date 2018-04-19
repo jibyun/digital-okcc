@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\API\MemberList;
+namespace App\Http\Controllers\Rest\MemberList;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController;
+use App\Http\Controllers\Rest\BaseController;
 use App\Http\Services\MemberList\MemberListService;
 
 class MemberListController extends BaseController
