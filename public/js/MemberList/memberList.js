@@ -84,6 +84,6 @@ function showMainConent() {
 function treeSelectionChanged(id, data) {
     showMainConent();
     updateTitle($('#pageTitle'), data.text);
-    loadTable(memberListUrl);
+    loadTable(memberListUrl + "/" + data.code);
 
 }
