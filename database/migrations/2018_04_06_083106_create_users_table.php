@@ -29,6 +29,10 @@ class CreateUsersTable extends Migration
             // TODO: 명확하게 라라벨 auth와 문제가 없을 경우 사용할 예정임
             // $table->boolean('reset')->default(false)->comment('Password Reset을 위한 스위치, TODO: 테스트 후 사용할 예정임');
             $table->timestamps();
+
+            // Foreign Key
+            $table->foreign('privilege_id')->references('id')->on('privileges');
+            $table->foreign('member_id')->references('id')->on('members');
         });
     }
 
