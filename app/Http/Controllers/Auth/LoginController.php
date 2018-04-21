@@ -28,6 +28,13 @@ class LoginController extends Controller
     protected $redirectTo = '/';
 
     /**
+     * Redirect after login.  As a default go to the memberList page.
+     */
+    protected function authenticated() {
+        return redirect()->route('memberList');
+    }
+
+    /**
      * Create a new controller instance.
      *
      * @return void
