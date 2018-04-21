@@ -42,8 +42,17 @@ class MemberListService
      * @return $member list
      */
     public function getMemberList($code) {
+        $category = $this->findCategoryByCode($code);
         $field = $this->findFieldByCode($code);
-        $member = Member::where($field, $code)->get();
+        //TODO: replace the 5, 10 to something else
+        if ($category->code_category_id  == 5
+            || $category->code_category_id == 10) {
+            $member = Member::with(['departmentId'])->whereHas('departmentId', function($query) use ($code){
+                $query -> where('department_id', $code);
+            })->get();
+        } else {
+            $member = Member::where($field, $code)->get();
+        }
         return $member;
     }
 
@@ -54,10 +63,22 @@ class MemberListService
      * @return string $fieldName
      */
     private function findFieldByCode($code) {
-        $categoryIds = Code::where('id', $code)->select('code_category_id')->get();
-        $fieldNames = Code_category::where('id', $categoryIds[0]->code_category_id)->select('fieldName')->get();
-        return $fieldNames[0]->fieldName;
+        $category = $this->findCategoryByCode($code);
+        $fieldName = Code_category::where('id', $category->code_category_id)->select('fieldName')->first();
+        return $fieldName->fieldName;
 
+    }
+
+    /**
+     * find the category by code
+     * 
+     * @param string $code
+     * @return object $category
+     */
+    private function findCategoryByCode($code) {
+        $category = Code::where('id', $code)->first();
+        Log::debug($category);
+        return $category;
     }
 
     /**
@@ -66,23 +87,23 @@ class MemberListService
     private function buildCategory() {
 
 
-	//전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-    $result=array();
+        //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
+        $result=array();
 
-    $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
+        $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
 
-    $menuList=array();
-    foreach($cates as $cate){
-        $menu=$this->makeMenu($cate);  //code_category->menu_level1
-        $children=array();
-        foreach($cate->codes as $code){
-            array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+        $menuList=array();
+        foreach($cates as $cate){
+            $menu=$this->makeMenu($cate);  //code_category->menu_level1
+            $children=array();
+            foreach($cate->codes as $code){
+                array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+            }
+            $menu->children=$children;
+            array_push($menuList,$menu);
         }
-        $menu->children=$children;
-        array_push($menuList,$menu);
-    }
 
-    return $menuList;
+        return $menuList;
 
     }
 

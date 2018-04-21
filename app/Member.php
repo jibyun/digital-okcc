@@ -42,4 +42,9 @@ class Member extends Model
     public function member_histories() {
         return $this->hasMany('App\Member_History');
     }
+
+    // Relationship with member_department_maps table and get member_id and depatment_id
+    public function departmentId() {
+        return $this->hasMany('App\Member_Department_Map')->select('member_id', 'department_id');
+    }
 }
