@@ -18,3 +18,8 @@
         <div id="mc_footer"></div>
     </div>
 </div>
+
+<div id="divMemberDetailPanel" style="display: none;">
+    {{--TODO Add Member Detail --}}
+    {{--@include('somthing?????') --}}
+</div>
