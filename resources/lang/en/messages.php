@@ -33,6 +33,23 @@ return [
     // Message for MemberList
     'memberlist' => [
         'landingtitle' => 'Ottawa Korean Community Church'
+    ],
+
+    // Message for MemberDetail
+    'memberdetail' => [
+        'menu_basicinfo' => 'Basic Information',
+        'menu_history' => 'History Information',
+        'menu_visit' => 'Visit Information',
+    ],
+
+    // Top Menu
+    'top_menu' => [
+        'members' => 'Members',
+        // TODO: remove later
+        'member_details' => 'Member Details',
+        'finance' => 'Finance',
+        'inventory' => 'Inventories',
+
     ]
 
 ];

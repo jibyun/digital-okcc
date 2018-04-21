@@ -4,7 +4,14 @@
 @endsection
 
 @section('sidePanel')
-<div id="sideMenu">
+<div id="sideMenuCategory">
+</div>
+<div id="sideMenuMemberDetail" style="display: none;">
+    <ul id="menu_member_detail_basic" class="memberDetail list-unstyled collapse show">{{__('messages.memberdetail.menu_basicinfo')}}</ul>
+    <ul id="menu_member_detail_history" class="memberDetail list-unstyled collapse show">{{__('messages.memberdetail.menu_history')}}</ul>
+    <ul id="menu_member_detail_visit" class="memberDetail list-unstyled collapse show">{{__('messages.memberdetail.menu_visit')}}</ul>
+</div>
+<div id="sideMenuProfile" style="display: none;">
 </div>
 @endsection
 
