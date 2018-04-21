@@ -20,6 +20,7 @@ class MemberListController extends BaseController
      */
     public function index()
     {
+        // TODO: Error Handling
         return $this->sendResponse(json_encode($this->memberListService->getAllMembers()),
                                     "retrieved all members successfully.");
     }
@@ -27,12 +28,12 @@ class MemberListController extends BaseController
     /**
      * Display the member list for the given code resource.
      *
-     * @param  string  $name
+     * @param  string  $code
      * @return \Illuminate\Http\Response
      */
     public function show($code)
     {
-        // TODO: need to implement the service layer logic to get member list
-        return $this->sendResponse($code, "retrieved members successfully.");
+        // TODO: Error Handling
+        return $this->sendResponse(json_encode($this->memberListService->getMemberList($code)), "retrieved members successfully.");
     }
 }

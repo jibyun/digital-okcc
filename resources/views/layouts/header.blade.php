@@ -19,9 +19,15 @@
         
         <ul class="navbar-nav mr-auto">
             @auth
-            <li id="menu_members" class="nav-item"><a class="nav-link" href="#">Members</a></li>
-            <li id="menu_finance" class="nav-item"><a class="nav-link" href="#">Finance</a></li>
-            <li id="menu_inventory" class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
+            <li id="menu_members" class="nav-item">
+                <a class="nav-link" href="{{ route('memberList') }}">{{__('messages.top_menu.members')}}</a></li>
+            <!-- TODO: This is the temporary menu for member detail view.  It will be remvoed later -->
+            <li id="menu_member_detail" class="nav-item">
+                <a class="nav-link" href="#">{{__('messages.top_menu.member_details')}}</a></li>
+            <li id="menu_finance" class="nav-item">
+                <a class="nav-link" href="#">{{__('messages.top_menu.finance')}}</a></li>
+            <li id="menu_inventory" class="nav-item">
+                <a class="nav-link" href="#">{{__('messages.top_menu.inventory')}}</a></li>
             @endauth 
         </ul>
         <ul class="navbar-nav ml-auto">

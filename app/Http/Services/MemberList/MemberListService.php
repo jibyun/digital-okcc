@@ -5,6 +5,7 @@ namespace App\Http\Services\MemberList;
 use App\Member;
 use App\Code_Category;
 use App\Code;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Service layer for handling member list
@@ -37,19 +38,47 @@ class MemberListService
     /**
      * Retrieve the member list belong to the given code
      * 
-     * params: code code
+     * @param string $code
+     * @return $member list
      */
     public function getMemberList($code) {
+        $category = $this->findCategoryByCode($code);
         $field = $this->findFieldByCode($code);
-        $member = Member::where($field, $code)->get();
-
+        //TODO: replace the 5, 10 to something else
+        if ($category->code_category_id  == 5
+            || $category->code_category_id == 10) {
+            $member = Member::with(['departmentId'])->whereHas('departmentId', function($query) use ($code){
+                $query -> where('department_id', $code);
+            })->get();
+        } else {
+            $member = Member::where($field, $code)->get();
+        }
+        return $member;
     }
 
     /**
      * find the field name in member table by given code
+     * 
+     * @param string $code
+     * @return string $fieldName
      */
-    private function findFieldNameByCode($code) {
+    private function findFieldByCode($code) {
+        $category = $this->findCategoryByCode($code);
+        $fieldName = Code_category::where('id', $category->code_category_id)->select('fieldName')->first();
+        return $fieldName->fieldName;
 
+    }
+
+    /**
+     * find the category by code
+     * 
+     * @param string $code
+     * @return object $category
+     */
+    private function findCategoryByCode($code) {
+        $category = Code::where('id', $code)->first();
+        Log::debug($category);
+        return $category;
     }
 
     /**
@@ -58,23 +87,23 @@ class MemberListService
     private function buildCategory() {
 
 
-	//전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-     $result=array();
+        //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
+        $result=array();
 
-     $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
+        $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
 
-     $menuList=array();
-     foreach($cates as $cate){
-        $menu=$this->makeMenu($cate);  //code_category->menu_level1
-        $children=array();
-        foreach($cate->codes as $code){
-            array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+        $menuList=array();
+        foreach($cates as $cate){
+            $menu=$this->makeMenu($cate);  //code_category->menu_level1
+            $children=array();
+            foreach($cate->codes as $code){
+                array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+            }
+            $menu->children=$children;
+            array_push($menuList,$menu);
         }
-        $menu->children=$children;
-        array_push($menuList,$menu);
-     }
 
-     return $menuList;
+        return $menuList;
 
     }
 
