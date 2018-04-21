@@ -1,12 +1,34 @@
 @extends('admin.layouts.master')
 
+@section('styles')
+    {{-- chosen user interface for autocomplete input --}}
+    <link href="{{ asset('css/chosen.css') }}" rel="stylesheet">
+    {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+    {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css" />
+@endsection
+
 @section('content')
 <div class='container p-4'>
-    <h4>Member List</h4>
+    <span class="h4-font-size pr-3">Member List</span><span id="contentTitle" class="h6-font-size"></span>
+    @include('admin.includes.members.show')
+    @include('admin.includes.members.edit')
     <div id="toolbar">
-        <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Register User
+        <button id="createNewRecord" class="btn btn-info mr-1" type="button" title="Create">
+            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Register Member
         </button>
+        {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
+        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
+        </button>
+        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
+        </button>
+        
+        {{-- <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
+            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
+        </button> --}}
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -18,28 +40,47 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-row-style="rowStyle"
+            data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" scope="col" data-visible="false">Id</th>
-                <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">User Name</th>
-                <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">Email</th>
-                <th data-field="member_id" scope="col" data-visible="false">Member Id</th>
-                <th data-field="member_name" scope="col" data-visible="false">Member Name</th>
-                <th data-field="privilege_id" scope="col" data-visible="false">Privilege Id</th>
-                <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">Privilege</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
+                <th data-field="first_name" data-filter-control="select" data-sortable="true" scope="col">First Name</th>
+                <th data-field="middle_name" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Middle Name</th>
+                <th data-field="last_name" data-filter-control="select" data-sortable="true" scope="col">Last Name</th>
+                <th data-field="kor_name" data-filter-control="select" data-sortable="true" scope="col">성명</th>
+                <th data-field="dob" data-filter-control="select" data-sortable="true" scope="col">Birthdate</th>
+                <th data-field="gender" data-width="60px" data-filter-control="select" data-sortable="false" scope="col">Gender</th>
+                <th data-field="email" data-filter-control="select" data-sortable="false" scope="col">Email</th>
+                <th data-field="tel_home" data-filter-control="select" data-sortable="false" scope="col">Home Phone</th>
+                <th data-field="tel_cell" data-filter-control="select" data-sortable="false" scope="col">Cell Phone</th>
+                <th data-field="tel_office" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Office Phone</th>
+                <th data-field="address" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Address</th>
+                <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Postal Code</th>
+                <th data-field="city_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">City Id</th>
+                <th data-field="city_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">City</th>
+                <th data-field="province_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Province Id</th>
+                <th data-field="province_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Province</th>
+                <th data-field="country_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Country Id</th>
+                <th data-field="country_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Country</th>
+                <th data-field="status_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Status Id</th>
+                <th data-field="status_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Status</th>
+                <th data-field="level_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Level Id</th>
+                <th data-field="level_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Level</th>
+                <th data-field="duty_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Duty Id</th>
+                <th data-field="duty_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Duty</th>
+                <th data-field="photo" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Photo</th>
+                <th data-field="primary" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Primary</th>
+                <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Register</th>
+                <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Baptism</th>
+                <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents">Clone</th>
+                <th data-field="edit" data-width="45px" data-formatter="editFormatter" data-events="editEvents">Edit</th>
+                <th data-field="delete" data-width="45px" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
             </tr>
         </thead>
     </table>
-
-    @include('admin.includes.users.create')
-    @include('admin.includes.users.edit')
-    @include('admin.includes.users.show')
-    @include('admin.includes.users.delete')
-
 </div>
+@include('admin.includes.members.crop')
 {{-- End Container --}}
 @endsection
 
@@ -53,9 +94,16 @@
 
     <script type="text/javascript">
         const $table = $('#table');
-        const listURL = "{!! route('admin.users.get-users') !!}";
-        const basicURL = "{!! route('admin.users.index') !!}";
-        var users;
+        const codesURL = "{!! route('admin.codes.index') !!}";
+        const membesURL = "{!! route('admin.members.index') !!}";
+
+        var statusCodeLists = new Array(); // Member Status Code List
+        var dutyCodeLists = new Array(); // Duty Code List
+        var levelCodeLists = new Array(); // Baptism Status Code List
+        var cityCodeLists = new Array(); // City Code List
+        var provinceCodeLists = new Array(); // Province Code List
+        var countryCodeLists = new Array(); // Country Code List
+        var memberLists = new Array(); // Member List
         var saveIndex; // Row index of the table
         var saveId; // Primary key of the table
 
@@ -68,10 +116,17 @@
             return { css: { "padding": "0px 10px" } };
         }
 
+        // compose the column for clone button 
+        function cloneFormatter(value, row, index) {
+            return [
+                '<a href="#"><span class="h6-font-size" style="color: #ff6600;"><i class="fa fa-fw fa-plus-circle" aria-hidden="true"></i></span></a>'
+            ].join('');
+        }
+
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
+                '<a href="#"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -83,33 +138,61 @@
         }
 
         // compute height of the table and return 
-        function getHeight() {
-            $(window).height() - $('h4').outerHeight(true); // table height
+        function getHeight() { $(window).height() - $('h4').outerHeight(true); }
+
+        // Initialize main table
+        $table.bootstrapTable({
+            height: getHeight(),
+            columns: [ { align: 'center' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'center' }, // last: dob
+                { align: 'center' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' }, // last: address
+                { align: 'center' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' }, // last: country
+                { align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' }, // last: duty
+                { align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'center' }, // last: baptism_at
+                { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+        });
+        // whenever being changed window's size, table's size should be also changed
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', { height: getHeight() });
+        });
+
+        function fillCombo($element, codeData, kind) {
+            $element.empty();
+            var html = '<option value=""></option>';
+            $.each(codeData, function( index, codes ) {
+                html += '<option value="' + codes['id'] + '">' + ( kind === 'province' ? codes['kor_txt'] + ' (' + codes['txt'] + ')' : codes['txt'] )  + '</option>';
+            });
+            $element.prepend(html);
+            // The following options are available to pass into Chosen on instantiation.
+            $element.chosen({
+                case_sensitive_search: false,
+                search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
+                no_results_text: "Oops, nothing found!",
+                placeholder_text_single: "Please Select One!",
+            });
         }
 
-        function initTable() {
-            $table.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{ align: 'left' },{ align: 'left' },{},{},{},{ align: 'left' }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
-            });
-            // whenever being changed window's size, table's size should be also changed
-            $(window).resize(function () {
-                $table.bootstrapTable('resetView', {
-                    height: getHeight()
-                });
-            });
-        }
+        $.ajax({
+            dataType: 'json',
+            url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=1&category_id[]=2&category_id[]=4&category_id[]=6&category_id[]=7&category_id[]=8',
+            success: function(data) { 
+                fillCombo( $('#selectStatusCombo'), data['codes'][0], "select" );
+                fillCombo( $('#selectDutyCombo'), data['codes'][1], "duty" );
+                fillCombo( $('#selectLevelCombo'), data['codes'][2], "level" );
+                fillCombo( $('#selectCityCombo'), data['codes'][3], "city" );
+                fillCombo( $('#selectProvinceCombo'), data['codes'][4], "province" );
+                fillCombo( $('#selectCountryCombo'), data['codes'][5], "country" );
+            }, 
+            fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
+            }
+        });
 
         // reload data from server and refresh table
         function reloadList() {
-            $('#createMemberCombo').val('').trigger('chosen:updated');
-            $('#createPrivilegeCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: listURL + '?table=users',
+            $.ajax({ dataType: 'json', url: membesURL,
                 success: function(data) { 
-                    users = data['users'];
-                    $table.bootstrapTable( 'load', { data: users } );
+                    memberLists = data['members'];
+                    $table.bootstrapTable( 'load', { data: memberLists } );
                 }, 
                 fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
                     toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
@@ -117,124 +200,45 @@
             });
         } 
 
-        function fillMemberCombo(memberCombo, members) {
-            memberCombo.empty();
-            var html = '<option value=""></option>';
-            $.each(members, function( index, member ) {
-                html += '<option value="' + member['idx'] + '">' + member['label'] + '</option>';
-            });
-            memberCombo.prepend(html);
-            // The following options are available to pass into Chosen on instantiation.
-            memberCombo.chosen({
-                case_sensitive_search: false,
-                search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
-                no_results_text: "Oops, nothing found!",
-                placeholder_text_single: "Select a correct Member",
-            });
-        }
-
-        function fillPrivilegeCombo(privilegeCombo, privileges) {
-            privilegeCombo.empty();
-            var html = '<option value=""></option>';
-            $.each(privileges, function( index, privilege ) {
-                html += '<option value="' + privilege['idx'] + '">' + privilege['label'] + '</option>';
-            });
-            privilegeCombo.prepend(html);
-            // The following options are available to pass into Chosen on instantiation.
-            privilegeCombo.chosen({
-                case_sensitive_search: false,
-                search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
-                no_results_text: "Oops, nothing found!",
-                placeholder_text_single: "Select a user privilege",
-            });
-        }
-
-        // fill autocomplete list of members and privilege
-        function getDataforCombo() {
-            var deferreds = [];
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=members',
-                    success: function(data) { 
-                        fillMemberCombo($('#createMemberCombo'), data['members']);
-                        fillMemberCombo($('#editMemberCombo'), data['members']);
-                    },
-                })
-            );
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=privileges',
-                    success: function(data) { 
-                        fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
-                        fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
-                    },
-                })
-            );
-            $.when.apply($, deferreds).then( function() {
-            }).fail(function(e){
-                toastr.error('Error occured! Please Save again. message:' + e.message, 'Failed');
-            });
-        }
-
-        initTable();
-        getDataforCombo();
         reloadList();
 
-        // pressed save register button
-        $(".crud-register").click(function(e){
-            e.preventDefault();
-            var formId = $("#create-item");
-            var form_action = formId.find("form").attr("action");
-            var postData = {
-                name: formId.find("input[name='name']").val(),
-                email: formId.find("input[name='email']").val(),
-                password: 'password',
-                member_id: $('#createMemberCombo').val(),
-                privilege_id: $('#createPrivilegeCombo').val() 
+        function fillPostData() {
+            var form = $("#editForm");
+            return {
+                first_name: form.find("input[name='first_name']").val(),
+                middle_name: form.find("input[name='middle_name']").val(),
+                last_name: form.find("input[name='last_name']").val(),
+                kor_name: form.find("input[name='kor_name']").val(),
+                gender: form.find("input[name='gender']:checked").val(),
+                dob: form.find("input[name='dob']").val(),
+                baptism_at: form.find("input[name='baptism_at']").val(),
+                register_at: form.find("input[name='register_at']").val(),
+                tel_home: form.find("input[name='tel_home']").val(),
+                tel_cell: form.find("input[name='tel_cell']").val(),
+                tel_office: form.find("input[name='tel_office']").val(),
+                email: form.find("input[name='email']").val(),
+                postal_code: form.find("input[name='postal_code']").val(),
+                address: form.find("input[name='address']").val(),
+                photo: $("#photo_filename").val(),
+                city_id: $('#selectCityCombo').val(),
+                city_name: $('#selectCityCombo option:selected').text(),
+                province_id: $('#selectProvinceCombo').val(),
+                province_name: $('#selectProvinceCombo option:selected').text(),
+                country_id: $('#selectCountryCombo').val(),
+                country_name: $('#selectCountryCombo option:selected').text(),
+                status_id: $('#selectStatusCombo').val(),
+                status_name: $('#selectStatusCombo option:selected').text(),
+                level_id: $('#selectLevelCombo').val(),
+                level_name: $('#selectLevelCombo option:selected').text(),
+                duty_id: $('#selectDutyCombo').val(),
+                duty_name: $('#selectDutyCombo option:selected').text(),
+                primary: 0,
             };
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#createForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
-                }
-            });
-        });
+        }
 
-        // press save button to edit
-        $(".crud-update").click(function(e){
-            e.preventDefault();
-            var formId = $("#edit-item");
-            var form_action = formId.find("form").attr("action");
-            var postData = {
-                name: formId.find("input[name='name']").val(),
-                email: formId.find("input[name='email']").val(),
-                member_id: $('#editMemberCombo').val(),
-                member_name: $('#editMemberCombo option:selected').text(),
-                privilege_id: $('#editPrivilegeCombo').val(),
-                privilege_name: $('#editPrivilegeCombo option:selected').text(),
-            };
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
+        function doPutOrPost(method, postData) {
+            var url = ( method === "POST" ) ? "{!! route('admin.members.store') !!}" : "{{ route('admin.members.index') }}" + '/' + saveId; 
+            $.ajax({ dataType: 'json', method: method, data: postData, url: url, 
                 success: function(data) {
                     if (data.errors) {
                         var message = '';
@@ -244,75 +248,199 @@
                         toastr.error(message, data.message);
                     } else {
                         toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
+                        if ( method === "POST" ) {
+                            $table.bootstrapTable("append", postData);
+                        } else {
+                            $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                        }
+                        $("#editPanel").collapse("hide");
+                        $('#contentTitle').text("");
                         reloadList();
                     }
                 }
             });
+        }
+
+        $("#saveRecordButton").click( function(e) {
+            e.preventDefault();
+            var postData = fillPostData();
+            var parameter = $('#saveRecordButton').hasClass('store') ? "POST" : "PUT";
+            doPutOrPost(parameter, postData);
         });
 
         // delete record but I will just add 'DELETED' to email address 
-        $(".crud-delete").click(function(e){
+        $("#deleteRecordButton").click( function(e) {
             e.preventDefault();
-            var formId = $("#edit-item");
-            var form_action = formId.find("form").attr("action");
-            var postData = {
-                name: $("#deleteBody").find("label[name='name']").text(),
-                email: $("#deleteBody").find("label[name='email']").text() + "__DELETED USER!!!",
-            };
+            var form = $("#editForm");
+            form.find("input[name='first_name']").val(form.find("input[name='first_name']").val() + "__DELETED__");
+            $('#selectStatusCombo').val(19999);
+            var postData = fillPostData();
+            doPutOrPost('PUT', postData);
+            $("#showPanel").collapse("hide");
+            $('#contentTitle').text("");
+        });
+
+        function fillEditPanel( rec ) {
+            var form = $("#editForm");
+            // if profile image is existed?
             $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+                url: "{!! asset('uploads/" + rec.photo + "') !!}",
+                type:'HEAD',
+                success: function() {
+                    form.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
+                },
+                error: function() {
+                    form.find('img').attr('src', "{!! asset('images/photo.png') !!}");
                 }
             });
+            $("#photo_filename").val(rec.photo);
+            form.find("input[name='first_name']").val(rec.first_name);
+            form.find("input[name='middle_name']").val(rec.middle_name);
+            form.find("input[name='last_name']").val(rec.last_name);
+            form.find("input[name='kor_name']").val(rec.kor_name);
+            form.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
+            form.find("input[name='dob']").val(rec.dob);
+            form.find("input[name='baptism_at']").val(rec.baptism_at);
+            form.find("input[name='register_at']").val(rec.register_at);
+            form.find("input[name='tel_home']").val(rec.tel_home);
+            form.find("input[name='tel_cell']").val(rec.tel_cell);
+            form.find("input[name='tel_office']").val(rec.tel_office);
+            form.find("input[name='email']").val(rec.email);
+            form.find("input[name='postal_code']").val(rec.postal_code);
+            form.find("input[name='address']").val(rec.address);
+            $('#selectStatusCombo').val(rec.status_id).trigger('chosen:updated');
+            $('#selectDutyCombo').val(rec.duty_id).trigger('chosen:updated'); 
+            $('#selectLevelCombo').val(rec.level_id).trigger('chosen:updated');
+            $('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
+            $('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
+            $('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
+        }
+
+        function fillEditPanelForClone( rec ) {
+            var form = $("#editForm");
+            $('#editForm')[0].reset();
+
+            form.find("input[name='last_name']").val(rec.last_name);
+            form.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
+            form.find("input[name='tel_home']").val(rec.tel_home);
+            form.find("input[name='postal_code']").val(rec.postal_code);
+            form.find("input[name='address']").val(rec.address);
+            $('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
+            $('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
+            $('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
+            form.find('img').attr('src', "{{ asset('images/photo.png') }}");
+
+            $('#selectStatusCombo').val('10001').trigger('chosen:updated'); // Member
+            $('#selectDutyCombo').val('29999').trigger('chosen:updated'); // Layman
+            $('#selectLevelCombo').val('49999').trigger('chosen:updated'); // Unbaptized
+        }
+
+        function fillShowPanel(rec) {
+            var panel = $("#showPanel");
+            $.ajax({
+                url: "{!! asset('uploads/" + rec.photo + "') !!}",
+                type:'HEAD',
+                success: function() {
+                    panel.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
+                },
+                error: function() {
+                    panel.find('img').attr('src', "{{ asset('images/photo.png') }}");
+                }
+            });
+            panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
+            panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
+            panel.find("span[name='birthdate']").text(' ' + !rec.dob ? '' : rec.dob);
+            panel.find("span[name='gender']").text(rec.gender == 'F' ? 'Female' : 'Male');
+            panel.find("span[name='email']").text(' ' + !rec.email ? '' : rec.email);
+            panel.find("span[name='tel_home']").text(' ' + !rec.tel_home ? '' : rec.tel_home);
+            panel.find("span[name='tel_cell']").text(' ' + !rec.tel_cell ? '' : rec.tel_cell);
+            panel.find("span[name='tel_office']").text(' ' + !rec.tel_office ? '' : rec.tel_office);
+            panel.find("span[name='address']").text(!rec.address ? '' : rec.address);
+            panel.find("span[name='city']").text(rec.city_name);
+            panel.find("span[name='province']").text(rec.province_name);
+            panel.find("span[name='country']").text(rec.country_name);
+            panel.find("span[name='postal_code']").text(!rec.postal_code ? '' : rec.postal_code);
+            panel.find("span[name='baptism_at']").text(' Baptism: ' + !rec.baptism_at ? '' : rec.baptism_at);
+            panel.find("span[name='register_at']").text('Register: ' + !rec.register_at ? '' : rec.register_at);
+            panel.find("span[name='status']").text(' Member Status: ' + rec.status_name);
+            panel.find("span[name='level']").text(' Baptism Status: ' + rec.level_name);
+            panel.find("span[name='duty']").text(' Duty: ' + rec.duty_name);
+        }
+
+        function openEditPanel(reason, rec) {
+            if ($("#editPanel").is(":hidden")) { // if editPanel is closed
+                $("#showPanel").collapse("hide");
+                $("#editPanel").collapse("show");
+                if (reason === "edit") {
+                    $('#contentTitle').text("> Editing...");
+                    fillEditPanel(rec);
+                    $('#saveRecordButton').removeClass('store update').addClass('update');
+                } else if (reason === "clone") {
+                    var form = $("#editForm");
+                    $('#contentTitle').text("> Cloning...");
+                    fillEditPanelForClone(rec);
+                    $('#saveRecordButton').removeClass('store update').addClass('store');
+                } else {
+                    $('#contentTitle').text("> Creating...");
+                    $('#editForm')[0].reset();
+                    $("#photoPlace").find('img').attr('src', "{{ asset('images/photo.png') }}");
+                    // TODO: 정확한 데이터가 확정되면 디폴트 값을 넣는다
+                    $('#selectStatusCombo').val('10001').trigger('chosen:updated');
+                    $('#selectDutyCombo').val('29999').trigger('chosen:updated'); 
+                    $('#selectLevelCombo').val('49999').trigger('chosen:updated');
+                    $('#selectCityCombo').val($('#selectCityCombo option:contains("Ottawa")').val()).trigger('chosen:updated');
+                    $('#selectProvinceCombo').val($('#selectProvinceCombo option:contains("ON")').val()).trigger('chosen:updated');
+                    $('#selectCountryCombo').val($('#selectCountryCombo option:contains("Canada")').val()).trigger('chosen:updated');
+                    $('#saveRecordButton').removeClass('store update').addClass('store');
+                }
+            }
+        }
+
+        function openShowPanel(reason, rec) {
+            if ($("#editPanel").is( ":hidden" )) {
+                fillShowPanel(rec);
+                $("#editPanel").collapse("hide");
+                $("#showPanel").collapse("show");
+                if (reason === "delete") {
+                    $('#deleteRecordButton').show();
+                    $('#contentTitle').text("> Deleting...");
+                } else {
+                    $('#deleteRecordButton').hide();
+                    $('#contentTitle').text("> Searching...");
+                }
+            }
+        }
+
+        // click close button on edit collasped div
+        $("#cancelEditButton").click(function(e) {
+            e.preventDefault();
+            $("#editPanel").collapse("hide");
+            $('#contentTitle').text("");
+        });
+
+        // click close button on show collasped div
+        $("#closeShowPanel").click(function(e) {
+            e.preventDefault();
+            $("#showPanel").collapse("hide");
+            $('#contentTitle').text("");
+        });
+
+        // click create new record
+        $("#createNewRecord").click(function(e) {
+            e.preventDefault();
+            openEditPanel("create", null);
         });
 
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
-            if (column === 'edit') {
-                var form = $("#edit-item");
-                form.find("input[name='name']").val(rec.name);
-                form.find("input[name='email']").val(rec.email);
-                // VERY IMPORTANT!!! If you use chosen, when you want to change a selection, you have to add .trigger('chosen:updated')
-                $('#editMemberCombo').val(rec.member_id).trigger('chosen:updated');
-                $('#editPrivilegeCombo').val(rec.privilege_id).trigger('chosen:updated');
-                form.find("#editForm").attr("action", basicURL + '/' + rec.id);
-            } else if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='name']").text(rec.name);
-                dispId.find("span[name='email']").text(rec.email);
-                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
-                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
-                $("#edit-item").find("#editForm").attr("action", basicURL + '/' + rec.id);
-                // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
-            } else {
-                var dispId = $("#showBody");
-                dispId.find("span[name='name']").text(rec.name);
-                dispId.find("span[name='email']").text(rec.email);
-                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
-                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
-                // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+            if (column === 'edit' || column === "clone") {
+                openEditPanel(column, rec);
+            } else { // delete and show
+                if (column === "delete") {
+                    fillEditPanel(rec);
+                }
+                openShowPanel(column, rec);
             }
         });
 
@@ -320,8 +448,66 @@
         $table.on('click-row.bs.table', function (e, row, $element) {
             saveIndex = $element.index();
         });
-    </script>
+ 
+        /* functions for uploading photos */
+        // click close button on edit collasped div
+        $("#getPhotoButton").click(function(e) {
+            e.preventDefault();
+            $("#crop-item").modal('show');
+        });
 
-    {{-- Chosen user interface CDN for autocomplete input --}}
+        var $uploadCrop;
+
+        $('#crop-item').on('shown.bs.modal', function () {
+            $uploadCrop = $('#upload-photo').croppie({
+                viewport: { width: 150, height: 150, type: 'square' },
+                boundary: { width: 250, height: 250 }
+            });
+            $uploadCrop.croppie('bind', { url: "{{ asset('images/photo.png') }}" });
+        });
+
+        $('#upload-file').on('change', function () { 
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $uploadCrop.croppie('bind', {
+                    url: e.target.result
+                });
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+
+        $('.upload-result').on('click', function (ev) {
+            $uploadCrop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function (resp) {
+                $.ajax({
+                    url: "{!! route('admin.photo-crop.post') !!}",
+                    type: "POST",
+                    data: {"image":resp},
+                    success: function (data) {
+                        $("#photoPlace").find('img').attr('src', "{!! asset('uploads/" + data.filename + "') !!}");
+                        $('#photo_filename').val(data.filename);
+                        $("#crop-item").modal('hide');
+                    }
+                });
+            });
+        }); 
+ 
+       // set date picker up
+        $(function () {
+            $('#dob').datetimepicker({ format: 'YYYY-MM-DD' });
+            $('#baptism_at').datetimepicker({ format: 'YYYY-MM-DD' });
+            $('#register_at').datetimepicker({ format: 'YYYY-MM-DD' });
+        });
+        
+    </script>
+    
+    {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
+    {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
 @endsection

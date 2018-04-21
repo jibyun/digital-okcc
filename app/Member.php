@@ -4,19 +4,49 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Member extends Model
-{
+class Member extends Model {
     // Table name: If table name is different from model name, it should need.
     protected $table = "members";
     // Indicates if the model should be timestamped. 
     public $timestamps = true;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
-    
-    // Relationship with codes table
-    public function code() {
-        return $this->belongsTo('App\Code');
+     // The attributes that are mass assignable.
+     protected $fillable = [
+        'id', 'first_name', 'middle_name', 'last_name', 'kor_name', 'dob', 'gender', 'email', 'tel_home', 'tel_office', 'tel_cell',
+        'address', 'postal_code', 'photo', 'city_id', 'province_id', 'country_id', 'status_id', 'level_id', 'duty_id', 'primary',
+        'register_at', 'baptism_at'
+    ];
+
+    // Relationship with between codes table and city_id
+    public function codeByCityId() {
+        return $this->belongsTo('App\Code', 'city_id', 'id');
+    } 
+
+    // Relationship with between codes table and province_id
+    public function codeByProvinceId() {
+        return $this->belongsTo('App\Code', 'province_id', 'id');
     }
+
+    // Relationship with between codes table and country_id
+    public function codeByCountryId() {
+        return $this->belongsTo('App\Code', 'country_id', 'id');
+    }  
+
+    // Relationship with between codes table and status_id
+    public function codeByStatusId() {
+        return $this->belongsTo('App\Code', 'status_id', 'id');
+    }  
+
+    // Relationship with between codes table and level_id
+    public function codeByLevelId() {
+        return $this->belongsTo('App\Code', 'level_id', 'id');
+    }  
+
+    // Relationship with between codes table and duty_id
+    public function codeByDutyId() {
+        return $this->belongsTo('App\Code', 'duty_id', 'id');
+    }  
 
     // Relationship with users table
     public function users() {

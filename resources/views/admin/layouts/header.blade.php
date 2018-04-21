@@ -22,17 +22,21 @@
             <li class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            @guest
+                <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">Sign In</a></li>
+            @else
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp&nbsp&nbsp{{ Auth::user()->name }}
+                    <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;{{ Auth::user()->name }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp'Log Out'
+                        <i class="fa fa-sign-out fa-lg"></i>&nbsp;&nbsp;&nbsp;'Log Out'
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
             </li>
+            @endguest
         </ul>
     </div>
 </nav>

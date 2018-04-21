@@ -7,14 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Code;
 
 class CodesController extends Controller {
-    /* 
-    TODO: After developed login process
-    Create a new controller instance. 
-    
-    public function __construct() {
-        $this->middleware('auth');
-    }
-    */
+
+    // public function __construct() {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -148,5 +144,16 @@ class CodesController extends Controller {
                     'status' => 422
                 ], 200);
         }
+    }
+
+    public function getCodesByCategoryIds(Request $request) {
+        $result = array();
+        for ($i=0; $i < count($request->category_id); $i++) {
+            $category_id = $request->category_id[$i];
+            $codes = Code::where('code_category_id', $category_id)->orderBy('order', 'ASC')->get();
+            array_push($result, $codes);
+        }
+        $result = array("codes" => json_decode(json_encode($result),true));
+        return response()->json($result);
     }
 }
