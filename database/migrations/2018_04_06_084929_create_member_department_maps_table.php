@@ -21,7 +21,7 @@ class CreateMemberDepartmentMapsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('member_id')->comment('Foreign Key: ID of Members Table');
             $table->unsignedInteger('department_id')->comment('Foreign Key: ID of Codes Table');
-            $table->unsignedInteger('position_id')->comment('Foreign Key: ID of Codes Table');
+            $table->unsignedInteger('position_id')->nullable()->comment('Foreign Key: ID of Codes Table');
             $table->date('started_at')->nullable()->comment('Start Date');
             $table->date('finished_at')->nullable()->comment('End Date');
             $table->boolean('enabled')->default(true)->comment('이 코드가 활성화 되었는지를 식별함'); 
