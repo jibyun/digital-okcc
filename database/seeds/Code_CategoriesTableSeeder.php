@@ -48,7 +48,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Department',
             'kor_txt' => '부서',
             'memo' => 'A code category for identifying the department of OKCC.',
-            'fieldName' => 'DEPARTMENT',
+            'fieldName' => 'department_id',
             'order' => 5
         ]);
         // City code
@@ -80,7 +80,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'KyoGu',
             'kor_txt' => '교구',
             'memo' => 'A code category for identifying Kyogu.',
-            'fieldName' => 'KYOGU',
+            'fieldName' => 'department_id',
             'order' => 9
         ]);
         // 구역
@@ -88,7 +88,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'GuYeok',
             'kor_txt' => '구역',
             'memo' => 'A code category for identifying GuYeok.',
-            'fieldName' => 'GUYEOK',
+            'fieldName' => 'department_id',
             'order' => 10
         ]);
         // LOG
