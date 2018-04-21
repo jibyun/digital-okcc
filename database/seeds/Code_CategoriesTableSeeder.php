@@ -24,7 +24,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Duty',
             'kor_txt' => '직무',
             'memo' => 'A code category for identifying the duty of OKCC members.',
-            'fieldName' => 'DUTY',
+            'fieldName' => 'duty_id',
             'order' => 2
         ]);
         // Family Relations: 본인, 처, 자녀, 부모, 손주 

@@ -28,6 +28,11 @@ return [
         'toAdminBodyName' => "Name: ",
         'toAdminBodyEmail' => "Email: ",
         'toAdminBodyPhone' => "Phone: ",
+    ],
+
+    // Message for MemberList
+    'memberlist' => [
+        'landingtitle' => 'Ottawa Korean Community Church'
     ]
 
 ];

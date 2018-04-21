@@ -5,6 +5,7 @@ namespace App\Http\Services\MemberList;
 use App\Member;
 use App\Code_Category;
 use App\Code;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Service layer for handling member list
@@ -37,18 +38,25 @@ class MemberListService
     /**
      * Retrieve the member list belong to the given code
      * 
-     * params: code code
+     * @param string $code
+     * @return $member list
      */
     public function getMemberList($code) {
         $field = $this->findFieldByCode($code);
         $member = Member::where($field, $code)->get();
-
+        return $member;
     }
 
     /**
      * find the field name in member table by given code
+     * 
+     * @param string $code
+     * @return string $fieldName
      */
-    private function findFieldNameByCode($code) {
+    private function findFieldByCode($code) {
+        $categoryIds = Code::where('id', $code)->select('code_category_id')->get();
+        $fieldNames = Code_category::where('id', $categoryIds[0]->code_category_id)->select('fieldName')->get();
+        return $fieldNames[0]->fieldName;
 
     }
 
@@ -59,12 +67,12 @@ class MemberListService
 
 
 	//전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-     $result=array();
+    $result=array();
 
-     $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
+    $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
 
-     $menuList=array();
-     foreach($cates as $cate){
+    $menuList=array();
+    foreach($cates as $cate){
         $menu=$this->makeMenu($cate);  //code_category->menu_level1
         $children=array();
         foreach($cate->codes as $code){
@@ -72,9 +80,9 @@ class MemberListService
         }
         $menu->children=$children;
         array_push($menuList,$menu);
-     }
+    }
 
-     return $menuList;
+    return $menuList;
 
     }
 
