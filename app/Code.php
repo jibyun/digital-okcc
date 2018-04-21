@@ -12,7 +12,11 @@ class Code extends Model
     public $timestamps = false;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = false;
-    
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'code_category_id', 'txt', 'kor_txt', 'enabled', 'sysmetic', 'memo', 'order'
+    ];
+
     // Relationship with code_categories table
     public function code_category() {
         return $this->belongsTo('App\Code_Category');
@@ -33,13 +37,25 @@ class Code extends Model
         return $this->hasMany('App\Family_Map');
     }
 
-    // Relationship with departments table
-    public function departments() {
-        return $this->hasMany('App\Department');
+     // Relationship with department_trees table
+     public function department_trees() {
+        return $this->hasMany('App\Department_Tree');
     }
 
     // Relationship with member_department_maps table
     public function member_department_maps() {
         return $this->hasMany('App\Member_Department_Map');
     }
+
+    
+    public function children(){
+        return $this->belongsToMany('App\Code', 'department_trees', 'parent_id', 'child_id');
+    }
+
+    public function parents(){
+       return $this->belongsToMany('App\Code', 'department_trees', 'child_id', 'parent_id');
+    }
+
+
+
 }

@@ -5,8 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use Notifiable;
 
     /**
@@ -15,7 +14,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'member_id', 'privilege_id'
     ];
 
     /**
@@ -27,20 +26,20 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // Relationship with user_privilege_maps table
-    public function user_privilege_maps() {
-        return $this->hasMany('App\User_Privilege_Map');
-    }
-
     // Relationship with system_logs table
     public function system_logs() {
         return $this->hasMany('App\System_Log');
     }
 
-    // Relationship with members table
-    // public function members() {
-    //     return $this->hasMany('App\Member');
-    // }
+    // Relationship with member table
+    public function member() {
+        return $this->belongsTo('App\Member');
+    }
+    
+    // Relationship with privilege table
+    public function privilege() {
+        return $this->belongsTo('App\Privilege');
+    }
 
     // Relationship with visits table
     public function visits() {
@@ -50,11 +49,6 @@ class User extends Authenticatable
     // Relationship with memos table
     public function memos() {
         return $this->hasMany('App\Memo');
-    }
-
-    // Relationship with departments table
-    public function departments() {
-        return $this->hasMany('App\Department');
     }
 
     // Relationship with member_department_maps table

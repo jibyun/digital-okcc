@@ -12,6 +12,15 @@ class Privilege extends Model
     public $timestamps = true;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'txt', 'memo'
+    ];
+  
+    // Relationship with users table
+    public function users() {
+        return $this->hasMany('App\Users');
+    }
     
     // Relationship with privilege_role_maps table
     public function privilege_role_maps() {

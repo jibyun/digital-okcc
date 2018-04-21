@@ -211,4 +211,9 @@ return [
 
     ],
 
+    /**
+     * System Admin email address
+     */
+    'SystemAdmin' => env('SYSTEM_ADMIN_EMAIL', 'it.help@okcc.ca'),
+
 ];

@@ -39,21 +39,29 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                 
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <span>
+                                        <label>
+                                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}
+                                         </label>
+                                </span>
+                                    
+                                <button type="submit" class="btn btn-primary" style="margin-left:30px;">
                                     {{ __('Login') }}
                                 </button>
+
+                                  
+                                
+                            </div>
+                        </div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4" >
+                                <a class="btn btn-link" href="{{ url('/preregister') }}">
+                                    {{ __('Sign Up') }}
+                                </a>
 
                                 <a class="btn btn-link" href="{{ url('/password/reset') }}">
                                     {{ __('Forgot Your Password?') }}

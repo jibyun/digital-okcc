@@ -1,5 +1,5 @@
-<div class="d-flex">
-    <nav class="sidebar bg-dark">
+<div class="d-flex" style="font-family: 'Roboto', 'Nanum Gothic', sans-serif;">
+    <nav class="sidebar">
         <ul class="list-unstyled">
             <li style="padding: 15px;">
                 <div class="input-group">
@@ -9,43 +9,44 @@
                     </div>
                 </div>
             </li>
+            {{-- Side menu for Users --}}
             <li>
-                <a href="#submenu_users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Users</a>
-                <ul id="submenu_users" class="list-unstyled collapse show">
-                    <li><a href="#">Approval</a></li>
-                    <li><a href="#">Remove User</a></li>
-                    <li><a href="#">Privileges</a></li>
-                    <li><a href="#">Roles</a></li>
-                    <li><a href="#">Visit History View</a></li>
-                    <li><a href="#">Log View</a></li>
+                <a href="#users" data-toggle="collapse"><i class="fa fa-fw fa-user"></i> Users</a>
+                <ul id="users" class="list-unstyled collapse show">
+                    <a href="#users_privilege" data-toggle="collapse"><i class="fa fa-fw fa-eye"></i> Privileges & Roles</a>
+                    <ul id="users_privilege" class="list-unstyled collapse show">
+                        <li><a href="{{ route('admin.privileges.start') }}"><i class="fa fa-fw fa-plug"></i> Privileges</a></li>
+                        <li><a href="{{ route('admin.roles.start') }}"><i class="fa fa-fw fa-plug"></i> Roles</a></li>
+                        <li><a href="{{ route('admin.privileges-roles.map') }}"><i class="fa fa-fw fa-plug"></i> Privileges > Roles</a></li>
+                    </ul>
+                    <li><a href="{{ route('admin.users.regist') }}"><i class="fa fa-fw fa-registered"></i> User Registration</a></li>
+                    <li><a href="{{ route('admin.log.view') }}"><i class="fa fa-fw fa-file-text-o"></i> Log View</a></li>
+                </ul>
+            </li>
+            {{-- Side menu for Members --}}
+            <li>
+                <a href="#members" data-toggle="collapse"><i class="fa fa-fw fa-users"></i> Members</a>
+                <ul id="members" class="list-unstyled collapse show">
+                    <li><a href="{{ route('admin.categories.start') }}"><i class="fa fa-fw fa-list-alt"></i> Categories</a></li>
+                    <li><a href="{{ route('admin.codes.start') }}"><i class="fa fa-fw fa-key"></i> Codes</a></li>
+                    <li><a href="{{ route('admin.dept-tree.map') }}"><i class="fa fa-fw fa-link"></i> Department Tree</a></li>
+                    <li><a href="{{ route('admin.members.start') }}"><i class="fa fa-fw fa-anchor"></i> Members</a></li>
+                    <li><a href="{{ route('admin.family.map') }}"><i class="fa fa-fw fa-sitemap"></i> Family Tree</a></li>
+                    <li><a href="{{ route('admin.member-dept.map') }}"><i class="fa fa-fw fa-files-o"></i> Member > Department</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#submenu_members" data-toggle="collapse"><i class="fa fa-fw fa-users"></i>&nbsp;&nbsp;Members</a>
-                <ul id="submenu_members" class="list-unstyled collapse show">
-                    <li><a href="#">Status (구분)</a></li>
-                    <li><a href="#">Level (신급)</a></li>
-                    <li><a href="#">Duty (직분)</a></li>
-                    <li><a href="#">Position (직책)</a></li>
-                    <li><a href="#">Department (부서)</a></li>
-                    <li><a href="#">Delete Member</a></li>
+                <a href="#finance" data-toggle="collapse"><i class="fa fa-fw fa-diamond"></i> Finance</a>
+                <ul id="finance" class="list-unstyled collapse">
+
                 </ul>
             </li>
             <li>
-                <a href="#submenu_finance" data-toggle="collapse"><i class="fa fa-fw fa-diamond"></i>&nbsp;&nbsp;Finance</a>
-                <ul id="submenu_finance" class="list-unstyled collapse">
-                    <li><a href="#">Account Code</a></li>
-                    <li><a href="#">Ledger</a></li>
-                    <li><a href="#">Cash Book</a></li>
+                <a href="#inventories" data-toggle="collapse"><i class="fa fa-fw fa-inbox"></i> Inventories</a>
+                <ul id="inventories" class="list-unstyled collapse">
+
                 </ul>
             </li>
-            <li>
-                <a href="#submenu_inventories" data-toggle="collapse"><i class="fa fa-fw fa-inbox"></i>&nbsp;&nbsp;Inventories</a>
-                <ul id="submenu_inventories" class="list-unstyled collapse">
-                    <li><a href="#">Item</a></li>
-                </ul>
-            </li>
-            <li><a href="#"><i class="fa fa-fw fa-link"></i>&nbsp;&nbsp;Go To OCO</a></li>
         </ul>
     </nav>
     <div class="container-fluid" style="margin: 15px 30px;">

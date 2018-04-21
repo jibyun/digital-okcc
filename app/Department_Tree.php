@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Department_Tree extends Model
 {
@@ -12,9 +13,18 @@ class Department_Tree extends Model
     public $timestamps = false;
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
-    
-    // Relationship with departments table
-    public function department() {
-        return $this->belongsTo('App\Department');
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'parent_id', 'child_id'
+    ];
+
+    // Relationship with between codes table and parent_id
+    public function codeByParentId() {
+        return $this->belongsTo('App\Code', 'parent_id', 'id');
+    }
+
+    // Relationship with between codes table and child_id
+    public function codeByChildId() {
+        return $this->belongsTo('App\Code', 'child_id', 'id');
     }
 }
