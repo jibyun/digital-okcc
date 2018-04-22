@@ -35,7 +35,7 @@ class UserRegistered extends Notification {
     public function toMail($notifiable) {
         $name = $notifiable->name;
         return (new MailMessage)
-            ->from(env('MAIL_USERNAME', 'it.help@okcc.ca>'), 'OCO Admin')
+            ->from(env('MAIL_USERNAME', 'it.help@okcc.ca'), 'OCO Admin')
             ->subject("Complete OKCC Cloud Office registration")
             ->greeting(sprintf('Hello %s', $name))
             ->line('You have successfully registered to OKCC Cloud Office system. Your current initial password is "password". Please change your password immediately.')

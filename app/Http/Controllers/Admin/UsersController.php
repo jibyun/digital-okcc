@@ -9,10 +9,14 @@ use App\Member;
 use App\Privilege;
 
 class UsersController extends Controller {
-    // Create a new controller instance.
+    private $log;
+    private $TABLE_NAME = "USERS";
+
     public function __construct() {
-        //$this->middleware('auth');
+        $this->middleware('auth');
+        $this->log = new LogController();
     }
+
     /**
      * Update the specified resource in storage.
      * @param  \Illuminate\Http\Request  $request
@@ -43,7 +47,9 @@ class UsersController extends Controller {
                 ], 200);
         } else {
             try {
+                $detail = $this->log->checkUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
                 $user = $userUpdate->fill($input)->save();
+                $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()
                     ->json([
                         'message' => 'Successfully created a new account.',

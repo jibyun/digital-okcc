@@ -8,14 +8,13 @@ use App\Role;
 use App\Privilege_Role_Map;
 
 class RolesController extends Controller {
-    /* 
-    TODO: After developed login process
-    Create a new controller instance. 
-    
+    private $log;
+    private $TABLE_NAME = "ROLES";
+
     public function __construct() {
         $this->middleware('auth');
+        $this->log = new LogController();
     }
-    */
 
     /**
      * Display a listing of the resource.
@@ -61,11 +60,12 @@ class RolesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
-            $roles = Role::create($request->all());
+            $result = Role::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
-                    'roles' => $roles,
+                    'roles' => $result,
                     'status' => 200
                 ], 200);
         }
@@ -100,7 +100,9 @@ class RolesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
+            $detail = $this->log->checkUpdatedFields($roleUpdate, $input, null); 
             $roles = $roleUpdate->fill($input)->save();
+            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -116,6 +118,7 @@ class RolesController extends Controller {
     public function destroy($id) {
         try {
             Role::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

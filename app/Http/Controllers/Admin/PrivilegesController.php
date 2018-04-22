@@ -7,14 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Privilege;
 
 class PrivilegesController extends Controller {
-    /* 
-    TODO: After developed login process
-    Create a new controller instance. 
-    
+    private $log;
+    private $TABLE_NAME = "PRIVILEGES";
+
     public function __construct() {
         $this->middleware('auth');
+        $this->log = new LogController();
     }
-    */
 
     /**
      * Display a listing of the resource.
@@ -60,11 +59,12 @@ class PrivilegesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
-            $privileges = Privilege::create($request->all());
+            $result = Privilege::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
-                    'privileges' => $privileges,
+                    'privileges' => $result,
                     'status' => 200
                 ], 200);
         }
@@ -99,7 +99,9 @@ class PrivilegesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
+            $detail = $this->log->checkUpdatedFields($privilegeUpdate, $input, null); 
             $privileges = $privilegeUpdate->fill($input)->save();
+            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -115,6 +117,7 @@ class PrivilegesController extends Controller {
     public function destroy($id) {
         try {
             Privilege::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

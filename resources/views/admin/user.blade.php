@@ -264,8 +264,8 @@
             var formId = $("#edit-item");
             var form_action = formId.find("form").attr("action");
             var postData = {
-                name: $("#deleteBody").find("label[name='name']").text(),
-                email: $("#deleteBody").find("label[name='email']").text() + "__DELETED USER!!!",
+                name: $("#deleteBody").find("span[name='name']").text(),
+                email: $("#deleteBody").find("span[name='email']").text() + "__DELETED USER!!!",
             };
             $.ajax({
                 dataType: 'json',

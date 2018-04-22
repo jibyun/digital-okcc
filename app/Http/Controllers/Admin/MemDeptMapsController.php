@@ -11,6 +11,14 @@ use App\Member;
 use App\User;
 
 class MemDeptMapsController extends Controller {
+    private $log;
+    private $TABLE_NAME = "MEMBER_DEPARTMENT_MAPS";
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->log = new LogController();
+    }
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -67,6 +75,7 @@ class MemDeptMapsController extends Controller {
                 ], 200);
         } else {
             $result = Member_Department_Map::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
@@ -111,7 +120,9 @@ class MemDeptMapsController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
+            $detail = $this->log->checkUpdatedFields($previousRecord, $input, ['department_name', 'position_name', 'updated_by_name']); 
             $result = $previousRecord->fill($input)->save();
+            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -129,6 +140,7 @@ class MemDeptMapsController extends Controller {
     public function destroy($id) {
         try {
             Member_Department_Map::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',
