@@ -211,9 +211,28 @@ return [
 
     ],
 
-    /**
-     * System Admin email address
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | System Admin email address
+    |--------------------------------------------------------------------------
+    |
+    | This is the system admin email address.
+    | It will be used sending email
+    |
+    */
     'SystemAdmin' => env('SYSTEM_ADMIN_EMAIL', 'it.help@okcc.ca'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Member List Landing page item list
+    |--------------------------------------------------------------------------
+    |
+    | This is the array of code.  It will be displayed in the memberList landing page
+    | The array is parent-child structure.
+    |
+    */
+    'MemberList_Bookmark' => '[{"title":"2","children":["20001","20002", "20003", "20004", "20005"]}, 
+                              {"title":"5","children":["50001","50002", "50003", "50004", 
+                              "50005", "50006", "50007", "50008", "50009", "50010"]}]',
 
 ];

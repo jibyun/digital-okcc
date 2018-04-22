@@ -57,6 +57,35 @@ class MemberListService
     }
 
     /**
+     * Read the app.MemberList_Bookmark, and return the code and name
+     * 
+     * @return Object bookmark
+     */
+    public function getBookmark() {
+        $config_bookmark = config('app.MemberList_Bookmark');
+        $bookmark_json = json_decode($config_bookmark);
+        LOG::debug($bookmark_json);
+        $bookmark_result = array();
+        foreach($bookmark_json as $bookmark) {
+            LOG::debug($bookmark->title);
+            $menu = new MenuObject();
+            $categoryName = Code_category::where('id', $bookmark->title)->select('txt')->first();
+            $menu->text = $categoryName->txt;
+            $menu->code = $bookmark->title;
+            $menu->children = array();
+            foreach($bookmark->children as $child) {
+                $childMenu = new MenuObject();
+                $codeName = Code::where('id', $child)->select('txt')->first();
+                $childMenu->text = $codeName->txt;
+                $childMenu->code = $child;
+                array_push ($menu->children, $childMenu);
+            }
+            array_push ($bookmark_result, $menu);
+        }
+        return $bookmark_result;
+    }
+
+    /**
      * find the field name in member table by given code
      * 
      * @param string $code

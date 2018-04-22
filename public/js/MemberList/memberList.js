@@ -5,6 +5,7 @@ var sideMenuTree;
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
+var memberListBookmarkUrl = 'okcc/memberList/bookmark';
 
 $(document).ready(function () {
 
@@ -70,6 +71,8 @@ $(document).ready(function () {
         pageSize: 10
     });
 
+    // Get LandingPage bookmark
+    restApiCall(memberListBookmarkUrl, "GET", null, bookmarkSuccess, null);
     showLandingContent();
 });
 
@@ -94,6 +97,43 @@ function memberListSuccess(response) {
     table.bootstrapTable('load', tableData);
 }
 
+/**
+ * Retrieve Bookmark Success handler
+ */
+function bookmarkSuccess(response) {
+    var bookmarkData = JSON.parse(response.data);
+    bookmarkData.forEach(element => {
+        console.log(element);
+        $('#LandingContent').append($('<div/>', {
+            text: element.text,
+            class: "card-header p-2",
+            id: 'bookmarkCard_' + element.code
+        }));
+        $('#LandingContent').append($('<div/>', {
+            class: "card-body",
+            id: 'bookmarkCardBody_' + element.code
+        }));
+        element.children.forEach(item => {
+            var parentid = 'bookmarkCardBody_' + element.code;
+            $('#'+parentid).append($('<button/>', {
+                text: item.text,
+                class: "btn btn-success m-3",
+                id: 'bookmarkBtn_' + item.code,
+                value: item.code,
+                click: bookmarkBtnClickHandler
+            }));
+        })
+    });
+}
+
+function bookmarkBtnClickHandler(obj) {
+    var btnObjText = document.getElementById(this.id).innerHTML;
+    var btnObjValue =document.getElementById(this.id).value;
+    var jsonString = '{"text": "' + btnObjText + '", "code":' + btnObjValue +'}';
+    var data = JSON.parse(jsonString);
+    treeSelectionChanged(this.id, data)
+}
+
 function updateTitle(obj, title) {
     obj.text(title);
 }
@@ -109,9 +149,9 @@ function showMainConent() {
 }
 
 function treeSelectionChanged(id, data) {
-    showMainConent();
     updateTitle($('#pageTitle'), data.text);
     loadTable(memberListUrl + "/" + data.code);
+    showMainConent();
 
 }
 
