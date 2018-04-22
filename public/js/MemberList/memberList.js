@@ -102,7 +102,8 @@ function memberListSuccess(response) {
  */
 function bookmarkSuccess(response) {
     var bookmarkData = JSON.parse(response.data);
-    bookmarkData.forEach(element => {
+    for (var i = 0; i < bookmarkData.length; i++) {
+        var element = bookmarkData[i];
         console.log(element);
         $('#LandingContent').append($('<div/>', {
             text: element.text,
@@ -113,7 +114,8 @@ function bookmarkSuccess(response) {
             class: "card-body",
             id: 'bookmarkCardBody_' + element.code
         }));
-        element.children.forEach(item => {
+        for(var j = 0; j < element.children.length; j++) {
+            var item = element.children[j];
             var parentid = 'bookmarkCardBody_' + element.code;
             $('#'+parentid).append($('<button/>', {
                 text: item.text,
@@ -122,8 +124,8 @@ function bookmarkSuccess(response) {
                 value: item.code,
                 click: bookmarkBtnClickHandler
             }));
-        })
-    });
+        }
+    }
 }
 
 function bookmarkBtnClickHandler(obj) {
