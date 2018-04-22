@@ -10,7 +10,7 @@ class AdminPagesController extends Controller {
      * Create a new controller instance.
      */
     public function __construct() {
-        $this->middleware('guest')->only('users_list');
+        //$this->middleware('guest')->only('users_list');
         $this->middleware('auth')->except('users_list');
     }
 

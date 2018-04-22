@@ -8,6 +8,14 @@ use App\Code;
 use App\Department_Tree;
 
 class DepartmentTreesController extends Controller {
+    private $log;
+    private $TABLE_NAME = "DEPARTMENT_TREES";
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->log = new LogController();
+    }
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -33,6 +41,7 @@ class DepartmentTreesController extends Controller {
      */
     public function store(Request $request) {
         $result = Department_Tree::create($request->all());
+        $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
         return response()
             ->json([
                 'message' => 'The item was successfully created.',
@@ -49,6 +58,7 @@ class DepartmentTreesController extends Controller {
     public function destroy($id) {
         try {
             Department_Tree::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

@@ -10,6 +10,14 @@ use App\Family_Map;
 use App\Member;
 
 class FamilyTreesController extends Controller {
+    private $log;
+    private $TABLE_NAME = "FAMILY_MAPS";
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->log = new LogController();
+    }
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -62,6 +70,7 @@ class FamilyTreesController extends Controller {
                 ], 200);
         } else {
             $result = Family_Map::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
@@ -79,6 +88,7 @@ class FamilyTreesController extends Controller {
     public function destroy($id) {
         try {
             Family_Map::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

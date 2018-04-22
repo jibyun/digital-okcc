@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth;
 use Illuminate\Validation\Validator;
 use Illuminate\Exception;
 use Illuminate\Support\Carbon\Carbon;
@@ -46,10 +45,8 @@ class LogController extends Controller {
         return response()->json($result);
     }
 
-    public function createLog($code_id, $user_id, $memo) {
-        $input->code_id = $code_id;
-        $input->user_id = $user_id;
-        $input->memo = $memo;
+    public function createLog($code_id, $memo) {
+        $input = array( 'code_id' => $code_id, 'user_id' => \Auth::user()->id, 'memo' => $memo); // 11003: Insert, 11004: Update, 11005: Delete
 
         try {
             $result = System_Log::create($input);
@@ -63,5 +60,17 @@ class LogController extends Controller {
                     'message' => 'Not allowed to create!',
                     'status' => 405 ], 200);
         }
+    }
+        
+    public function checkUpdatedFields($origin, $updated, $exceptArray) {
+        $message = '';
+        foreach ($updated as $key => $value) {
+            if ( !isset($exceptArray) || (isset($exceptArray) && !in_array($key, $exceptArray))) {
+                if ($value <> $origin[$key]) { // NEVER USER !=== 
+                    $message .= '(' . $key . ') ' . $origin[$key] . ' > ' . $value . ', ';
+                }
+            }
+        }
+        return $message;
     }
 }

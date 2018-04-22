@@ -221,10 +221,10 @@
             var html = '<option value=""></option>';
             $.each(members, function( index, member ) {
                 var fullName;
-                if (!member['first_name'].trim() && !member['last_name'].trim()) {
+                if (!member['first_name'] && !member['last_name']) {
                     fullName = member['kor_name'];
                 } else {
-                    fullName = !member['first_name'].trim() ? member['last_name'].trim() : member['first_name'].trim() + ' ' + member['last_name'].trim();
+                    fullName = !member['first_name'] ? member['last_name'] : member['first_name'] + ' ' + member['last_name'];
                 }
                 html += '<option value="' + member['id'] + '">' + fullName + '</option>';
             });

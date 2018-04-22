@@ -6,16 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Code_Category;
 
-class Code_CategoriesController extends Controller
-{
-    /* 
-    TODO: After developed login process
-    Create a new controller instance. 
-    
+class Code_CategoriesController extends Controller {
+    private $log;
+    private $TABLE_NAME = "CODE_CATEGORIES";
+
     public function __construct() {
         $this->middleware('auth');
+        $this->log = new LogController();
     }
-    */
 
     /**
      * Display a listing of the resource.
@@ -71,11 +69,12 @@ class Code_CategoriesController extends Controller
                     'status' => 422
                 ], 200);
         } else {
-            $categories = Code_Category::create($request->all());
+            $result = Code_Category::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
-                    'categories' => $categories,
+                    'categories' => $result,
                     'status' => 200
                 ], 200);
         }
@@ -114,7 +113,9 @@ class Code_CategoriesController extends Controller
                     'status' => 422
                 ], 200);
         } else {
+            $detail = $this->log->checkUpdatedFields($categoryUpdate, $input, null); 
             $categories = $categoryUpdate->fill($input)->save();
+            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -130,6 +131,7 @@ class Code_CategoriesController extends Controller
     public function destroy($id) {
         try {
             Code_Category::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

@@ -7,10 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Code;
 
 class CodesController extends Controller {
+    private $log;
+    private $TABLE_NAME = "CODES";
 
-    // public function __construct() {
-    //     $this->middleware('auth');
-    // }
+    public function __construct() {
+        $this->middleware('auth');
+        $this->log = new LogController();
+    }
 
     /**
      * Display a listing of the resource.
@@ -71,11 +74,12 @@ class CodesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
-            $codes = Code::create($request->all());
+            $result = Code::create($request->all());
+            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
-                    'codes' => $codes,
+                    'codes' => $result,
                     'status' => 200
                 ], 200);
         }
@@ -115,7 +119,9 @@ class CodesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
+            $detail = $this->log->checkUpdatedFields($codeUpdate, $input, null); 
             $codes = $codeUpdate->fill($input)->save();
+            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -131,6 +137,7 @@ class CodesController extends Controller {
     public function destroy($id) {
         try {
             Code::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',

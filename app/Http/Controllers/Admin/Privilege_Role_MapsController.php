@@ -8,6 +8,14 @@ use App\Role;
 use App\Privilege_Role_Map;
 
 class Privilege_Role_MapsController extends Controller {
+    private $log;
+    private $TABLE_NAME = "PRIVILEGE_ROLE_MAPS";
+
+    public function __construct() {
+        $this->middleware('auth');
+        $this->log = new LogController();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,6 +39,7 @@ class Privilege_Role_MapsController extends Controller {
      */
     public function store(Request $request) {
         $result = Privilege_Role_Map::create($request->all());
+        $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
         return response()
             ->json([
                 'message' => 'The item was successfully created.',
@@ -45,6 +54,7 @@ class Privilege_Role_MapsController extends Controller {
     public function destroy($id) {
         try {
             Privilege_Role_Map::find($id)->delete();
+            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',
