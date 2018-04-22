@@ -5,7 +5,7 @@
         {{__('messages.memberlist.landingtitle')}}
     </div>
 {{-- Landing Page Content --}}
-    <div id="LandingContent" class="card-block"></div>
+    <div id="LandingContent" class="card-block p-4"></div>
 {{-- Main Page Content --}}
     <div id="MainContent" class="card-block">
     {{-- Header section --}}

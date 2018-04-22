@@ -36,4 +36,14 @@ class MemberListController extends BaseController
         // TODO: Error Handling
         return $this->sendResponse(json_encode($this->memberListService->getMemberList($code)), "retrieved members successfully.");
     }
+
+    /**
+     * Return the bookmark as JSON
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getBookmark() {
+        // TODO: Error Handling
+        return $this->sendResponse(json_encode($this->memberListService->getBookmark()), "retrieved bookmark successfully.");
+    }
 }

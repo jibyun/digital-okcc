@@ -111,6 +111,7 @@ Route::resource('okcc/memberList/member', 'Rest\MemberList\MemberController')->o
 Route::resource('okcc/memberList/memberList', 'Rest\MemberList\MemberListController')->only([
     'index', 'show'
 ])->middleware('auth');
+
 /**
  * Method: GET
  * URL: /okcc/memberList/search/{searchString}: Retrieve members who matched the string
@@ -119,6 +120,13 @@ Route::resource('okcc/memberList/memberList', 'Rest\MemberList\MemberListControl
 Route::resource('okcc/memberList/search', 'Rest\MemberList\SearchController')->only([
     'show'
 ])->middleware('auth');
+
+/**
+ * Method: GET
+ * URL: /okcc/memberList/bookmark: Retrieve memberList landing page bookmark item
+ * 
+ */
+Route::get('okcc/memberList/bookmark', 'Rest\MemberList\MemberListController@getBookMark')->middleware('auth');
 
 /**
  * Method: GET
