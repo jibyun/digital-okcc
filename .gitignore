@@ -5,3 +5,4 @@ tests/**
 .vscode/**
 vendor/**
 store/**
+public/uploads/**

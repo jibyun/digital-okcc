@@ -44,10 +44,11 @@ Route::resource('admin/categories', 'Admin\Code_CategoriesController', [ 'except
 // Codes CRUD
 Route::get('admin/codeStart', 'Admin\CodesController@start')->name('admin.codes.start');
 Route::get('admin/getCodes', 'Admin\CodesController@get_codes')->name('admin.code.getCodes');
+Route::get('admin/getCodesByCategoryIds', 'Admin\CodesController@getCodesByCategoryIds')->name('admin.code.getCodesByCategoryIds');
 Route::resource('admin/codes', 'Admin\CodesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Members CRUD
 Route::get('admin/memberStart', 'Admin\MembersController@start')->name('admin.members.start');
-Route::resource('admin/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
+Route::resource('admin/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit', 'destroy' ], 'as' => 'admin' ] );
 //Privileges CRUD
 Route::get('admin/privilegeStart', 'Admin\PrivilegesController@start')->name('admin.privileges.start');
 Route::resource('admin/privileges', 'Admin\PrivilegesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
@@ -77,6 +78,8 @@ Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' 
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');
 Route::get('admin/getCodesNotInChildByMDMap', 'Admin\MemDeptMapsController@getcodes_notin_child')->name('admin.member-dept-trees.getcodes-notin-child');
 Route::resource('admin/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
+// Image Upload
+Route::post('admin/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
 
 /*
 |--------------------------------------------------------------------------

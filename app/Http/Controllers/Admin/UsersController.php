@@ -11,7 +11,7 @@ use App\Privilege;
 class UsersController extends Controller {
     // Create a new controller instance.
     public function __construct() {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
     /**
      * Update the specified resource in storage.

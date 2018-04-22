@@ -117,6 +117,20 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'first_name'        => 'First Name',
+        'middle_name'       => 'Middle Name',
+        'last_name'         => 'Last Name',
+        'kor_name'          => 'Korean Name',
+        'dob'               => 'Birthdate',
+        'gender'            => 'Gender',
+        'email'             => 'Email',
+        'duty_id'           => 'Duty ID',
+        'city_id'           => 'City ID',
+        'province_id'       => 'Province ID',
+        'country_id'        => 'Country ID',
+        'status_id'         => 'Member Status ID',
+        'level_id'          => 'Baptism Status ID',
+    ],
 
 ];

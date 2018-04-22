@@ -10,9 +10,8 @@ class AdminPagesController extends Controller {
      * Create a new controller instance.
      */
     public function __construct() {
-        // TODO 로그인이 구현된 후 사용할 예정임 
-        // $this->middleware('guest')->only('index');
-        // $this->middleware('auth')->except('index');
+        $this->middleware('guest')->only('users_list');
+        $this->middleware('auth')->except('users_list');
     }
 
     /**
@@ -51,9 +50,25 @@ class AdminPagesController extends Controller {
     }
 
     /**
-     * Show family-family tree mapping.
+     * Show member and department mapping.
      */
     public function memberDeptMap() {
         return view('admin.m-dept-map');
+    }
+
+    /**
+     * upload an image
+     */
+    public function photoCropPost(Request $request) {
+        $data = $request->image;
+        list($type, $data) = explode(';', $data);
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+
+        $image_name = 'photo'.time().'.png';
+        $path = public_path() . '/uploads/' . $image_name;
+
+        file_put_contents($path, $data);
+        return response()->json([ 'success'=>'done', 'filename'=>$image_name ]);
     }
 }

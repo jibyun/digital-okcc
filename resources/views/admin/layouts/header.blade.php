@@ -1,7 +1,7 @@
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
     <div style="min-width:250px; max-width:250px;">
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
         @if ( strpos(url()->current(), 'admin') !== false )
@@ -22,17 +22,21 @@
             <li class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            @guest
+                <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">Sign In</a></li>
+            @else
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp&nbsp&nbsp{{ Auth::user()->name }}
+                    <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;{{ Auth::user()->name }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp'Log Out'
+                        <i class="fa fa-sign-out fa-lg"></i>&nbsp;&nbsp;&nbsp;'Log Out'
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
             </li>
+            @endguest
         </ul>
     </div>
 </nav>

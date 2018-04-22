@@ -20,11 +20,11 @@ class CreateMembersTable extends Migration
             $table->collation = 'utf8_unicode_ci';
 
             $table->increments('id');
-            $table->string('first_name', 50)->default('')->comment('English First Name');
-            $table->string('middle_name', 50)->default('')->comment('English Moddle Name');
-            $table->string('last_name', 50)->default('')->comment('English Last Name');
+            $table->string('first_name', 50)->nullable()->default('')->comment('English First Name');
+            $table->string('middle_name', 50)->nullable()->default('')->comment('English Moddle Name');
+            $table->string('last_name', 50)->nullable()->default('')->comment('English Last Name');
             $table->string('kor_name', 50)->nullable()->default('')->comment('Korean Name');
-            $table->date('dob')->default('1990-01-01')->comment('Date of Birth');
+            $table->date('dob')->nullable()->default('1990-01-01')->comment('Date of Birth');
             $table->char('gender', 1)->default('F')->comment('Gender: M)ale, F)emale');
             $table->string('email', 100)->nullable()->default('')->comment('Email Address');
             $table->string('tel_home', 50)->nullable()->default('')->comment('Home Phone Number');
