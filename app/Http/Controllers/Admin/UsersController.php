@@ -7,14 +7,13 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Member;
 use App\Privilege;
+use App\Http\Services\Log\SystemLog;
 
 class UsersController extends Controller {
-    private $log;
     private $TABLE_NAME = "USERS";
 
     public function __construct() {
         $this->middleware('auth');
-        $this->log = new LogController();
     }
 
     /**
@@ -47,9 +46,9 @@ class UsersController extends Controller {
                 ], 200);
         } else {
             try {
-                $detail = $this->log->checkUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
+                $detail = SystemLog::createLogForUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
                 $user = $userUpdate->fill($input)->save();
-                $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()
                     ->json([
                         'message' => 'Successfully created a new account.',

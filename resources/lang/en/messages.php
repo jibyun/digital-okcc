@@ -50,6 +50,12 @@ return [
         'finance' => 'Finance',
         'inventory' => 'Inventories',
 
-    ]
+    ],
+
+    // System log
+    'log' => [
+        'success_message'       => 'Successfully created a new log.',
+        'error_message'         => 'Not allowed to create!'
+    ],
 
 ];

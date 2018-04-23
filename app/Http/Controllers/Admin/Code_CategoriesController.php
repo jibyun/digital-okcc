@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Code_Category;
+use App\Http\Services\Log\SystemLog;
 
 class Code_CategoriesController extends Controller {
-    private $log;
     private $TABLE_NAME = "CODE_CATEGORIES";
 
     public function __construct() {
         $this->middleware('auth');
-        $this->log = new LogController();
     }
 
     /**
@@ -70,7 +69,7 @@ class Code_CategoriesController extends Controller {
                 ], 200);
         } else {
             $result = Code_Category::create($request->all());
-            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
+            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
@@ -113,9 +112,9 @@ class Code_CategoriesController extends Controller {
                     'status' => 422
                 ], 200);
         } else {
-            $detail = $this->log->checkUpdatedFields($categoryUpdate, $input, null); 
+            $detail = SystemLog::createLogForUpdatedFields($categoryUpdate, $input, null); 
             $categories = $categoryUpdate->fill($input)->save();
-            $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+            SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
             return response()
                 ->json([
                     'message' => 'The item was successfully updated.',
@@ -131,7 +130,7 @@ class Code_CategoriesController extends Controller {
     public function destroy($id) {
         try {
             Code_Category::find($id)->delete();
-            $this->log->createLog(110005, 'DELETE ' . $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
             return response()
                 ->json([
                     'message' => 'The item was successfully deleted.',
