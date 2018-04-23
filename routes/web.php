@@ -66,6 +66,7 @@ Route::get('admin/getCurrentUsers', 'Admin\UsersController@getCurrentUsers')->na
 Route::resource('admin/users', 'Admin\UsersController', [ 'except' => [ 'store', 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Log View
 Route::get('admin/log-view', 'Admin\AdminPagesController@logView')->name('admin.log.view');
+Route::get('admin/getLog', 'Admin\LogController@getLog')->name('admin.log.get');
 // Department code Tree mapping
 Route::get('admin/dept-tree-map', 'Admin\AdminPagesController@departmentTree')->name('admin.dept-tree.map');
 Route::get('admin/getCodesNotInChild', 'Admin\DepartmentTreesController@getcodes_notin_child')->name('admin.department-trees.getcodes-notin-child');
