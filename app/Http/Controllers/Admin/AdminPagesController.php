@@ -57,6 +57,13 @@ class AdminPagesController extends Controller {
     }
 
     /**
+     * Show log view.
+     */
+    public function logView() {
+        return view('admin.logview');
+    }
+
+    /**
      * upload an image
      */
     public function photoCropPost(Request $request) {

@@ -5,16 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-
 use App\Member;
+use App\Http\Services\Log\SystemLog;
 
 class MembersController extends Controller {
-    private $log;
     private $TABLE_NAME = "MEMBERS";
 
     public function __construct() {
         $this->middleware('auth');
-        $this->log = new LogController();
     }
 
     public function start() {
@@ -45,7 +43,7 @@ class MembersController extends Controller {
                 ], 200);
         } else {
             $result = Member::create($input);
-            $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $result->id);
+            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()
                 ->json([
                     'message' => 'The item was successfully created.',
@@ -69,10 +67,10 @@ class MembersController extends Controller {
                 ], 200);
         } else {
             try {
-                $detail = $this->log->checkUpdatedFields($memberUpdate, $input, 
+                $detail = SystemLog::createLogForUpdatedFields($memberUpdate, $input, 
                     ['city_name', 'province_name', 'country_name', 'status_name', 'level_name', 'duty_name']); 
                 $result = $memberUpdate->fill($input)->save();
-                $this->log->createLog(110004, 'UPDATE ' . $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()
                     ->json([
                         'message' => 'The item was successfully updated.',

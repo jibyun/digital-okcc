@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 use App\User;
-use App\Http\Controllers\Admin\LogController;
+use App\Http\Services\Log\SystemLog;
 
 class RegisterController extends Controller {
-    private $log;
     private $TABLE_NAME = "USERS";
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +32,6 @@ class RegisterController extends Controller {
      */
     public function __construct() {
         //$this->middleware('guest');
-        $this->log = new LogController();
     }
 
     /**
@@ -76,7 +74,7 @@ class RegisterController extends Controller {
         } else {
             try {
                 $user = User::create($input);
-                $this->log->createLog(110003, 'INSERT ' . $this->TABLE_NAME . ' [ID] ' . $user->id);
+                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $user->id); 
                 $user->notify(new UserRegistered($user));
                 return response()
                     ->json([
