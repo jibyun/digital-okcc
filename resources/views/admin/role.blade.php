@@ -2,7 +2,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.role') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Role']) }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
@@ -23,11 +23,11 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Role Name</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.role_name') }}</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
