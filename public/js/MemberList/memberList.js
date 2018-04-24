@@ -5,7 +5,7 @@ var sideMenuTree;
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
-var memberListBookmarkUrl = 'okcc/memberList/bookmark';
+var memberListSettingsUrl = 'okcc/memberList/settings';
 
 $(document).ready(function () {
 
@@ -51,28 +51,10 @@ $(document).ready(function () {
         restApiCall(url, "GET", null, memberListSuccess, null);
     });
     
-    var table = $('#mc_table');
-    table.bootstrapTable({
-        //TODO: need to update column
-        columns: [{
-            field: 'id',
-            title: 'Item ID'
-        }, {
-            field: 'first_name',
-            title: 'First Name'
-        }, {
-            field: 'kor_name',
-            title: 'Korean Name'
-        }, {
-            field: 'address',
-            title: 'Address'
-        }],
-        pagination: true,
-        pageSize: 10
-    });
+    
 
     // Get LandingPage bookmark
-    restApiCall(memberListBookmarkUrl, "GET", null, bookmarkSuccess, null);
+    restApiCall(memberListSettingsUrl, "GET", null, settingsSuccess, null);
     showLandingContent();
 });
 
@@ -93,15 +75,17 @@ function loadTable(url) {
 
 function memberListSuccess(response) {
     var tableData = JSON.parse(response.data);
-    var table = $('#mc_table');
+    var table = $('#bt_table');
     table.bootstrapTable('load', tableData);
 }
 
 /**
- * Retrieve Bookmark Success handler
+ * Retrieve Settings Success handler
  */
-function bookmarkSuccess(response) {
-    var bookmarkData = JSON.parse(response.data);
+function settingsSuccess(response) {
+    var settingsData = JSON.parse(response.data);
+    var bookmarkData = settingsData.bookmark;
+    var columnInfoData = settingsData.columninfos;
     for (var i = 0; i < bookmarkData.length; i++) {
         var element = bookmarkData[i];
         console.log(element);
@@ -126,6 +110,8 @@ function bookmarkSuccess(response) {
             }));
         }
     }
+
+    initializeTable(columnInfoData);
 }
 
 function bookmarkBtnClickHandler(obj) {
@@ -134,6 +120,17 @@ function bookmarkBtnClickHandler(obj) {
     var jsonString = '{"text": "' + btnObjText + '", "code":' + btnObjValue +'}';
     var data = JSON.parse(jsonString);
     treeSelectionChanged(this.id, data)
+}
+
+function initializeTable(columnInfo) {
+    var table = $('#bt_table');
+    table.bootstrapTable({
+        //TODO: need to update column
+        columns: columnInfo,
+        pagination: true,
+        pageSize: 10,
+        showColumns: true
+    });
 }
 
 function updateTitle(obj, title) {
