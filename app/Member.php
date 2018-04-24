@@ -20,32 +20,32 @@ class Member extends Model {
 
     // Relationship with between codes table and city_id
     public function codeByCityId() {
-        return $this->belongsTo('App\Code', 'city_id', 'id');
+        return $this->belongsTo('App\Code', 'city_id', 'id')->select('id', 'txt');
     } 
 
     // Relationship with between codes table and province_id
     public function codeByProvinceId() {
-        return $this->belongsTo('App\Code', 'province_id', 'id');
+        return $this->belongsTo('App\Code', 'province_id', 'id')->select('id', 'txt');
     }
 
     // Relationship with between codes table and country_id
     public function codeByCountryId() {
-        return $this->belongsTo('App\Code', 'country_id', 'id');
+        return $this->belongsTo('App\Code', 'country_id', 'id')->select('id', 'txt');
     }  
 
     // Relationship with between codes table and status_id
     public function codeByStatusId() {
-        return $this->belongsTo('App\Code', 'status_id', 'id');
+        return $this->belongsTo('App\Code', 'status_id', 'id')->select('id', 'txt');
     }  
 
     // Relationship with between codes table and level_id
     public function codeByLevelId() {
-        return $this->belongsTo('App\Code', 'level_id', 'id');
+        return $this->belongsTo('App\Code', 'level_id', 'id')->select('id', 'txt');
     }  
 
     // Relationship with between codes table and duty_id
     public function codeByDutyId() {
-        return $this->belongsTo('App\Code', 'duty_id', 'id');
+        return $this->belongsTo('App\Code', 'duty_id', 'id')->select('id', 'txt');
     }  
 
     // Relationship with users table
@@ -76,10 +76,5 @@ class Member extends Model {
     // Relationship with member_department_maps table and get member_id and depatment_id
     public function departmentId() {
         return $this->hasMany('App\Member_Department_Map')->select('member_id', 'department_id');
-    }
-
-    // Get Duty by name
-    public function duty() {
-        return $this->belongsTo('App\Code', 'duty_id', 'id')->select('id', 'txt');
     }
 }
