@@ -85,4 +85,36 @@ return [
         'error_message'         => 'Not allowed to create!'
     ],
 
+    // Button String using Admin 
+    'adm_button' => [
+        'export'                => 'Export',
+        'create_member'         => 'Register Member',
+        'excel'                 => 'Excel (XLSX)',
+        'pdf'                   => 'PDF',
+        'png'                   => 'PNG (Image)',
+        'json'                  => 'JSON',
+        'create'                => 'Create',
+        'order'                 => 'Make Diaplay Order',
+        'register'              => 'Register User',
+        'add_role'              => 'Add Roles',
+        'clear_all'             => 'Clear All',
+        'add_department'        => 'Add Child Department',
+        'add_family'            => 'Add Family',
+        'add_career'            => 'Add Career',
+    ],
+
+    // View title using Admin 
+    'adm_title' => [
+        'member'                => 'Member List',
+        'category'              => 'Category List',
+        'code'                  => 'Code List',
+        'privilege'             => 'Privilege List',
+        'role'                  => 'Role List',
+        'user'                  => 'User List',
+        'log'                   => 'Log View',
+        'privilege_role'        => 'Configure Privileges',
+        'department_tree'       => 'Configure Department Tree',
+        'family_tree'           => 'Compose Family Relation',
+        'member_dept'           => 'Manage Member Relation',
+    ],
 ];

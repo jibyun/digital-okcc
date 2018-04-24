@@ -11,24 +11,14 @@
 
 @section('content')
 <div class='container p-4'>
-    <span class="h4-font-size pr-3">Member List</span><span id="contentTitle" class="h6-font-size"></span>
+    <span class="h4-font-size pr-3">{{ __('messages.adm_title.member') }}</span><span id="contentTitle" class="h6-font-size"></span>
     @include('admin.includes.members.show')
     @include('admin.includes.members.edit')
     <div id="toolbar">
         <button id="createNewRecord" class="btn btn-info mr-1" type="button" title="Create">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Register Member
+            <i class="fa fa-fw fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create_member') }}
         </button>
-        {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
-        </button>
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
-        </button>
-        
-        {{-- <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
-            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
-        </button> --}}
+        @include('admin.includes.export')
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -505,9 +495,14 @@
     
     {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
+
     {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+
     {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
+
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection
