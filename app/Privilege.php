@@ -26,9 +26,4 @@ class Privilege extends Model
     public function privilege_role_maps() {
         return $this->hasMany('App\Privilege_Role_Map');
     }
-
-    // Relationship with user_privilege_maps table
-    public function user_privilege_maps() {
-        return $this->hasMany('App\User_Privilege_Map');
-    }
 }
