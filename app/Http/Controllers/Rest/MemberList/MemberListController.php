@@ -38,12 +38,18 @@ class MemberListController extends BaseController
     }
 
     /**
-     * Return the bookmark as JSON
+     * Return the memberList settings as JSON
+     * Settings contains
+     *     Landing page bookmark
+     *     Table Column info
      * 
      * @return \Illuminate\Http\Response
      */
-    public function getBookmark() {
+    public function getSettings() {
         // TODO: Error Handling
-        return $this->sendResponse(json_encode($this->memberListService->getBookmark()), "retrieved bookmark successfully.");
+        $settings = (object)array();
+        $settings->bookmark = $this->memberListService->getBookmark();
+        $settings->columninfos = $this->memberListService->getColumnInfos();
+        return $this->sendResponse(json_encode($settings), "retrieved settings successfully.");
     }
 }

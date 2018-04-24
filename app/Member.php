@@ -77,4 +77,9 @@ class Member extends Model {
     public function departmentId() {
         return $this->hasMany('App\Member_Department_Map')->select('member_id', 'department_id');
     }
+
+    // Get Duty by name
+    public function duty() {
+        return $this->belongsTo('App\Code', 'duty_id', 'id')->select('id', 'txt');
+    }
 }

@@ -123,10 +123,11 @@ Route::resource('okcc/memberList/search', 'Rest\MemberList\SearchController')->o
 
 /**
  * Method: GET
- * URL: /okcc/memberList/bookmark: Retrieve memberList landing page bookmark item
+ * URL: /okcc/memberList/settings: Retrieve memberList settings (landing page bookmark,
+ *                                 table column info)
  * 
  */
-Route::get('okcc/memberList/bookmark', 'Rest\MemberList\MemberListController@getBookMark')->middleware('auth');
+Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@getSettings')->middleware('auth');
 
 /**
  * Method: GET

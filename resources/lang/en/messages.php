@@ -32,7 +32,34 @@ return [
 
     // Message for MemberList
     'memberlist' => [
-        'landingtitle' => 'Ottawa Korean Community Church'
+        'landingtitle' => 'Ottawa Korean Community Church',
+        'id' => 'ID',
+        'name' => 'Name',
+        'first_name' => 'First Name',
+        'middle_name' => 'Middle Name',
+        'last_name' => 'Last Name',
+        'kor_name' => 'Korean Name',
+        'dob' => 'DOB',
+        'gender' => 'Gender',
+        'email' => 'Email',
+        'tel_home' => 'Tel (Home)',
+        'tel_office' => 'Tel (Office)',
+        'tel_cell' => 'Tel (Cell)',
+        'address' => 'Address',
+        'postal_code' => 'Postal Code',
+        'photo' => 'Photo',
+        'city' => 'City',
+        'province' => 'Province',
+        'country' => 'Country',
+        'status' => 'Status',
+        'level' => 'Level',
+        'duty' => 'Duty',
+        'department' => 'Department',
+        'register_date' => 'Register Date',
+        'baptism_date' => 'Baptism Date'
+
+
+
     ],
 
     // Message for MemberDetail

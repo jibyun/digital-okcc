@@ -13,7 +13,9 @@
     {{-- Toolbar section --}}
         <div id="mc_toolbar"></div>
     {{-- Table section --}}
-        <div id="mc_table"></div>
+        <div id="mc_table">
+            <table id="bt_table"></table>
+        </div>
     {{-- Table section --}}
         <div id="mc_footer"></div>
     </div>
