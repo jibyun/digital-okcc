@@ -24,9 +24,9 @@
             <!-- TODO: This is the temporary menu for member detail view.  It will be remvoed later -->
             <li id="menu_member_detail" class="nav-item">
                 <a class="nav-link" href="#">{{__('messages.top_menu.member_details')}}</a></li>
-            <li id="menu_finance" class="nav-item">
+            <li id="menu_finance" class="nav-item hide">
                 <a class="nav-link" href="#">{{__('messages.top_menu.finance')}}</a></li>
-            <li id="menu_inventory" class="nav-item">
+            <li id="menu_inventory" class="nav-item hide">
                 <a class="nav-link" href="#">{{__('messages.top_menu.inventory')}}</a></li>
             @endauth 
         </ul>

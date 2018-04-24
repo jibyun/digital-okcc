@@ -48,13 +48,19 @@ class MemberListService
         //TODO: replace the 5, 10 to something else
         if ($category->code_category_id  == 5
             || $category->code_category_id == 10) {
-            $member = Member::with(['departmentId'])->whereHas('departmentId', function($query) use ($code){
-                $query -> where('department_id', $code);
-            })->get();
+            $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId', 'departmentId',
+                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
+                                    ->whereHas('departmentId', function($query) use ($code) {
+                                        $query -> where('department_id', $code);
+                                      })
+                                    ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
+                                    ->get();
         } else {
-            $member = Member::with('duty')->where($field, $code)
-                                          ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
-                                          ->get();
+            $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
+                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
+                                    ->where($field, $code)
+                                    ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
+                                    ->get();
         }
         return $member;
     }
@@ -154,6 +160,13 @@ class MemberListService
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
+        $columnInfo->field = 'code_by_duty_id.txt';
+        $columnInfo->title = __('messages.memberlist.duty');
+        $columnInfo->checkbox = false;
+        $columnInfo->visible = true;
+        array_push ($columnInfos, $columnInfo);
+
+        $columnInfo = new ColumnInfo();
         $columnInfo->field = 'email';
         $columnInfo->title = __('messages.memberlist.email');
         $columnInfo->checkbox = false;
@@ -196,43 +209,36 @@ class MemberListService
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'city';
+        $columnInfo->field = 'code_by_city_id.txt';
         $columnInfo->title = __('messages.memberlist.city');
         $columnInfo->checkbox = false;
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'province';
+        $columnInfo->field = 'code_by_province_id.txt';
         $columnInfo->title = __('messages.memberlist.province');
         $columnInfo->checkbox = false;
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'country';
+        $columnInfo->field = 'code_by_country_id.txt';
         $columnInfo->title = __('messages.memberlist.country');
         $columnInfo->checkbox = false;
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'status';
+        $columnInfo->field = 'code_by_status_id.txt';
         $columnInfo->title = __('messages.memberlist.status');
         $columnInfo->checkbox = false;
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
 
         $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'level';
+        $columnInfo->field = 'code_by_level_id.txt';
         $columnInfo->title = __('messages.memberlist.level');
-        $columnInfo->checkbox = false;
-        $columnInfo->visible = false;
-        array_push ($columnInfos, $columnInfo);
-
-        $columnInfo = new ColumnInfo();
-        $columnInfo->field = 'duty.txt';
-        $columnInfo->title = __('messages.memberlist.duty');
         $columnInfo->checkbox = false;
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
