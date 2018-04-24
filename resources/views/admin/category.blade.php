@@ -2,7 +2,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.category') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Category']) }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
@@ -26,15 +26,15 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
-                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-width="13%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
-                <th data-field="fieldName" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">Field Name</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="txt" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.category_name') }}</th>
+                <th data-field="kor_txt" data-width="13%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.category_kname') }}</th>
+                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">{{ __('messages.adm_table.enable') }}</th>
+                <th data-field="fieldName" data-width="15%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.field_name') }}</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.order') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -58,7 +58,7 @@
     <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
     <script type="text/javascript"> 
         CKEDITOR.replace( 'ckeditor-create', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
-        CKEDITOR.replace( 'ckeditor-edit',{ customConfig : '/js/ckeditor/simpleToolbar.js' }  );
+        CKEDITOR.replace( 'ckeditor-edit', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
     </script>
     {{-- for Toast --}}
     <script type="text/javascript">
@@ -130,7 +130,7 @@
                     $table.bootstrapTable( 'load', { data: categories } );
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get categories data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error( 'Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!' );
                 }
             });
         }  
@@ -274,7 +274,7 @@
                     reloadList();
                     displayOrder = '';
                 }).fail(function(){
-                    toastr.error('Error occured! Please Save again.', 'Failed');
+                    toastr.error( 'Fail to save data to server!', 'Failed!' );
                 });
             }
         });

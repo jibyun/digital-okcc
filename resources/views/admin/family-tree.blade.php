@@ -8,7 +8,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.family_tree') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Family Tree']) }}</h4>
     <div id="toolbar">
         <div class='row py-2'>
             <div class="col-sm-3">
@@ -40,15 +40,15 @@
             data-row-style="rowStyle">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Child Id</th>
-                <th data-field="child_name" data-width="25%" data-filter-control="select" scope="col">Name</th>
-                <th data-field="child_birth" data-width="10%" data-filter-control="select" scope="col">Birthdate</th>
-                <th data-field="child_gender" data-width="5%" data-filter-control="select" scope="col">Gender</th>
-                <th data-field="child_email" data-filter-control="select" scope="col">Email</th>
-                <th data-field="child_relation_id" data-filter-control="select" scope="col" data-visible="false">Relation Id</th>
-                <th data-field="child_relation_name" data-width="20%" data-filter-control="select" scope="col">Relation</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.child_id') }}</th>
+                <th data-field="child_name" data-width="25%" data-filter-control="select" scope="col">{{ __('messages.adm_table.child_name') }}</th>
+                <th data-field="child_birth" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="child_gender" data-width="5%" data-filter-control="select" scope="col">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="child_email" data-filter-control="select" scope="col">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="child_relation_id" data-filter-control="select" scope="col" data-visible="false">{{ __('messages.adm_table.relation_id') }}</th>
+                <th data-field="child_relation_name" data-width="20%" data-filter-control="select" scope="col">{{ __('messages.adm_table.relation_name') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>

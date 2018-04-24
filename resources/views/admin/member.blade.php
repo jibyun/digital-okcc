@@ -11,7 +11,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <span class="h4-font-size pr-3">{{ __('messages.adm_title.member') }}</span><span id="contentTitle" class="h6-font-size"></span>
+    <span class="h4-font-size pr-3">{{ __('messages.adm_title.title', ['title' => 'Member']) }}</span><span id="contentTitle" class="h6-font-size"></span>
     @include('admin.includes.members.show')
     @include('admin.includes.members.edit')
     <div id="toolbar">
@@ -34,38 +34,38 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="first_name" data-filter-control="select" data-sortable="true" scope="col">First Name</th>
-                <th data-field="middle_name" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Middle Name</th>
-                <th data-field="last_name" data-filter-control="select" data-sortable="true" scope="col">Last Name</th>
-                <th data-field="kor_name" data-filter-control="select" data-sortable="true" scope="col">성명</th>
-                <th data-field="dob" data-filter-control="select" data-sortable="true" scope="col">Birthdate</th>
-                <th data-field="gender" data-width="60px" data-filter-control="select" data-sortable="false" scope="col">Gender</th>
-                <th data-field="email" data-filter-control="select" data-sortable="false" scope="col">Email</th>
-                <th data-field="tel_home" data-filter-control="select" data-sortable="false" scope="col">Home Phone</th>
-                <th data-field="tel_cell" data-filter-control="select" data-sortable="false" scope="col">Cell Phone</th>
-                <th data-field="tel_office" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Office Phone</th>
-                <th data-field="address" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Address</th>
-                <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Postal Code</th>
-                <th data-field="city_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">City Id</th>
-                <th data-field="city_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">City</th>
-                <th data-field="province_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Province Id</th>
-                <th data-field="province_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Province</th>
-                <th data-field="country_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Country Id</th>
-                <th data-field="country_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Country</th>
-                <th data-field="status_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Status Id</th>
-                <th data-field="status_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Status</th>
-                <th data-field="level_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Level Id</th>
-                <th data-field="level_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Level</th>
-                <th data-field="duty_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Duty Id</th>
-                <th data-field="duty_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Duty</th>
-                <th data-field="photo" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Photo</th>
-                <th data-field="primary" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Primary</th>
-                <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Register</th>
-                <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Baptism</th>
-                <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents">Clone</th>
-                <th data-field="edit" data-width="45px" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="45px" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="first_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.first_name') }}</th>
+                <th data-field="middle_name" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.middle_name') }}</th>
+                <th data-field="last_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.last_name') }}</th>
+                <th data-field="kor_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.kor_name') }}</th>
+                <th data-field="dob" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="gender" data-width="60px" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="email" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="tel_home" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_home') }}</th>
+                <th data-field="tel_cell" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_cell') }}</th>
+                <th data-field="tel_office" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.tel_office') }}</th>
+                <th data-field="address" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.address') }}</th>
+                <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.postal') }}</th>
+                <th data-field="city_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.city_id') }}</th>
+                <th data-field="city_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.city_name') }}</th>
+                <th data-field="province_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.province_id') }}</th>
+                <th data-field="province_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.province_name') }}</th>
+                <th data-field="country_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.country_id') }}</th>
+                <th data-field="country_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.country_name') }}</th>
+                <th data-field="status_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.status_id') }}</th>
+                <th data-field="status_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.status_name') }}</th>
+                <th data-field="level_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.level_id') }}</th>
+                <th data-field="level_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.level_name') }}</th>
+                <th data-field="duty_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_id') }}</th>
+                <th data-field="duty_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_name') }}</th>
+                <th data-field="photo" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.photo') }}</th>
+                <th data-field="primary" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.primary') }}</th>
+                <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.register_at') }}</th>
+                <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.baptism_at') }}</th>
+                <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents">{{ __('messages.adm_table.clone_btn') }}</th>
+                <th data-field="edit" data-width="45px" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="45px" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>

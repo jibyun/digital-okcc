@@ -7,7 +7,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.user') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'User']) }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.register') }}
@@ -28,15 +28,15 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" scope="col" data-visible="false">Id</th>
-                <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">User Name</th>
-                <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">Email</th>
-                <th data-field="member_id" scope="col" data-visible="false">Member Id</th>
-                <th data-field="member_name" scope="col" data-visible="false">Member Name</th>
-                <th data-field="privilege_id" scope="col" data-visible="false">Privilege Id</th>
-                <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">Privilege</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.user_name') }}</th>
+                <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="member_id" scope="col" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
+                <th data-field="member_name" scope="col" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
+                <th data-field="privilege_id" scope="col" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
+                <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.privilege_name') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>

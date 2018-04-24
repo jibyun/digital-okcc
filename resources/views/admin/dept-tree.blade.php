@@ -13,7 +13,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.department_tree') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Department Tree']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='departmentsCombo' class="form-group form-control mr-3">
@@ -44,11 +44,11 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Department Id</th>
-                <th data-field="child_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Department Name</th>
-                <th data-field="child_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.dept_id') }}</th>
+                <th data-field="child_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.dept_name') }}</th>
+                <th data-field="child_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -182,7 +182,7 @@
                     reloadList();
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), 'Failed');
                 }
             });
         }  

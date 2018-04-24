@@ -10,7 +10,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.member_dept') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Department Enrollment']) }}</h4>
     <div id="toolbar">
         <div class='row py-2'>
             <div class="col-sm-3">
@@ -39,18 +39,18 @@
             data-row-style="rowStyle">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="department_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Department Id</th>
-                <th data-field="department_name" data-filter-control="select" scope="col">Department</th>
-                <th data-field="position_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Position Id</th>
-                <th data-field="position_name" data-filter-control="select" scope="col">Position</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enabled</th>
-                <th data-field="started_at" data-width="10%" data-filter-control="select" scope="col">Start</th>
-                <th data-field="finished_at" data-width="10%" data-filter-control="select" scope="col">End</th>
-                <th data-field="updated_by" data-filter-control="select" scope="col" data-visible="false">Updated by Id</th>
-                <th data-field="updated_by_name" data-filter-control="select" scope="col">Updated By</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="department_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.dept_id') }}</th>
+                <th data-field="department_name" data-filter-control="select" scope="col">{{ __('messages.adm_table.dept_name') }}</th>
+                <th data-field="position_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.position_id') }}</th>
+                <th data-field="position_name" data-filter-control="select" scope="col">{{ __('messages.adm_table.position_name') }}</th>
+                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">{{ __('messages.adm_table.enable') }}</th>
+                <th data-field="started_at" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.start_at') }}</th>
+                <th data-field="finished_at" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.finished_at') }}</th>
+                <th data-field="updated_by" data-filter-control="select" scope="col" data-visible="false">{{ __('messages.adm_table.updated_by') }}</th>
+                <th data-field="updated_by_name" data-filter-control="select" scope="col">{{ __('messages.adm_table.updated_by_name') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>

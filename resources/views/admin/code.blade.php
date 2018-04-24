@@ -3,7 +3,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.code') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Code']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='categoriesCombo' class="form-group form-control mr-3">
@@ -31,15 +31,15 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="sysmetic" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Sysmetic</th>
-                <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Category Name</th>
-                <th data-field="kor_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">카테고리명</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">Enable</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Sort Order</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="sysmetic" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.sysmetic') }}</th>
+                <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.code_name') }}</th>
+                <th data-field="kor_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.code_kname') }}</th>
+                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">{{ __('messages.adm_table.enable') }}</th>
+                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.order') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -144,7 +144,7 @@
                     } 
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get codes data from server: " + JSON.stringify(jqXHR), 'Failed');
+                    toastr.error( 'Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!' );
                 }
             });
         } 
@@ -186,7 +186,7 @@
                     reloadList();
                 }, 
                 error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get categories data from server: " + JSON.stringify(jqXHR), Failed);
+                    toastr.error( 'Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!' );
                 }
             });
         }  
@@ -330,7 +330,7 @@
                     reloadList();
                     displayOrder = '';
                 }).fail(function(){
-                    toastr.error('Error occured! Please Save again.', 'Failed');
+                    toastr.error( 'Fail to save data to server!', 'Failed!' );
                 });
             }
         });
@@ -349,7 +349,7 @@
             } else if (column === 'delete') {
                 var showId = $("#deleteBody");
                 showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='category_id']").text($('#categoriesCombo').find('option:selected').val() + '(' + $('#categoriesCombo').find('option:selected').text() + ')' );
+                showId.find("span[name='category_name']").text( $('#categoriesCombo').find('option:selected').text() + '(' + $('#categoriesCombo').find('option:selected').val() + ')' );
                 showId.find("span[name='memo']").html(rec.memo);
                 showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
@@ -357,7 +357,7 @@
             } else {
                 var showId = $("#showBody");
                 showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='category_id']").text($('#categoriesCombo').find('option:selected').val() + '(' + $('#categoriesCombo').find('option:selected').text() + ')' );
+                showId.find("span[name='category_name']").text( $('#categoriesCombo').find('option:selected').text() + '(' + $('#categoriesCombo').find('option:selected').val() + ')' );
                 showId.find("span[name='memo']").html(rec.memo);
                 showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click

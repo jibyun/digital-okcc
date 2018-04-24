@@ -13,7 +13,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.privilege_role') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege & Role Mapping']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='privilegesCombo' class="form-group form-control mr-3">
@@ -44,11 +44,11 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="role_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Role Id</th>
-                <th data-field="role_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Role Name</th>
-                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="role_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.role_id') }}</th>
+                <th data-field="role_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.role_name') }}</th>
+                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
