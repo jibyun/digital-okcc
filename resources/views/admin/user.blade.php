@@ -7,11 +7,12 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>User List</h4>
+    <h4>{{ __('messages.adm_title.user') }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Register User
+            <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.register') }}
         </button>
+        @include('admin.includes.export')
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -23,7 +24,8 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-row-style="rowStyle"
+            data-show-columns="true">
         <thead>
             <tr>
                 <th data-field="id" scope="col" data-visible="false">Id</th>
@@ -329,4 +331,7 @@
 
     {{-- Chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
+    
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

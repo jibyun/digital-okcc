@@ -13,7 +13,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>Configure Privileges</h4>
+    <h4>{{ __('messages.adm_title.privilege_role') }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='privilegesCombo' class="form-group form-control mr-3">
@@ -22,11 +22,12 @@
                 <i class="fa fa-question" aria-hidden="true"></i>
             </button>
             <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Roles" onclick="addRoles();">
-                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add Roles
+                <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_role') }}
             </button>
             <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
-                <i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Clear All
-            </button>                    
+                <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
+            </button>    
+            @include('admin.includes.export')                
         </div>
     </div>
 
@@ -39,7 +40,8 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-row-style="rowStyle"
+            data-show-columns="true">
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
@@ -339,4 +341,6 @@
         });
     </script>
 
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

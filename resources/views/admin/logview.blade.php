@@ -9,7 +9,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <span class="h4-font-size pr-3">Log View</span><span id="contentTitle" class="h6-font-size"></span>
+    <span class="h4-font-size pr-3">{{ __('messages.adm_title.log') }}</span><span id="contentTitle" class="h6-font-size"></span>
     <div id="toolbar" class="form-inline">
         <div class="mr-2" style="width: 130px;">
             <select id="log" class="form-control" name="log" data-placeholder="Select a Log">
@@ -26,12 +26,13 @@
             </div>
         </div>
         <div id="test"></div>
-        <div class="input-group date" id="to" data-target-input="nearest" style="width: 150px;">
+        <div class="input-group date mr-2" id="to" data-target-input="nearest" style="width: 150px;">
             <input type="text" class="form-control datetimepicker-input" data-target="#to" name="to" placeholder="To: YYYY-MM-DD" />
             <div class="input-group-append" data-target="#to" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
         </div>
+        @include('admin.includes.export')
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -43,7 +44,8 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle" >
+            data-row-style="rowStyle"
+            data-show-columns="true" >
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
@@ -166,4 +168,7 @@
     {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

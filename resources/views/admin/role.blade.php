@@ -2,11 +2,12 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>Role List</h4>
+    <h4>{{ __('messages.adm_title.role') }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
+            <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
         </button>
+        @include('admin.includes.export')
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -18,7 +19,8 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-row-style="rowStyle"
+            data-show-columns="true">
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
@@ -244,4 +246,6 @@
         });
     </script>
 
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

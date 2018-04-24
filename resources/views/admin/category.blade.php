@@ -2,20 +2,14 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>Category List</h4>
+    <h4>{{ __('messages.adm_title.category') }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
-            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;Create
+            <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
         </button>
-        {{-- TODO: 추후 Excel과 PDF Export 기능이 추가되면 disabled 를 삭제한다 --}}
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export Excel" disabled>
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;&nbsp;Export Excel
-        </button>
-        <button id="export" class="btn btn-default mr-1" type="button" title="Export PDF" disabled>
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>&nbsp;&nbsp;Export PDF
-        </button>
+        @include('admin.includes.export')
         <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
-            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>&nbsp;&nbsp;Make Diaplay Order
+            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>{{ __('messages.adm_button.order') }}
         </button>
     </div>
 
@@ -28,7 +22,8 @@
             data-mobile-responsive="true" 
             data-click-to-select="true" 
             data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-row-style="rowStyle"
+            data-show-columns="true">
         <thead>
             <tr>
                 <th data-field="id" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">Id</th>
@@ -334,4 +329,6 @@
         }
         
     </script>
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
     @endsection

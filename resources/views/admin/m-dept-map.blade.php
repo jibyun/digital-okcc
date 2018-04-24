@@ -10,7 +10,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>Manage Member Relation</h4>
+    <h4>{{ __('messages.adm_title.member_dept') }}</h4>
     <div id="toolbar">
         <div class='row py-2'>
             <div class="col-sm-3">
@@ -22,8 +22,9 @@
                     <i class="fa fa-question" aria-hidden="true"></i>
                 </button>
                 <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Career" onclick="addChild();">
-                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add Career
+                    <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_career') }}
                 </button>
+                @include('admin.includes.export')
             </div>
         </div>
     </div>
@@ -435,4 +436,7 @@
     {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

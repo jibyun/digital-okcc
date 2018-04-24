@@ -8,7 +8,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>Compose Family Relation</h4>
+    <h4>{{ __('messages.adm_title.family_tree') }}</h4>
     <div id="toolbar">
         <div class='row py-2'>
             <div class="col-sm-3">
@@ -19,12 +19,13 @@
                 <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
                     <i class="fa fa-question" aria-hidden="true"></i>
                 </button>
-                <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Roles" onclick="addChild();">
-                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add Family
+                <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Family" onclick="addChild();">
+                    <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_family') }}
                 </button>
                 <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
-                    <i class="fa fa-times" aria-hidden="true"></i>&nbsp;&nbsp;Clear All
-                </button>  
+                    <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
+                </button> 
+                @include('admin.includes.export') 
             </div>
         </div>
     </div>
@@ -426,4 +427,6 @@
     {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
 
+    {{-- export EXCEL, PDF, PNG, JSON --}}
+    <script src="{{ asset('js/export.js') }}"></script>
 @endsection
