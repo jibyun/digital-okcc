@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
 use App\Code;
 use App\Member_Department_Map;
 use App\Member;
@@ -170,5 +172,32 @@ class MemDeptMapsController extends Controller {
         $temp['updated_by_name'] = $v->userByUpdatedById->name;
 
         return $temp;
+    }
+
+    /**
+     * Get members by department ids
+     */
+    public function getMembersByDepartmentId(Request $request) {
+
+        $result = DB::table('members')
+            ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
+            ->where('department_id', $request->department_id)
+            ->orderBy('department_id', 'ASC')->get(['members.*']);
+
+        $result = array( "members" => json_decode(json_encode($result), true) );
+        return response()->json($result);
+    }
+
+    public function getMembersNotAssignedCell() {
+        $CELL_CATEGORY = 10;
+
+        $exception = DB::table('members')
+            ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
+            ->join('codes', 'member_department_maps.department_id', '=', 'codes.id')
+            ->where('codes.code_category_id', '=', '10')->pluck('members.id')->all();
+
+        $result = Member::whereNotIn('id', $exception)->where('primary', 1)->get(['members.*']);
+        $result = array( "members" => json_decode(json_encode($result), true) );
+        return response()->json($result);
     }
 }

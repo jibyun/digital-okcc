@@ -112,6 +112,7 @@ return [
         'side_privilege'        => 'Privileges',
         'side_role'             => 'Roles',
         'side_p_role'           => 'Privileges > Roles',
+        'side_organize_cell'    => 'Cell Orginizer'
     ],
 
     // using Admin System log 
@@ -150,6 +151,7 @@ return [
         'delete'                => 'Delete :name',
         'order'                 => 'Make Display Order',
         'upload_photo'          => 'Upload Photo',
+        'cell_organizer'        => 'Cell Organizer',
     ],
 
     // using Admin table & CRUD

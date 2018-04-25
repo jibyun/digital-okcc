@@ -35,4 +35,9 @@ class Member_Department_Map extends Model {
     public function userByUpdatedById() {
         return $this->belongsTo('App\User', 'updated_by', 'id');
     }
+
+    // Relationship with members table
+    public function membersByMemberId() {
+        return $this->hasMany(App\Member::class);
+    }
 }

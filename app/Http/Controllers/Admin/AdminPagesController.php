@@ -78,4 +78,11 @@ class AdminPagesController extends Controller {
         file_put_contents($path, $data);
         return response()->json([ 'success'=>'done', 'filename'=>$image_name ]);
     }
+
+    /**
+     * Show Cell Organizer.
+     */
+    public function cellOrginizer() {
+        return view('admin.cell');
+    }
 }

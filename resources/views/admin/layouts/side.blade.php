@@ -33,6 +33,7 @@
                     <li><a href="{{ route('admin.members.start') }}"><i class="fa fa-fw fa-anchor mr-1"></i>{{ __('messages.adm_layout.side_member') }}</a></li>
                     <li><a href="{{ route('admin.family.map') }}"><i class="fa fa-fw fa-sitemap mr-1"></i>{{ __('messages.adm_layout.side_family_tree') }}</a></li>
                     <li><a href="{{ route('admin.member-dept.map') }}"><i class="fa fa-fw fa-files-o mr-1"></i>{{ __('messages.adm_layout.side_m_dept') }}</a></li>
+                    <li><a href="{{ route('admin.cell.orginizer') }}"><i class="fa fa-fw fa-cubes mr-1"></i>{{ __('messages.adm_layout.side_organize_cell') }}</a></li>
                 </ul>
             </li>
             <li>
