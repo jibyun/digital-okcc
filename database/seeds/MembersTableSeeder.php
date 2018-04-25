@@ -29,6 +29,7 @@ class MembersTableSeeder extends Seeder
                 'address' => $canFaker->streetAddress(),
                 'postal_code' => $this->randomPostalCode(),
                 'photo' => '',
+                'primary' => (bool)random_int(0, 1),
                 'city_id' => $canFaker->numberBetween($min = 60001, $max = 60204),
                 'province_id' => $canFaker->numberBetween($min = 70001, $max = 70013),
                 'country_id' => 80001,

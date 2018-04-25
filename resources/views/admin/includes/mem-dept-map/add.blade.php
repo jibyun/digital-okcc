@@ -28,26 +28,6 @@
                             </select>
                         </div>
                     </div>
-                    {{-- Start Date --}}
-                    <div class="form-group row">
-                        <label for="started_at" class="col-sm-3 col-form-label text-right">{{ __('messages.adm_table.start_date') }}</label>
-                        <div class="input-group date col-sm-9" id="addStartDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#addStartDate" name="started_at" placeholder="{{ __('messages.adm_table.date_ph') }}" />
-                            <div class="input-group-append" data-target="#addStartDate" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Date --}}
-                    <div class="form-group row">
-                        <label for="finished_at" class="col-sm-3 col-form-label text-right">{{ __('messages.adm_table.end_date') }}</label>
-                        <div class="input-group date col-sm-9" id="addEndDate" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#addEndDate" name="finished_at" placeholder="{{ __('messages.adm_table.date_ph') }}" />
-                            <div class="input-group-append" data-target="#addEndDate" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
                     {{--  Enabled  --}}
                     <div class="form-group row">
                         <label for="enabled" class="col-sm-3 col-form-label text-right">{{ __('messages.adm_table.enable') }}</label>

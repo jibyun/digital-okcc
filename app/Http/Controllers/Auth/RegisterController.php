@@ -74,7 +74,9 @@ class RegisterController extends Controller {
         } else {
             try {
                 $user = User::create($input);
-                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $user->id); 
+                if ( !empty(\Auth::user()->id) ) { // Don't save a Log if it is first user
+                    SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $user->id); 
+                }
                 $user->notify(new UserRegistered($user));
                 return response()
                     ->json([

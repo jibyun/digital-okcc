@@ -109,6 +109,16 @@
                                 <input type="text" class="form-control" id="tel_office" name="tel_office" placeholder="{{ __('messages.adm_table.tel_office') }}">
                             </div>
                         </div>
+                        {{--  Householder --}}
+                        <div class="form-group row">
+                            <label for="primary" class="col-sm-3 col-form-label s1-font-size text-right pr-0">{{ __('messages.adm_table.primary') }}</label>
+                            <div class="col-sm-9">
+                                <div class="form-control form-checkbox">
+                                    <input type="checkbox" class="form-control-input" id="primary" name="primary">
+                                    <label class="form-control-label" for="primary">Check if Householder</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row m-3">

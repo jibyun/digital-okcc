@@ -192,7 +192,7 @@ return [
         'duty_id'               => 'Duty Id',
         'duty_name'             => 'Duty',
         'photo'                 => 'Photo',
-        'primary'               => 'Primary',
+        'primary'               => 'Householder',
         'register_at'           => 'Register',
         'baptism_at'            => 'Baptism',
         'child_id'              => 'Child Id',
