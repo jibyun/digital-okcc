@@ -13,7 +13,7 @@ class UsersController extends Controller {
     private $TABLE_NAME = "USERS";
 
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['getUsers']]);
     }
 
     /**

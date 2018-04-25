@@ -3,8 +3,6 @@
 @section('styles')
     {{-- chosen user interface for autocomplete input --}}
     <link href="{{ asset('css/chosen.css') }}" rel="stylesheet">
-    {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 @endsection
 
 @section('content')
@@ -45,8 +43,6 @@
                 <th data-field="position_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.position_id') }}</th>
                 <th data-field="position_name" data-filter-control="select" scope="col">{{ __('messages.adm_table.position_name') }}</th>
                 <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">{{ __('messages.adm_table.enable') }}</th>
-                <th data-field="started_at" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.start_at') }}</th>
-                <th data-field="finished_at" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.finished_at') }}</th>
                 <th data-field="updated_by" data-filter-control="select" scope="col" data-visible="false">{{ __('messages.adm_table.updated_by') }}</th>
                 <th data-field="updated_by_name" data-filter-control="select" scope="col">{{ __('messages.adm_table.updated_by_name') }}</th>
                 <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
@@ -125,7 +121,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{},{ align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'center' },{ align: 'center', clickToSelect: false }]
+                columns: [ {},{},{ align: 'left' },{},{ align: 'left' },{ align: 'center' },{ align: 'center', clickToSelect: false }]
             });
             $(window).resize(function () {
                 $table.bootstrapTable('resetView', {
@@ -291,8 +287,6 @@
                 position_id: $('#addPositionCombo').val(), 
                 position_name: $('#addPositionCombo').find('option:selected').text(),
                 enabled: Number(formId.find("input[name='enabled']:checked").val()),
-                started_at: formId.find("input[name='started_at']").val(),
-                finished_at: formId.find("input[name='finished_at']").val(),
                 updated_by: userId,
                 updated_by_name: userName,
             };
@@ -332,8 +326,6 @@
                 position_id: $('#editPositionCombo').val(), 
                 position_name: $('#editPositionCombo').find('option:selected').text(),
                 enabled: Number(formId.find("input[name='enabled']:checked").val()),
-                started_at: formId.find("input[name='started_at']").val(),
-                finished_at: formId.find("input[name='finished_at']").val(),
                 updated_by: userId,
                 updated_by_name: userName,
             };
@@ -390,16 +382,12 @@
                 $('#editDepartmentCombo').val(rec.department_id).trigger('chosen:updated');
                 $('#editPositionCombo').val(rec.position_id).trigger('chosen:updated');
                 form.find("input[name='enabled'][value='" + rec.enabled + "']").prop('checked', true);
-                form.find("input[name='started_at']").val(rec.started_at);
-                form.find("input[name='finished_at']").val(rec.finished_at);
                 form.find("span[name='users']").text(rec.updated_by_name + ' -> ' + userName );
                 form.find("#editForm").attr("action", memDeptTreesUrl + '/' + rec.id);
             } else if (column === 'delete') {
                 var dispId = $("#deleteBody");
                 dispId.find("span[name='department_name']").text(rec.department_name + ' (' + rec.department_id + ')');
                 dispId.find("span[name='position_name']").text(rec.position_name + ' (' + rec.position_id + ')');
-                dispId.find("span[name='started_at']").text(rec.started_at);
-                dispId.find("span[name='finished_at']").text(rec.finished_at);
                 dispId.find("span[name='enabled']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 dispId.find("span[name='updated_by']").text(rec.updated_by_name + ' (' + rec.updated_by + ')');
                 // Open Bootstrap Model without Button Click
@@ -408,8 +396,6 @@
                 var dispId = $("#showBody");
                 dispId.find("span[name='department_name']").text(rec.department_name + ' (' + rec.department_id + ')');
                 dispId.find("span[name='position_name']").text(rec.position_name + ' (' + rec.position_id + ')');
-                dispId.find("span[name='started_at']").text(rec.started_at);
-                dispId.find("span[name='finished_at']").text(rec.finished_at);
                 dispId.find("span[name='enabled']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 dispId.find("span[name='updated_by']").text(rec.updated_by_name + ' (' + rec.updated_by + ')');
                 // Open Bootstrap Model without Button Click
@@ -422,21 +408,11 @@
             saveIndex = $element.index();
         }); 
 
-        $(function () {
-            $('#addStartDate').datetimepicker({ format: 'YYYY-MM-DD' });
-            $('#addEndDate').datetimepicker({ format: 'YYYY-MM-DD' });
-            $('#editStartDate').datetimepicker({ format: 'YYYY-MM-DD' });
-            $('#editEndDate').datetimepicker({ format: 'YYYY-MM-DD' });
-        });
-        
     </script>
     
     {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
-    {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
-    
+
     {{-- export EXCEL, PDF, PNG, JSON --}}
     <script src="{{ asset('js/export.js') }}"></script>
 @endsection

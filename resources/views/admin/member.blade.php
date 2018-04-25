@@ -60,7 +60,7 @@
                 <th data-field="duty_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_id') }}</th>
                 <th data-field="duty_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_name') }}</th>
                 <th data-field="photo" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.photo') }}</th>
-                <th data-field="primary" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.primary') }}</th>
+                <th data-field="primary" data-filter-control="select" data-formatter="primaryFormatter" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.primary') }}</th>
                 <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.register_at') }}</th>
                 <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.baptism_at') }}</th>
                 <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents">{{ __('messages.adm_table.clone_btn') }}</th>
@@ -106,6 +106,10 @@
             return { css: { "padding": "0px 10px" } };
         }
 
+        function primaryFormatter(value, row, index) {
+            if (value === 1) { return 'True'; } else { return 'False'; }
+        }
+
         // compose the column for clone button 
         function cloneFormatter(value, row, index) {
             return [
@@ -137,7 +141,7 @@
                 { align: 'center' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' }, // last: address
                 { align: 'center' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' }, // last: country
                 { align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' },{ align: 'center' },{ align: 'left' }, // last: duty
-                { align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'center' }, // last: baptism_at
+                { align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'center' }, // last: baptism_at
                 { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
         });
         // whenever being changed window's size, table's size should be also changed
@@ -222,7 +226,7 @@
                 level_name: $('#selectLevelCombo option:selected').text(),
                 duty_id: $('#selectDutyCombo').val(),
                 duty_name: $('#selectDutyCombo option:selected').text(),
-                primary: 0,
+                primary: (form.find("input[name='primary']").prop('checked') ? 1 : 0),
             };
         }
 
@@ -273,16 +277,18 @@
         function fillEditPanel( rec ) {
             var form = $("#editForm");
             // if profile image is existed?
-            $.ajax({
-                url: "{!! asset('uploads/" + rec.photo + "') !!}",
-                type:'HEAD',
-                success: function() {
-                    form.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
-                },
-                error: function() {
-                    form.find('img').attr('src', "{!! asset('images/photo.png') !!}");
-                }
-            });
+            if ( rec.photo ) {
+                $.ajax({
+                    url: "{!! asset('uploads/" + rec.photo + "') !!}",
+                    type:'HEAD',
+                    success: function() {
+                        form.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
+                    },
+                    error: function() {
+                        form.find('img').attr('src', "{!! asset('images/photo.png') !!}");
+                    }
+                });
+            }
             $("#photo_filename").val(rec.photo);
             form.find("input[name='first_name']").val(rec.first_name);
             form.find("input[name='middle_name']").val(rec.middle_name);
@@ -290,6 +296,7 @@
             form.find("input[name='kor_name']").val(rec.kor_name);
             form.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
             form.find("input[name='dob']").val(rec.dob);
+            form.find("input[name='primary']").prop('checked', ( rec.primary ? true : false )); 
             form.find("input[name='baptism_at']").val(rec.baptism_at);
             form.find("input[name='register_at']").val(rec.register_at);
             form.find("input[name='tel_home']").val(rec.tel_home);
@@ -327,20 +334,23 @@
 
         function fillShowPanel(rec) {
             var panel = $("#showPanel");
-            $.ajax({
-                url: "{!! asset('uploads/" + rec.photo + "') !!}",
-                type:'HEAD',
-                success: function() {
-                    panel.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
-                },
-                error: function() {
-                    panel.find('img').attr('src', "{{ asset('images/photo.png') }}");
-                }
-            });
+            if ( rec.photo ) {
+                $.ajax({
+                    url: "{!! asset('uploads/" + rec.photo + "') !!}",
+                    type:'HEAD',
+                    success: function() {
+                        panel.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
+                    },
+                    error: function() {
+                        panel.find('img').attr('src', "{{ asset('images/photo.png') }}");
+                    }
+                });
+            }
             panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
             panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
             panel.find("span[name='birthdate']").text(' ' + (!rec.dob ? '' : rec.dob));
-            panel.find("span[name='gender']").text(rec.gender == 'F' ? 'Female' : 'Male');
+            panel.find("span[name='primary']").text(' ' + (rec.primary ? '{{ __('messages.adm_table.primary') }}' : ''));
+            panel.find("span[name='gender']").text(rec.gender == 'F' ? '{{ __('messages.adm_table.female') }}' : '{{ __('messages.adm_table.male') }}');
             panel.find("span[name='email']").text(' ' + (!rec.email ? '' : rec.email));
             panel.find("span[name='tel_home']").text(' ' + (!rec.tel_home ? '' : rec.tel_home));
             panel.find("span[name='tel_cell']").text(' ' + (!rec.tel_cell ? '' : rec.tel_cell));
