@@ -170,7 +170,12 @@ function showMainConent() {
 
 function treeSelectionChanged(id, data) {
     updateTitle($('#pageTitle'), data.text);
-    loadTable(memberListUrl + "/" + data.code);
+    // This is the special case for all member.
+    if (data.code === "0000") {
+        loadTable(memberListUrl);
+    } else {
+        loadTable(memberListUrl + "/" + data.code);
+    }
 }
 
 /**
