@@ -16,10 +16,8 @@ Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->na
 Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
 
 Route::get('/', function () {
-    return view('index');
+    return view('MemberList\memberList');
 })->middleware('auth');
-
-Route::post('apply', 'GuestController@apply')->name('apply'); 
 
 // memberList Landing page
 Route::get('/memberList', function () {
