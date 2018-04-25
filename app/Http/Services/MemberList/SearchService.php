@@ -3,6 +3,8 @@
 namespace App\Http\Services\MemberList;
 
 use App\Member;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Service layer for handling Search request
@@ -21,8 +23,13 @@ class SearchService
      * 
      */
     public function getMemberList($search) {
-        // TODO: At thie moment, we support the kor_name only.  We need to enhance the logic.
-        $memberList = Member::where('kor_name', 'like', '%' . $search . '%')->get();
+        $memberList = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
+                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
+                        ->where(
+                            DB::raw("CONCAT(first_name, ' ', last_name, ' ', kor_name)"), 
+                            'like', '%' . $search . '%')
+                        ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
+                        ->get();
         return $memberList;
     }
 }
