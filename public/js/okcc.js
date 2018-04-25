@@ -14,10 +14,14 @@ $(document).ready(function () {
         parent.addClass('show');
     }
 
-    // Hide Finance and Inventory menu as a default
-    // TODO: Those are visible depends on the privilege
-    $('#menu_finance').hide();
-    $('#menu_inventory').hide();
+    // TODO: Need to enhanced
+    /*
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.indexOf("FINANCE_ACCESS_ROLE") > -1) {
+        $('#menu_finance').show();
+    }
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.indexOf("INVENTORY_ACCESS_ROLE") > -1) {
+        $('#menu_inventory').show();
+    }*/
 });
 
 // When the user scrolls down 20px from the top of the document, show the button
