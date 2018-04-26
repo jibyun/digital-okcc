@@ -16,12 +16,12 @@ Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->na
 Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
 
 Route::get('/', function () {
-    return view('MemberList\memberList');
+    return view('MemberList/memberList');
 })->middleware('auth');
 
 // memberList Landing page
 Route::get('/memberList', function () {
-    return view('MemberList\memberList');
+    return view('MemberList/memberList');
 })->middleware('auth')->name('memberList');
 /*
 |--------------------------------------------------------------------------

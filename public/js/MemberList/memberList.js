@@ -84,7 +84,7 @@ function memberDetailSelectHandler(obj) {
  */
 function searchMember(searchString) {
     // TODO: Unselect tree, update title
-    //updateTitle($('#pageTitle'), "Search Result");
+    updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
     var url = searchUrl + "/" + searchString;
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
