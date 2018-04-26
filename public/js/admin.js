@@ -1,4 +1,5 @@
-$(document).ready(function () {
+
+$(document).ready( function () {
     // toggle sidebar when button clicked
     $('.sidebar-toggle').on('click', function () {
         $('.sidebar').toggleClass('toggled');
@@ -34,3 +35,8 @@ function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
+
+toastr.options.progressBar = false;
+toastr.options.timeOut = 3000; // How long the toast will display without user interaction
+toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
+

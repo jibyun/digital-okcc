@@ -6,11 +6,13 @@
     <h4>{{ __('messages.adm_title.cell_organizer') }}</h4>
     <div class="pt-2">
         <nav aria-label="Page navigation">
-            <ul id="cell_menu" class="pagination pagination-sm">
+            <ul id="from_menu" class="pagination pagination-sm">
 
             </ul>
         </nav>
     </div>
+
+    @include('admin.includes.cells.select')
 
     <table  id="table" class="table table-striped table-bordered" 
             data-side-pagination="client"
@@ -37,6 +39,7 @@
                 <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.postal') }}</th>
                 <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.register_at') }}</th>
                 <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.baptism_at') }}</th>
+                <th data-field="xid" data-filter-control="select" data-sortable="false" scope="col" data-visible="false"></th>
             </tr>
         </thead>
     </table>
@@ -60,20 +63,27 @@
     </script>
     <script type="text/javascript">
         const CELL_CATEGORY = 10;
+        const NOT_ASSIGN = 999999;
+        const DEFAULT_POSITION = 120012; // TODO: 코드 등록할 때 구역원 코드를 만들어 대치한다. 예) 125000
         const CODE_URL = "{!! route('admin.code.getCodesByCategoryIds') !!}";
-
-
-
-
-  
-        var saveIndex; // Row index of the table
-        var saveId; // Primary key of categories
-        var maxOrder; // Max Order number
-        var categories; // cached categories
-        var displayOrder; // display order using changing order
-        var $table = $('#table');
+        const $table = $('#table');
+        var saveId // id of member_department_maps
+        var saveMemberId;
+        var sourceId, targetId; // department(cell) id 
+        var userId, userName;
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+
+        // get user id and name
+        $.ajax({ dataType: 'json', url: "{!! route('admin.users.get-current-users') !!}",
+            success: function(data) { 
+                userName = data['user']['name'];
+                userId = data['user']['id'];
+            }, 
+            error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
+            }
+        });
 
         // Row Style
         function rowStyle(row, index) {
@@ -90,7 +100,7 @@
                 height: getHeight(),
                 columns: [ { align: 'center' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'center' }, // last: dob
                     { align: 'center' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' },{ align: 'left' }, // last: address
-                    { align: 'center' },{ align: 'center' },{ align: 'center' } ]
+                    { align: 'center' },{ align: 'center' },{ align: 'center' },{} ]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -101,8 +111,8 @@
         }
 
         // Reload data from server and refresh table
-        function reloadList($department_id) {
-            $url = ( $department_id === 999999 ? "{!! route('admin.member-dept-trees.getmembers-notassigned') !!}" : "{!! route('admin.member-dept-trees.getmembers-department') !!}" + '?department_id=' + $department_id );
+        function reloadList( $department_id ) {
+            $url = ( $department_id === NOT_ASSIGN ? "{!! route('admin.member-dept-trees.getmembers-notassigned') !!}" : "{!! route('admin.member-dept-trees.getmembers-department') !!}" + '?department_id=' + $department_id );
             $.ajax({ dataType: 'json', url: $url,
                 success: function(data) { // What to do if we succeed
                     $table.bootstrapTable( 'load', { data: data['members'] } );
@@ -115,21 +125,38 @@
 
         function createSelection( codeData ) {
             initTable();
-            $('#cell_menu').empty();
-            var html = '<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Select Cell</a></li>';
+            $('#from_menu').empty();
+            $('#to_menu').empty();
+            var source = '<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Source Cell</a></li>';
+            var target = '<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Target Cell</a></li>';
             $.each(codeData, function( index, codes ) {
-                html += '<li class="page-item" value=' + codes['id'] + '><a class="page-link" href="#">' + (index + 1) + '</a></li>';
+                source += '<li class="page-item" value="' + codes['id'] + '" data-toggle="tooltip" data-placement="top" title="' + codes['kor_txt'] + '"><a class="page-link" href="#">' + (index + 1) + '</a></li>';
+                target += '<li class="page-item" value="' + codes['id'] + '" data-toggle="tooltip" data-placement="top" title="' + codes['kor_txt'] + '"><a class="page-link" href="#">' + (index + 1) + '</a></li>';
             });
-            html += '<li class="page-item" value=999999><a class="page-link" href="#">Not Assigned</a></li>';
-            $('#cell_menu').prepend(html);
+            source += '<li class="page-item" value=' + NOT_ASSIGN + ' data-toggle="tooltip" data-placement="top" title="구역미정"><a class="page-link" href="#">Not Assigned</a></li>';
+            target += '<li class="page-item" value=' + NOT_ASSIGN + ' data-toggle="tooltip" data-placement="top" title="구역미정"><a class="page-link" href="#">Not Assigned</a></li>';
+            $('#from_menu').prepend(source);
+            $('#to_menu').prepend(target);
 
-            $('#cell_menu li').click( function(e) {
+            $('li').tooltip();
+
+            $('#from_menu li').click( function(e) {
                 e.preventDefault();
                 $(this).addClass('active').siblings().removeClass('active');
+                sourceId = $(this).val();
                 reloadList($(this).val());
             });
 
-            $('#cell_menu li:nth-child(2)').click();
+            $('#from_menu li:nth-child(2)').click();
+            
+            $('#to_menu li').click( function(e) {
+                e.preventDefault();
+                $(this).addClass('active').siblings().removeClass('active');
+                targetId = $(this).val();
+                moveCell(sourceId, targetId);
+                reloadList(sourceId);
+                $("#showPanel").collapse("hide");
+            });
         }
 
         $.ajax({ dataType: 'JSON', url: CODE_URL + '?category_id[]=' + CELL_CATEGORY,
@@ -140,46 +167,91 @@
                 toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
             }
         });
- 
-
-        
-
 
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
-            saveId = Number(rec.id);
-            if (column === 'edit') {
-                var form = $("#edit-item");
-                form.find("input[name='txt']").val(rec.txt);
-                form.find("input[name='kor_txt']").val(rec.kor_txt);
-                form.find("input[name='fieldName']").val(rec.fieldName);
-                form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
-                CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
-                form.find("input[name='order']").val(rec.order);
-                form.find("#editForm").attr("action", url + '/' + rec.id);
-            } else if (column === 'delete') {
-                var showId = $("#deleteBody");
-                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='fieldName']").text(rec.fieldName);
-                showId.find("span[name='memo']").html(rec.memo);
-                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
-                // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
-            } else {
-                var showId = $("#showBody");
-                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='fieldName']").text(rec.fieldName);
-                showId.find("span[name='memo']").html(rec.memo);
-                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
-                // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+            saveId = Number(rec.xid);
+            saveMemberId = rec.id;
+            if ($("#showPanel").is( ":hidden" )) {
+                $('#to_menu li').removeClass('active');
+                $("#showPanel").collapse("show");
             }
         });
 
-        // 테이블의 Row를 클릭하면 발생하는 이벤트를 핸들한다: Bootstrap Table에서 Index를 구하기 위한 유일한 방법(Maybe)
-        $table.on('click-row.bs.table', function (e, row, $element) {
-            saveIndex = $element.index();
-        });
+        function moveCell( source, target ) {
+            if ( source != target ) {
+                if ( source === NOT_ASSIGN ) { // INSERT
+                    createRecord( target );
+                } else if ( target === NOT_ASSIGN ) { // DEKETE
+                    deleteRecord();
+                } else { // UPDATE
+                    updateRecord( target );
+                }
+            }
+        }
+
+        function createRecord( department_id ) {
+            var postData = { 
+                member_id: saveMemberId,
+                department_id: department_id, 
+                position_id: DEFAULT_POSITION, 
+                enabled: 1,
+                updated_by: userId,
+                updated_by_name: userName,
+            };
+            $.ajax({ dataType: 'json', method:'POST', data: postData, url: "{{ route('admin.member-dept-trees.store') }}",
+                success: function(data) {
+                    if (data.errors) {
+                        var message = '';
+                        for (i=0; i < data.errors.length; i++) {
+                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
+                        } 
+                        toastr.error(message, data.message);
+                    } else {
+                        $table.bootstrapTable('remove', {field: 'id', values: [saveMemberId]});
+                        toastr.success(data.message, 'Success');
+                    }
+                }
+            });
+        }
+
+        function updateRecord( department_id ) {
+            var postData = { 
+                member_id: saveMemberId,
+                department_id: department_id, 
+                position_id: DEFAULT_POSITION, 
+                enabled: 1,
+                updated_by: userId,
+                updated_by_name: userName,
+            };
+            $.ajax({ dataType: 'json', method:'PUT', data: postData, url: "{!! route('admin.member-dept-trees.index') !!}" + '/' + saveId,
+                success: function(data) {
+                    if (data.errors) {
+                        var message = '';
+                        for (i=0; i < data.errors.length; i++) {
+                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
+                        } 
+                        toastr.error(message, data.message);
+                    } else {
+                        $table.bootstrapTable('remove', {field: 'id', values: [saveMemberId]});
+                        toastr.success(data.message, 'Success');
+                    }
+                }
+            });
+        }
+
+        function deleteRecord() {
+            $.ajax({ dataType: 'json', method:'DELETE', url: "{!! route('admin.member-dept-trees.index') !!}" + '/' + saveId,
+                success: function(data) {
+                    if (data.errors) {
+                        toastr.error(data.errors, data.message);
+                    } else {
+                        $table.bootstrapTable('remove', {field: 'id', values: [saveMemberId]});
+                        toastr.success(data.message, 'Success');
+                    }
+                }
+            });
+        }
     </script>
 
     </script>

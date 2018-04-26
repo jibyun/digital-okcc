@@ -182,7 +182,7 @@ class MemDeptMapsController extends Controller {
         $result = DB::table('members')
             ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
             ->where('department_id', $request->department_id)
-            ->orderBy('department_id', 'ASC')->get(['members.*']);
+            ->orderBy('department_id', 'ASC')->get(['members.*', 'member_department_maps.id as xid']);
 
         $result = array( "members" => json_decode(json_encode($result), true) );
         return response()->json($result);

@@ -19,6 +19,7 @@
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, ALL]" 
             data-mobile-responsive="true" 
@@ -28,15 +29,15 @@
             data-show-columns="true">
         <thead>
             <tr>
-                <th data-field="id" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="id" scope="col" data-searchable="false" data-search-formatter="false" data-visible="false">{{ __('messages.adm_table.id') }}</th>
                 <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.user_name') }}</th>
                 <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.email') }}</th>
-                <th data-field="member_id" scope="col" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
-                <th data-field="member_name" scope="col" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
-                <th data-field="privilege_id" scope="col" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
+                <th data-field="member_id" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
+                <th data-field="member_name" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
+                <th data-field="privilege_id" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
                 <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.privilege_name') }}</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-searchable="false" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-searchable="false" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>

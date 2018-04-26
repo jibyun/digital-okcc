@@ -14,6 +14,7 @@
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, 50, 100, ALL]" 
             data-mobile-responsive="true" 

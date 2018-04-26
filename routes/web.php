@@ -85,7 +85,8 @@ Route::resource('admin/member-dept-trees', 'Admin\MemDeptMapsController', [ 'exc
 Route::post('admin/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
 // Cell Organizer
 Route::get('admin/cell-orginizer', 'Admin\AdminPagesController@cellOrginizer')->name('admin.cell.orginizer');
-
+// Route for export/download tabledata to .csv, .xls or .xlsx
+Route::get('admin/exportCategories', 'Admin\ExportsController@exportCategories')->name('admin.export.categories');
 /*
 |--------------------------------------------------------------------------
 | MEMBER LIST RESTFUL API

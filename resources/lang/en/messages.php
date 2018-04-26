@@ -123,7 +123,7 @@ return [
 
     // Button String using Admin 
     'adm_button' => [
-        'export'                => 'Export',
+        'export'                => 'Save As',
         'create_member'         => 'Register Member',
         'excel'                 => 'Excel (XLSX)',
         'pdf'                   => 'PDF',
@@ -243,6 +243,7 @@ return [
         'child_dept'            => 'Child Department',
         'parent_member'         => 'Householder',
         'child_member'          => 'Family Member',
+        'confirm_mesg'          => 'Once deleted data can not be recovered.<br/>Do you want to really DELETE?',
 
         // components on table
         'edit_btn'              => 'Edit',
