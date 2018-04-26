@@ -84,7 +84,7 @@ function memberDetailSelectHandler(obj) {
  */
 function searchMember(searchString) {
     // TODO: Unselect tree, update title
-    //updateTitle($('#pageTitle'), "Search Result");
+    updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
     var url = searchUrl + "/" + searchString;
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
@@ -170,7 +170,12 @@ function showMainConent() {
 
 function treeSelectionChanged(id, data) {
     updateTitle($('#pageTitle'), data.text);
-    loadTable(memberListUrl + "/" + data.code);
+    // This is the special case for all member.
+    if (data.code === "0000") {
+        loadTable(memberListUrl);
+    } else {
+        loadTable(memberListUrl + "/" + data.code);
+    }
 }
 
 /**

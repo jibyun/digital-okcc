@@ -21,8 +21,10 @@ class MemberListService
      * Retrieve all members
      */
     public function getAllMembers() {
-        // TODO: Implement the logic to get all member
-        $member = Member::all()->take(50);
+        $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
+                                'codeByCityId','codeByProvinceId','codeByCountryId'])
+                                ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
+                                ->get();
         return $member;
     }
 
@@ -257,8 +259,6 @@ class MemberListService
         $columnInfo->visible = false;
         array_push ($columnInfos, $columnInfo);
 
-        LOG::debug($columnInfos);        
-
         return $columnInfos;
     }
 
@@ -291,14 +291,16 @@ class MemberListService
      * Search Category Sample
      */
     private function buildCategory() {
+        $menuList=array();
+        // Add All Member as a default
+        $allMember = (object)array();
+        $allMember->id = "0000";
+        $allMember->txt = __('messages.memberlist.allmember');
+        array_push($menuList, $this->makeMenu($allMember));
 
-
-        //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-        $result=array();
 
         $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
 
-        $menuList=array();
         foreach($cates as $cate){
             $menu=$this->makeMenu($cate);  //code_category->menu_level1
             $children=array();

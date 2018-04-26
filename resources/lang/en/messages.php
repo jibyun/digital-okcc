@@ -56,9 +56,11 @@ return [
         'duty' => 'Duty',
         'department' => 'Department',
         'register_date' => 'Register Date',
-        'baptism_date' => 'Baptism Date'
-
-
+        'baptism_date' => 'Baptism Date',
+        'allmember' => 'All Member',
+        'search_result' => 'Search Result'
+        
+        
 
     ],
 

@@ -24,6 +24,7 @@
     // Get roles for current user
     var USER_ROLES = "{{ Auth::user()->roles() }}";
 </script>
+<script src="js/lang.js"></script>
 <script src="{{ asset('js/MemberList/memberList.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
 @endsection
