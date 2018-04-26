@@ -41,7 +41,7 @@
     @include('admin.includes.categories.create')
     @include('admin.includes.categories.edit')
     @include('admin.includes.categories.show')
-    @include('admin.includes.delete')
+    @include('admin.includes.categories.delete')
     @include('admin.includes.categories.order')
 
 </div>

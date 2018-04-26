@@ -154,6 +154,19 @@ return [
         'cell_organizer'        => 'Cell Organizer',
     ],
 
+    // Title using Admin 
+    'adm_name' => [
+        'category'              => 'Category',
+        'code'                  => 'Code',
+        'add'                   => 'Add :name',
+        'edit'                  => 'Edit :name',
+        'show'                  => 'Show :name',
+        'delete'                => 'Delete :name',
+        'order'                 => 'Make Display Order',
+        'upload_photo'          => 'Upload Photo',
+        'cell_organizer'        => 'Cell Organizer',
+    ],
+
     // using Admin table & CRUD
     'adm_table' => [
         'id'                    => 'Id',

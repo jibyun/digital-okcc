@@ -4,17 +4,18 @@
 
 <div class='container p-4'>
     <h4>{{ __('messages.adm_title.title', ['title' => 'Code']) }}</h4>
+    
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='categoriesCombo' class="form-group form-control mr-3">
+            <select id='categoriesCombo' class="form-group form-control mr-2" style="width: 150px">
             </select>
-            <button class="form-group form-control btn btn-info mr-2" type="button" title="Create" data-toggle="modal" data-target="#create-item">
+            <button class="form-group form-control btn btn-info mr-2" type="button" title="Create" id='create-button'>
                 <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
             </button>
-            @include('admin.includes.export')
             <button class="form-group btn btn-warning btn-modal-target mr-2" type="button" title="Make Display Order" onclick="showOrder();">
                 <i class="fa fa-sort-amount-asc mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.order') }}
-            </button>                    
+            </button>  
+            @include('admin.includes.export', [ 'router' => 'admin.export.codes' ])                  
         </div>
     </div>
 
@@ -24,23 +25,21 @@
             data-search="true" 
             data-search-on-enter-key="true"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, 100, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
+            data-page-list="[5, 10, 25, ALL]" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="sysmetic" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.sysmetic') }}</th>
-                <th data-field="txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.code_name') }}</th>
-                <th data-field="kor_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.code_kname') }}</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-filter-control="select" scope="col">{{ __('messages.adm_table.enable') }}</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
-                <th data-field="order" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.order') }}</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="sysmetic" data-visible="false" data-searchable="false">{{ __('messages.adm_table.sysmetic') }}</th>
+                <th data-field="txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.code_name') }}</th>
+                <th data-field="kor_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.code_kname') }}</th>
+                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-searchable="false">{{ __('messages.adm_table.enable') }}</th>
+                <th data-field="memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="order" data-sortable="true" data-visible="false" data-searchable="false">{{ __('messages.adm_table.order') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-searchable="false" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-searchable="false" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -56,22 +55,7 @@
 @endsection
 
 @section('scripts')
-    {{--    basic - the Basic preset
-            standard - the Standard preset
-            standard-all - the Standard preset together with all other plugins created by CKSource*
-            full - the Full preset
-            full-all - the Full preset together with all other plugins created by CKSource* --}}
-    <script src="https://cdn.ckeditor.com/4.9.2/full-all/ckeditor.js"></script>
-    <script type="text/javascript"> 
-        CKEDITOR.replace( 'ckeditor-create', { customConfig : '/js/ckeditor/simpleToolbar.js' } );
-        CKEDITOR.replace( 'ckeditor-edit',{ customConfig : '/js/ckeditor/simpleToolbar.js' }  );
-    </script>
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
+
     <script type="text/javascript">
         var url = "{!! route('admin.codes.index') !!}";
         var saveIndex; // Row index of the table
@@ -98,7 +82,7 @@
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
+                '<a href="#"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -208,7 +192,7 @@
                 kor_txt: formId.find("input[name='kor_txt']").val(), 
                 order: maxOrder, 
                 enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
-                memo: CKEDITOR.instances['ckeditor-create'].getData(), 
+                memo: formId.find("textarea[name='memo']").val(), 
                 sysmetic: 0 
             };
 
@@ -228,7 +212,6 @@
                         toastr.success(data.message, 'Success');
                         $table.bootstrapTable("append", postData); // Add input data to table
                         $('#createForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-create'].setData(''); // clear textarea
                         $(".modal").modal('hide'); // hide model form
                         reloadList();
                     }
@@ -248,7 +231,7 @@
                 kor_txt: formId.find("input[name='kor_txt']").val(), 
                 order: formId.find("input[name='order']").val(), 
                 enabled: Number(formId.find("input[name='enable']:checked").val()), // 숫자 변화 꼭 해야 함 
-                memo: CKEDITOR.instances['ckeditor-edit'].getData(), 
+                memo: formId.find("textarea[name='memo']").val(), 
                 sysmetic: 0
             };
 
@@ -268,7 +251,6 @@
                         toastr.success(data.message, 'Success');
                         $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
                         $('#editForm')[0].reset(); // Clear create form 
-                        CKEDITOR.instances['ckeditor-edit'].setData(''); // clear textarea
                         $(".modal").modal('hide'); // hide model form
                         reloadList();
                     }
@@ -336,6 +318,10 @@
             }
         });
 
+        $('#create-button').click( function(e) {
+            $("#create-item").modal('show').draggable({ handle: ".modal-header" });
+        });
+
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
@@ -344,9 +330,10 @@
                 form.find("input[name='txt']").val(rec.txt);
                 form.find("input[name='kor_txt']").val(rec.kor_txt);
                 form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
-                CKEDITOR.instances['ckeditor-edit'].setData(rec.memo);
+                form.find("textarea[name='memo']").val(rec.memo);
                 form.find("input[name='order']").val(rec.order);
                 form.find("#editForm").attr("action", url + '/' + rec.id);
+                $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
                 var showId = $("#deleteBody");
                 showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
@@ -354,7 +341,7 @@
                 showId.find("span[name='memo']").html(rec.memo);
                 showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var showId = $("#showBody");
                 showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
@@ -362,7 +349,7 @@
                 showId.find("span[name='memo']").html(rec.memo);
                 showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -380,10 +367,9 @@
         function showOrder() {
             $('#workTbody').load("{!! route('admin.code.getCodes') !!}", function() {
                 displayOrder = '';
-                $('#make-order').modal({show:true});
+                $('#make-order').modal({show:true}).draggable({ handle: ".modal-header" });
             });
         }
     </script>
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
+
     @endsection
