@@ -114,6 +114,7 @@ return [
         'side_privilege'        => 'Privileges',
         'side_role'             => 'Roles',
         'side_p_role'           => 'Privileges > Roles',
+        'side_organize_cell'    => 'Cell Orginizer'
     ],
 
     // using Admin System log 
@@ -124,7 +125,7 @@ return [
 
     // Button String using Admin 
     'adm_button' => [
-        'export'                => 'Export',
+        'export'                => 'Save As',
         'create_member'         => 'Register Member',
         'excel'                 => 'Excel (XLSX)',
         'pdf'                   => 'PDF',
@@ -152,6 +153,7 @@ return [
         'delete'                => 'Delete :name',
         'order'                 => 'Make Display Order',
         'upload_photo'          => 'Upload Photo',
+        'cell_organizer'        => 'Cell Organizer',
     ],
 
     // using Admin table & CRUD
@@ -243,6 +245,7 @@ return [
         'child_dept'            => 'Child Department',
         'parent_member'         => 'Householder',
         'child_member'          => 'Family Member',
+        'confirm_mesg'          => 'Once deleted data can not be recovered.<br/>Do you want to really DELETE?',
 
         // components on table
         'edit_btn'              => 'Edit',

@@ -37,8 +37,6 @@
 
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
-        {{-- Basic Scripts --}}
-        <script src="{{ asset('js/admin.js') }}"></script>
 
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
@@ -56,6 +54,8 @@
         
         {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        {{-- Basic Scripts --}}
+        <script src="{{ asset('js/admin.js') }}"></script>
 
         {{-- for additional scripts --}}
         @yield('scripts')

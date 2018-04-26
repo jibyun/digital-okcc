@@ -4,6 +4,7 @@ body {
     font-size: 14px;    
     font-weight: 400;
     background-color: #f8f8f8;
+    font-family: 'Roboto', 'Nanum Gothic', sans-serif;
 }
 
 .h1-font-size { font-size: 4.5em;   font-weight: 900; }
@@ -45,7 +46,7 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     max-width: 250px;
     min-height: calc(100vh - 102px);
     transition: all 0.3s;
-    font-size: 0.85em;
+    font-size: 1em;
     background-color: #1B5E20;
 }
 .sidebar ul li a {
@@ -112,7 +113,7 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     bottom: 30px;
     right: 30px;
     z-index: 99;
-    font-size: 18px;
+    font-size: 1em;
     padding: 15px;
 }
 
@@ -196,4 +197,12 @@ table.table-bordered > thead > tr > th {
 }
 table.table-bordered > tbody > tr > td {
     border:1px solid #a0a0a0;
+}
+
+.modal {
+    overflow: hidden;
+}
+
+.modal-header {      /* not necessary but imo important for user */
+    cursor: move;
 }

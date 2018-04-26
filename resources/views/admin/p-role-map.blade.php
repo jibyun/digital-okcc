@@ -13,7 +13,7 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege & Role Mapping']) }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege Mapping']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
             <select id='privilegesCombo' class="form-group form-control mr-3">
@@ -35,6 +35,7 @@
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, 50, 100, ALL]" 
             data-mobile-responsive="true" 

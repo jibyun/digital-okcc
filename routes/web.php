@@ -76,10 +76,15 @@ Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' 
 // Members and Departments Mapping
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');
 Route::get('admin/getCodesNotInChildByMDMap', 'Admin\MemDeptMapsController@getcodes_notin_child')->name('admin.member-dept-trees.getcodes-notin-child');
+Route::get('admin/getMembersByDepartmentId', 'Admin\MemDeptMapsController@getMembersByDepartmentId')->name('admin.member-dept-trees.getmembers-department');
+Route::get('admin/getMembersNotAssignedCell', 'Admin\MemDeptMapsController@getMembersNotAssignedCell')->name('admin.member-dept-trees.getmembers-notassigned');
 Route::resource('admin/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Image Upload
 Route::post('admin/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
-
+// Cell Organizer
+Route::get('admin/cell-orginizer', 'Admin\AdminPagesController@cellOrginizer')->name('admin.cell.orginizer');
+// Route for export/download tabledata to .csv, .xls or .xlsx
+Route::get('admin/exportCategories', 'Admin\ExportsController@exportCategories')->name('admin.export.categories');
 /*
 |--------------------------------------------------------------------------
 | MEMBER LIST RESTFUL API
