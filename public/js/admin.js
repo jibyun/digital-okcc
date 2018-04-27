@@ -40,3 +40,34 @@ toastr.options.progressBar = false;
 toastr.options.timeOut = 3000; // How long the toast will display without user interaction
 toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
 
+function errorMessage( jqXHR ) { // jqXHR.status, jqXHR.statusText, jqXHR.responseText
+    toastr.error( 'Request Status: ' + jqXHR.status + '<br/> Status Text: ' + jqXHR.statusText, 'Failed!' );
+}
+
+function validationMessage( errors ) {
+    var message = '';
+    for (i=0; i < data.errors.length; i++) {
+        message += data.errors[i] + ( i < data.errors.length -1 ? ' : ' : '' );
+    } 
+    toastr.error( message, 'Validation Failled!' );
+}
+
+function exceptionMessage( status, errors ) {
+    toastr.error( 'Exception Status: ' + status + ' Status Text: ' + errors, 'Error Exception!' );
+}
+
+function saveSuccessMessage() {
+    toastr.success( 'The item was successfully saved.', 'Saved!' );
+}
+
+function deleteSuccessMessage() {
+    toastr.success( 'The item was successfully deleted.', 'Deleted!' );
+}
+
+function orderSuccessMessage() {
+    toastr.success('Display order was successfully re-arranged.', 'Success');
+}
+
+function orderErrorMessage() {
+    toastr.error( 'Fail to save data to server!', 'Failed!' );
+}

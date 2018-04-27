@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Code_Category;
 use App\Http\Services\Log\SystemLog;
+use Exception;
 
 class Code_CategoriesController extends Controller {
     private $TABLE_NAME = "CODE_CATEGORIES";
@@ -61,21 +62,15 @@ class Code_CategoriesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $result = Code_Category::create($request->all());
-            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully created.',
-                    'categories' => $result,
-                    'status' => 200
-                ], 200);
+            try {
+                $result = Code_Category::create( $request->all() );
+                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                return response()->json([ 'categories' => $result ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -105,22 +100,16 @@ class Code_CategoriesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $detail = SystemLog::createLogForUpdatedFields($categoryUpdate, $input, null); 
-            $categories = $categoryUpdate->fill($input)->save();
-            SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully updated.',
-                    'categories' => $categories,
-                    'status' => 200
-                ], 200);
+            try {
+                $detail = SystemLog::createLogForUpdatedFields($categoryUpdate, $input, null); 
+                $categories = $categoryUpdate->fill($input)->save();
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                return response()->json([ 'categories' => $categories ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -131,18 +120,9 @@ class Code_CategoriesController extends Controller {
         try {
             Code_Category::find($id)->delete();
             SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully deleted.',
-                    'status' => 200
-                ], 200);
-        } catch (\Exception $e) {
-            return response()
-                ->json([
-                    'errors' => $e->getMessage(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
     }
 }
