@@ -10,45 +10,41 @@
 <div class='container p-4'>
     <h4>{{ __('messages.adm_title.title', ['title' => 'Family Tree']) }}</h4>
     <div id="toolbar">
-        <div class='row py-2'>
-            <div class="col-sm-3">
-                <select id='membersCombo' class="form-group form-control mr-3" style="width: 70%;" data-placeholder="Select Correct Member">
+        <div class='form-inline py-2'>
+            <div class='mr-2' style="width: 200px;">
+                <select id='membersCombo' class="form-group form-control mr-2" style="width: 200px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
                 </select>
             </div>
-            <div class="form-inline">
-                <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
-                    <i class="fa fa-question" aria-hidden="true"></i>
-                </button>
-                <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Family" onclick="addChild();">
-                    <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_family') }}
-                </button>
-                <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
-                    <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
-                </button> 
-                @include('admin.includes.export') 
-            </div>
+            <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
+                <i class="fa fa-question" aria-hidden="true"></i>
+            </button>
+            <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Family" onclick="addChild();">
+                <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_family') }}
+            </button>
+            <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
+                <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
+            </button> 
+            @include('admin.includes.export', [ 'router' => 'admin.export.familytrees' ])     
         </div>
     </div>
 
     <table  id="mainTable" class="table table-striped table-bordered" 
             data-side-pagination="client"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-page-list="[5, 10, 25, ALL]" 
+            data-row-style="rowStyle"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.child_id') }}</th>
-                <th data-field="child_name" data-width="25%" data-filter-control="select" scope="col">{{ __('messages.adm_table.child_name') }}</th>
-                <th data-field="child_birth" data-width="10%" data-filter-control="select" scope="col">{{ __('messages.adm_table.dob') }}</th>
-                <th data-field="child_gender" data-width="5%" data-filter-control="select" scope="col">{{ __('messages.adm_table.gender') }}</th>
-                <th data-field="child_email" data-filter-control="select" scope="col">{{ __('messages.adm_table.email') }}</th>
-                <th data-field="child_relation_id" data-filter-control="select" scope="col" data-visible="false">{{ __('messages.adm_table.relation_id') }}</th>
-                <th data-field="child_relation_name" data-width="20%" data-filter-control="select" scope="col">{{ __('messages.adm_table.relation_name') }}</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="child_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.child_id') }}</th>
+                <th data-field="child_name" data-width="25%">{{ __('messages.adm_table.child_name') }}</th>
+                <th data-field="child_birth" data-width="10%">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="child_gender" data-width="5%">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="child_email">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="child_relation_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.relation_id') }}</th>
+                <th data-field="child_relation_name" data-width="20%">{{ __('messages.adm_table.relation_name') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -63,12 +59,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
     <script type="text/javascript">
         const $table = $('#mainTable');
         const $addTable = $('#addTable');
@@ -268,7 +258,7 @@
                         } else {
                             fillAddMemberCombo($('#addMemberCombo'), data["members"]);
                             fillAddRelationCombo($('#addRelationCombo'), relationList);
-                            $('#add-item').modal({show:true});
+                            $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
                         }
                     }
                 });
@@ -392,7 +382,7 @@
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
-                $("#deleteall-item").modal('show');
+                $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 toastr.error('There is nothing to delete.', 'Failed');
             }
@@ -402,19 +392,15 @@
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
             if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
-                dispId.find("span[name='child_txt']").text(rec.child_name + ' (' + rec.child_id + ')');
-                dispId.find("span[name='relation']").text(rec.child_relation_name + ' (' + rec.child_relation_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
                 dispId.find("span[name='child_txt']").text(rec.child_name + ' (' + rec.child_id + ')');
                 dispId.find("span[name='relation']").text(rec.child_relation_name + ' (' + rec.child_relation_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -426,7 +412,7 @@
     
     {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

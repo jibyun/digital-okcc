@@ -85,6 +85,17 @@ Route::post('admin/photo-crop', 'Admin\AdminPagesController@photoCropPost')->nam
 Route::get('admin/cell-orginizer', 'Admin\AdminPagesController@cellOrginizer')->name('admin.cell.orginizer');
 // Route for export/download tabledata to .csv, .xls or .xlsx
 Route::get('admin/exportCategories', 'Admin\ExportsController@exportCategories')->name('admin.export.categories');
+Route::get('admin/exportCodes', 'Admin\ExportsController@exportCodes')->name('admin.export.codes');
+Route::get('admin/exportPrivileges', 'Admin\ExportsController@exportPrivileges')->name('admin.export.privileges');
+Route::get('admin/exportRoles', 'Admin\ExportsController@exportRoles')->name('admin.export.roles');
+Route::get('admin/exportUsers', 'Admin\ExportsController@exportUsers')->name('admin.export.users');
+Route::get('admin/exportLogs', 'Admin\ExportsController@exportLogs')->name('admin.export.logs');
+Route::get('admin/exportMembers', 'Admin\ExportsController@exportMembers')->name('admin.export.members');
+Route::get('admin/exportPrivilegeRoleMaps', 'Admin\ExportsController@exportPrivilegeRoleMaps')->name('admin.export.privilegerolemaps');
+Route::get('admin/exportDepartmentTrees', 'Admin\ExportsController@exportDepartmentTrees')->name('admin.export.departmenttrees');
+Route::get('admin/exportFamilyTrees', 'Admin\ExportsController@exportFamilyTrees')->name('admin.export.familytrees');
+Route::get('admin/exportMemDeptMaps', 'Admin\ExportsController@exportMemDeptMaps')->name('admin.export.memdeptmaps');
+
 /*
 |--------------------------------------------------------------------------
 | MEMBER LIST RESTFUL API

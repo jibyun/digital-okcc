@@ -28,7 +28,7 @@
                 {{-- Buttons --}}
                 <div class="form-group text-right py-3">
                     <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal"><span class="fa fa-times mr-1"></span>{{ __('messages.adm_table.cancel_btn') }}</button>
-                    <button type="button" class="btn add-roles btn-info"><span class="fa fa-check mr-1"></span>{{ __('messages.adm_table.save_btn') }}</button>
+                    <button type="button" class="btn crud-submit btn-info"><span class="fa fa-check mr-1"></span>{{ __('messages.adm_table.save_btn') }}</button>
                 </div>
             </div>
         </div>

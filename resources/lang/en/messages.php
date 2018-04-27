@@ -156,6 +156,19 @@ return [
         'cell_organizer'        => 'Cell Organizer',
     ],
 
+    // Title using Admin 
+    'adm_name' => [
+        'category'              => 'Category',
+        'code'                  => 'Code',
+        'add'                   => 'Add :name',
+        'edit'                  => 'Edit :name',
+        'show'                  => 'Show :name',
+        'delete'                => 'Delete :name',
+        'order'                 => 'Make Display Order',
+        'upload_photo'          => 'Upload Photo',
+        'cell_organizer'        => 'Cell Organizer',
+    ],
+
     // using Admin table & CRUD
     'adm_table' => [
         'id'                    => 'Id',
@@ -246,6 +259,7 @@ return [
         'parent_member'         => 'Householder',
         'child_member'          => 'Family Member',
         'confirm_mesg'          => 'Once deleted data can not be recovered.<br/>Do you want to really DELETE?',
+        'fake_delete'           => 'In this case, the data will not be actually deleted .<br/>Do you want to really DELETE?',
 
         // components on table
         'edit_btn'              => 'Edit',

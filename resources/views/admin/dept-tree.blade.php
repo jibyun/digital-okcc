@@ -3,7 +3,7 @@
 @section('styles')
     {{-- IMPORTANT: OVERRIDE of selected row in Bootstrap table --}}
     <style>
-        #addTable .selected td{
+        #createTable .selected td{
             background-color:#031023 !important;
             color: cornsilk;
         }
@@ -16,7 +16,7 @@
     <h4>{{ __('messages.adm_title.title', ['title' => 'Department Tree']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='departmentsCombo' class="form-group form-control mr-3">
+            <select id='departmentsCombo' class="form-group form-control mr-2" style="width: 180px;">
             </select>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" title="Describe" data-content="">
                 <i class="fa fa-question" aria-hidden="true"></i>
@@ -27,7 +27,7 @@
             <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
                 <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
             </button> 
-            @include('admin.includes.export')                   
+            @include('admin.includes.export', [ 'router' => 'admin.export.departmenttrees' ])                   
         </div>
     </div>
 
@@ -37,19 +37,17 @@
             data-search="true" 
             data-search-on-enter-key="true"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
+            data-page-list="[5, 10, 25, ALL]" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.dept_id') }}</th>
-                <th data-field="child_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.dept_name') }}</th>
-                <th data-field="child_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="child_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.dept_id') }}</th>
+                <th data-field="child_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.dept_name') }}</th>
+                <th data-field="child_memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -64,15 +62,9 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
     <script type="text/javascript">
         const $table = $('#mainTable');
-        const $addTable = $('#addTable');
+        const $addTable = $('#createTable');
         const $combo = $("#departmentsCombo");
         const DEPARTMENT_CODE = 5 // department id in categories table
         const codesUrl = "{!! route('admin.codes.index') !!}";
@@ -220,14 +212,14 @@
                         toastr.error('There are no more data to add!', 'Warning');
                     } else {
                         $addTable.bootstrapTable( 'load', { data: data["codes"] } );
-                        $('#add-item').modal({show:true});
+                        $('#create-item').modal({show:true}).draggable({ handle: ".modal-header" });
                     }
                 }
             });
         }
 
         // Save button was pressed after selecting roles to add.
-        $(".add-roles").click(function(e){
+        $(".crud-submit").click(function(e){
             event.preventDefault();
             var selection = $addTable.bootstrapTable('getSelections');
             if (selection) { // if selected items are more than one?
@@ -314,7 +306,7 @@
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
-                $("#deleteall-item").modal('show');
+                $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 toastr.error('There is nothing to delete.', 'Failed');
             }
@@ -324,17 +316,14 @@
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
             if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
-                dispId.find("span[name='child_txt']").text(rec.child_txt + ' (' + rec.child_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
                 dispId.find("span[name='child_txt']").text(rec.child_txt + ' (' + rec.child_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -343,7 +332,7 @@
             saveIndex = $element.index();
         });
     </script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

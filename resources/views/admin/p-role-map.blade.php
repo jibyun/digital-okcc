@@ -16,7 +16,7 @@
     <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege Mapping']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='privilegesCombo' class="form-group form-control mr-3">
+            <select id='privilegesCombo' class="form-group form-control mr-2" style="width: 180px">
             </select>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" title="Describe" data-content="">
                 <i class="fa fa-question" aria-hidden="true"></i>
@@ -27,7 +27,7 @@
             <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
                 <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
             </button>    
-            @include('admin.includes.export')                
+            @include('admin.includes.export', [ 'router' => 'admin.export.privilegerolemaps' ])               
         </div>
     </div>
 
@@ -37,19 +37,17 @@
             data-search="true" 
             data-search-on-enter-key="true"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, 100, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
+            data-page-list="[5, 10, 25, ALL]" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="role_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.role_id') }}</th>
-                <th data-field="role_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.role_name') }}</th>
-                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">{{ __('messages.adm_table.memo') }}</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="role_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.role_id') }}</th>
+                <th data-field="role_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.role_name') }}</th>
+                <th data-field="role_memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -58,18 +56,11 @@
     @include('admin.includes.p-role-map.show')
     @include('admin.includes.p-role-map.delete')
     @include('admin.includes.p-role-map.deleteall')
-    <input id="signup-token" name="_token" type="hidden" value="{{csrf_token()}}">
 </div>
 {{-- End Container --}}
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
     <script type="text/javascript">
         // variables
         var $table = $('#mainTable');
@@ -217,14 +208,14 @@
                         toastr.error('There are no more data to add!', 'Warning');
                     } else {
                         $addTable.bootstrapTable( 'load', { data: data["roles"] } );
-                        $('#add-item').modal({show:true});
+                        $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
                     }
                 }
             });
         }
 
         // Save button was pressed after selecting roles to add.
-        $(".add-roles").click(function(e){
+        $(".crud-submit").click(function(e){
             event.preventDefault();
             var selection = $addTable.bootstrapTable('getSelections');
             if (selection) { // if selected items are more than one?
@@ -311,7 +302,7 @@
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
-                $("#deleteall-item").modal('show');
+                $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 toastr.error('There is nothing to delete.', 'Failed');
             }
@@ -322,17 +313,14 @@
             saveId = Number(rec.id);
 
             if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
-                dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
                 dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -341,7 +329,7 @@
             saveIndex = $element.index();
         });
     </script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

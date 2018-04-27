@@ -18,7 +18,7 @@
         <button id="createNewRecord" class="btn btn-info mr-1" type="button" title="Create">
             <i class="fa fa-fw fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create_member') }}
         </button>
-        @include('admin.includes.export')
+        @include('admin.includes.export', [ 'router' => 'admin.export.members' ])  
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -28,45 +28,43 @@
             data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="first_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.first_name') }}</th>
-                <th data-field="middle_name" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.middle_name') }}</th>
-                <th data-field="last_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.last_name') }}</th>
-                <th data-field="kor_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.kor_name') }}</th>
-                <th data-field="dob" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.dob') }}</th>
-                <th data-field="gender" data-width="60px" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.gender') }}</th>
-                <th data-field="email" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.email') }}</th>
-                <th data-field="tel_home" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_home') }}</th>
-                <th data-field="tel_cell" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_cell') }}</th>
-                <th data-field="tel_office" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.tel_office') }}</th>
-                <th data-field="address" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.address') }}</th>
-                <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.postal') }}</th>
-                <th data-field="city_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.city_id') }}</th>
-                <th data-field="city_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.city_name') }}</th>
-                <th data-field="province_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.province_id') }}</th>
-                <th data-field="province_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.province_name') }}</th>
-                <th data-field="country_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.country_id') }}</th>
-                <th data-field="country_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.country_name') }}</th>
-                <th data-field="status_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.status_id') }}</th>
-                <th data-field="status_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.status_name') }}</th>
-                <th data-field="level_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.level_id') }}</th>
-                <th data-field="level_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.level_name') }}</th>
-                <th data-field="duty_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_id') }}</th>
-                <th data-field="duty_name" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.duty_name') }}</th>
-                <th data-field="photo" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.photo') }}</th>
-                <th data-field="primary" data-filter-control="select" data-formatter="primaryFormatter" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.primary') }}</th>
-                <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.register_at') }}</th>
-                <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.baptism_at') }}</th>
-                <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents">{{ __('messages.adm_table.clone_btn') }}</th>
-                <th data-field="edit" data-width="45px" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
-                <th data-field="delete" data-width="45px" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
+                <th data-field="middle_name" data-sortable="true" data-visible="false" data-searchable="false">{{ __('messages.adm_table.middle_name') }}</th>
+                <th data-field="last_name"  data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
+                <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                <th data-field="dob" data-sortable="true">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="gender" data-width="60px" data-sortable="true" data-searchable="false">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="email">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="tel_home">{{ __('messages.adm_table.tel_home') }}</th>
+                <th data-field="tel_cell">{{ __('messages.adm_table.tel_cell') }}</th>
+                <th data-field="tel_office" data-visible="false" data-searchable="false">{{ __('messages.adm_table.tel_office') }}</th>
+                <th data-field="address" data-visible="false" data-searchable="false">{{ __('messages.adm_table.address') }}</th>
+                <th data-field="postal_code" data-visible="false" data-searchable="false">{{ __('messages.adm_table.postal') }}</th>
+                <th data-field="city_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.city_id') }}</th>
+                <th data-field="city_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.city_name') }}</th>
+                <th data-field="province_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.province_id') }}</th>
+                <th data-field="province_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.province_name') }}</th>
+                <th data-field="country_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.country_id') }}</th>
+                <th data-field="country_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.country_name') }}</th>
+                <th data-field="status_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.status_id') }}</th>
+                <th data-field="status_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.status_name') }}</th>
+                <th data-field="level_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.level_id') }}</th>
+                <th data-field="level_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.level_name') }}</th>
+                <th data-field="duty_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.duty_id') }}</th>
+                <th data-field="duty_name" data-visible="false" data-searchable="false">{{ __('messages.adm_table.duty_name') }}</th>
+                <th data-field="photo" data-visible="false" data-searchable="false">{{ __('messages.adm_table.photo') }}</th>
+                <th data-field="primary" data-formatter="primaryFormatter" data-visible="false" data-searchable="false">{{ __('messages.adm_table.primary') }}</th>
+                <th data-field="register_at" data-visible="false" data-searchable="false">{{ __('messages.adm_table.register_at') }}</th>
+                <th data-field="baptism_at" data-visible="false" data-searchable="false">{{ __('messages.adm_table.baptism_at') }}</th>
+                <th data-field="clone" data-width="45px" data-formatter="cloneFormatter" data-events="cloneEvents" data-searchable="false">{{ __('messages.adm_table.clone_btn') }}</th>
+                <th data-field="edit" data-width="45px" data-formatter="editFormatter" data-events="editEvents" data-searchable="false">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="45px" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -76,12 +74,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
 
     <script type="text/javascript">
         const $table = $('#table');
@@ -514,6 +506,4 @@
     {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection
