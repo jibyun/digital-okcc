@@ -96,7 +96,9 @@ function loadTable(url) {
 function memberListSuccess(response) {
     var tableData = JSON.parse(response.data);
     var table = $('#bt_table');
-    table.bootstrapTable('load', tableData);
+    table.bootstrapTable('load', tableData.members);
+    // Update manager info
+    $('#member_header_panel').text(tableData.managerInfo);
     showMainConent();
 }
 

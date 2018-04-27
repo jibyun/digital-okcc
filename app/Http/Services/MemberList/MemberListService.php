@@ -5,6 +5,7 @@ namespace App\Http\Services\MemberList;
 use App\Member;
 use App\Code_Category;
 use App\Code;
+use App\Member_Department_Map;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -13,19 +14,20 @@ use Illuminate\Support\Facades\Log;
  */
 class MemberListService
 {
+    // This is language setting and it is test purpose only.
+    private $language = "EN";
+
     function __construct() {
-        
     }
 
     /**
      * Retrieve all members
      */
     public function getAllMembers() {
-        $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
-                                'codeByCityId','codeByProvinceId','codeByCountryId'])
+        $members = CommonService::getMemberListWithCodeValue()
                                 ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
                                 ->get();
-        return $member;
+        return $members;
     }
 
     /**
@@ -47,24 +49,23 @@ class MemberListService
     public function getMemberList($code) {
         $category = $this->findCategoryByCode($code);
         $field = $this->findFieldByCode($code);
+        $members = '';
         //TODO: replace the 5, 10 to something else
         if ($category->code_category_id  == 5
             || $category->code_category_id == 10) {
-            $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId', 'departmentId',
-                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
-                                    ->whereHas('departmentId', function($query) use ($code) {
-                                        $query -> where('department_id', $code);
-                                      })
-                                    ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
-                                    ->get();
+            $members = CommonService::getMemberListWithCodeValue()
+                                ->whereHas('departmentId', function($query) use ($code) {
+                                    $query -> where('department_id', $code);
+                                    })
+                                ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
+                                ->get();
         } else {
-            $member = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
-                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
+            $members = CommonService::getMemberListWithCodeValue()
                                     ->where($field, $code)
                                     ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
                                     ->get();
         }
-        return $member;
+        return $members;
     }
 
     /**
@@ -94,6 +95,47 @@ class MemberListService
             array_push ($bookmark_result, $menu);
         }
         return $bookmark_result;
+    }
+
+    /**
+     * Get manager info string
+     * It reads the Member_Department_Map table and build the manager info string
+     * 
+     * @param code
+     * @return string position:name | position:name | .....
+     */
+    public function getManagerInfo($code) {
+        $fieldName = "txt";
+        if ($this->language !== "EN") {
+            $fieldName = "kor_txt";
+        }
+        $result = '';
+        $members = Member_Department_Map::where('department_id', $code)->where('manager', true)
+                                        ->select('member_id', 'position_id')
+                                        ->orderBy('position_id', 'asc')
+                                        ->get();
+        LOG::debug($members);                                  
+        foreach($members as $member) {
+            $positionName = Code::where('id', $member->position_id)
+                                ->select(DB::raw($fieldName . ' as name'))
+                                ->first();
+            $memberName = '';
+            if ($this->language === "EN") {
+                $memberName = Member::where('id', $member->member_id)
+                                    ->select(DB::raw("CONCAT(first_name,' ',last_name) as name"))
+                                    ->first();
+            } else {
+                $memberName = Member::where('id', $member->member_id)
+                                    ->select(DB::raw('kor_name as name'))
+                                    ->first();
+            }
+
+            if ($result !== '') {
+                $result = $result . " | ";
+            }
+            $result = $result . $positionName->name . ": " . $memberName->name;
+        }
+        return $result;
     }
 
     /**
@@ -272,7 +314,6 @@ class MemberListService
         $category = $this->findCategoryByCode($code);
         $fieldName = Code_category::where('id', $category->code_category_id)->select('fieldName')->first();
         return $fieldName->fieldName;
-
     }
 
     /**
