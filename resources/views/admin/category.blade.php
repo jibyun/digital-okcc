@@ -282,11 +282,6 @@
                 form.find("#editForm").attr("action", url + '/' + rec.id);
                 $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
-                var showId = $("#deleteBody");
-                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='fieldName']").text(rec.fieldName);
-                showId.find("span[name='memo']").html(rec.memo);
-                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {

@@ -17,50 +17,36 @@
     <table  id="table" class="table table-striped table-bordered" 
             data-side-pagination="client"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, 100, ALL]" 
-            data-mobile-responsive="true" 
+            data-page-list="[5, 10, 25, 50, ALL]" 
             data-click-to-select="true" 
-            data-filter-control="true" 
             data-row-style="rowStyle">
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="first_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.first_name') }}</th>
-                <th data-field="middle_name" data-filter-control="select" data-sortable="true" scope="col" data-visible="false">{{ __('messages.adm_table.middle_name') }}</th>
-                <th data-field="last_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.last_name') }}</th>
-                <th data-field="kor_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.kor_name') }}</th>
-                <th data-field="dob" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.dob') }}</th>
-                <th data-field="gender" data-width="60px" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.gender') }}</th>
-                <th data-field="email" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.email') }}</th>
-                <th data-field="tel_home" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_home') }}</th>
-                <th data-field="tel_cell" data-filter-control="select" data-sortable="false" scope="col">{{ __('messages.adm_table.tel_cell') }}</th>
-                <th data-field="tel_office" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.tel_office') }}</th>
-                <th data-field="address" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.address') }}</th>
-                <th data-field="postal_code" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.postal') }}</th>
-                <th data-field="register_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.register_at') }}</th>
-                <th data-field="baptism_at" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">{{ __('messages.adm_table.baptism_at') }}</th>
-                <th data-field="xid" data-filter-control="select" data-sortable="false" scope="col" data-visible="false"></th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
+                <th data-field="middle_name" data-sortable="true" data-visible="false" data-searchable="false">{{ __('messages.adm_table.middle_name') }}</th>
+                <th data-field="last_name" data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
+                <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                <th data-field="dob" data-sortable="true">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="gender" data-width="60px" data-sortable="true" data-searchable="false">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="email">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="tel_home">{{ __('messages.adm_table.tel_home') }}</th>
+                <th data-field="tel_cell">{{ __('messages.adm_table.tel_cell') }}</th>
+                <th data-field="tel_office" data-visible="false" data-searchable="false">{{ __('messages.adm_table.tel_office') }}</th>
+                <th data-field="address" data-visible="false" data-searchable="false">{{ __('messages.adm_table.address') }}</th>
+                <th data-field="postal_code" data-visible="false" data-searchable="false">{{ __('messages.adm_table.postal') }}</th>
+                <th data-field="register_at" data-visible="false" data-searchable="false">{{ __('messages.adm_table.register_at') }}</th>
+                <th data-field="baptism_at" data-visible="false" data-searchable="false">{{ __('messages.adm_table.baptism_at') }}</th>
+                <th data-field="xid" data-visible="false" data-searchable="false"></th>
             </tr>
         </thead>
     </table>
-
-    @include('admin.includes.categories.create')
-    @include('admin.includes.categories.edit')
-    @include('admin.includes.categories.show')
-    @include('admin.includes.categories.delete')
-    @include('admin.includes.categories.order')
-
 </div>
 {{-- End Container --}}
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
+
     <script type="text/javascript">
         const CELL_CATEGORY = 10;
         const NOT_ASSIGN = 999999;
@@ -254,7 +240,4 @@
         }
     </script>
 
-    </script>
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

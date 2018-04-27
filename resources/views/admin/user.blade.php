@@ -9,33 +9,31 @@
 <div class='container p-4'>
     <h4>{{ __('messages.adm_title.title', ['title' => 'User']) }}</h4>
     <div id="toolbar">
-        <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
+        <button class="btn btn-info mr-1" type="button" title="Create" id='create-button'>
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.register') }}
         </button>
-        @include('admin.includes.export')
+        @include('admin.includes.export', [ 'router' => 'admin.export.users' ])    
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
-            data-toolbar="#toolbar"
+    data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
             data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" scope="col" data-searchable="false" data-search-formatter="false" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.user_name') }}</th>
-                <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.email') }}</th>
-                <th data-field="member_id" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
-                <th data-field="member_name" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
-                <th data-field="privilege_id" scope="col" data-searchable="false" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
-                <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">{{ __('messages.adm_table.privilege_name') }}</th>
+                <th data-field="id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="name" data-width="25%" data-sortable="true">{{ __('messages.adm_table.user_name') }}</th>
+                <th data-field="email" data-width="43%" data-sortable="true">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="member_id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
+                <th data-field="member_name" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
+                <th data-field="privilege_id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
+                <th data-field="privilege_name" data-sortable="true">{{ __('messages.adm_table.privilege_name') }}</th>
                 <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-searchable="false" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
                 <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-searchable="false" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
@@ -52,13 +50,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
-
     <script type="text/javascript">
         const $table = $('#table');
         const listURL = "{!! route('admin.users.get-users') !!}";
@@ -66,6 +57,7 @@
         var users;
         var saveIndex; // Row index of the table
         var saveId; // Primary key of the table
+        var saveName, saveEmail;
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -79,7 +71,7 @@
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
+                '<a href="#"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -191,7 +183,7 @@
         reloadList();
 
         // pressed save register button
-        $(".crud-register").click(function(e){
+        $(".crud-submit").click(function(e){
             e.preventDefault();
             var formId = $("#create-item");
             var form_action = formId.find("form").attr("action");
@@ -267,8 +259,8 @@
             var formId = $("#edit-item");
             var form_action = formId.find("form").attr("action");
             var postData = {
-                name: $("#deleteBody").find("span[name='name']").text(),
-                email: $("#deleteBody").find("span[name='email']").text() + "__DELETED USER!!!",
+                name: saveName,
+                email: saveEmail + "__DELETED USER!!!",
             };
             $.ajax({
                 dataType: 'json',
@@ -293,6 +285,10 @@
             });
         });
 
+        $('#create-button').click( function(e) {
+            $("#create-item").modal('show').draggable({ handle: ".modal-header" });
+        });
+
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
@@ -303,16 +299,14 @@
                 // VERY IMPORTANT!!! If you use chosen, when you want to change a selection, you have to add .trigger('chosen:updated')
                 $('#editMemberCombo').val(rec.member_id).trigger('chosen:updated');
                 $('#editPrivilegeCombo').val(rec.privilege_id).trigger('chosen:updated');
+                $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
                 form.find("#editForm").attr("action", basicURL + '/' + rec.id);
             } else if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='name']").text(rec.name);
-                dispId.find("span[name='email']").text(rec.email);
-                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
-                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
+                saveName = rec.name;
+                saveEmail = rec.email;
                 $("#edit-item").find("#editForm").attr("action", basicURL + '/' + rec.id);
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='name']").text(rec.name);
@@ -320,7 +314,7 @@
                 dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
                 dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -332,7 +326,7 @@
 
     {{-- Chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
-    
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+ 
 @endsection
