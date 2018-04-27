@@ -155,30 +155,24 @@
 
         // fill autocomplete list of members
         function getDataforCombo() {
-            $.ajax({
-                dataType: 'json',
-                url: memberListURL + '?table=members',
-                success: function(data) { 
-                    parentList = data['members'];
-                    fillMemberCombo($combo, data['members']);
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=members' })
+            .done ( function(data, textStatus, jqXHR) { 
+                parentList = data['members'];
+                fillMemberCombo($combo, data['members']);
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
         // Get list from server and fill combobox
         function getRelationList() {
-            $.ajax({
-                dataType: 'json',
-                url: codesUrl + '?category_id=' + RELATION_CODE,
-                success: function(data) { // What to do if we succeed
-                    relationList = data['codes'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + RELATION_CODE })
+            .done ( function(data, textStatus, jqXHR) { 
+                relationList = data['codes'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }  
 
@@ -186,20 +180,17 @@
         function reloadList() {
             $('#addMemberCombo').val('').trigger('chosen:updated');
             $('#addRelationCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: familyTreesUrl + '?parent_id=' + currentParentId,
-                success: function(data) { // What to do if we succeed
-                    if (data['result'].length > 0) {
-                        $table.bootstrapTable( 'load', { data: data['result'] } );
-                    } else {
-                        $table.bootstrapTable( 'removeAll' );
-                    } 
-                    childLists = data['result'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: familyTreesUrl + '?parent_id=' + currentParentId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['result'].length > 0) {
+                    $table.bootstrapTable( 'load', { data: data['result'] } );
+                } else {
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+                childLists = data['result'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -248,19 +239,18 @@
         // click addChild button
         function addChild() {
             if (currentParentId) {
-                $.ajax({
-                    dataType: 'json',
-                    method:'GET',
-                    url: getCodesNotInChild + '?parent_id=' + currentParentId,
-                    success: function(data) {
-                        if (data.length < 1) {
-                            toastr.error('There are no more data to add!', 'Warning');
-                        } else {
-                            fillAddMemberCombo($('#addMemberCombo'), data["members"]);
-                            fillAddRelationCombo($('#addRelationCombo'), relationList);
-                            $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
-                        }
+                $.ajax({ dataType: 'json', timeout: 3000, method:'GET', url: getCodesNotInChild + '?parent_id=' + currentParentId })
+                .done ( function(data) {
+                    if (data.length < 1) {
+                        nomoreDataError();
+                    } else {
+                        fillAddMemberCombo($('#addMemberCombo'), data["members"]);
+                        fillAddRelationCombo($('#addRelationCombo'), relationList);
+                        $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
                     }
+                })
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
                 });
             }
         }
@@ -301,26 +291,22 @@
                 child_relation_name: relationCombo.find('option:selected').text(),
             }
 
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", tableData); // Add input data to table
-                        $('#addForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", tableData); // Add input data to table
+                    $('#addForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });    
 
@@ -328,20 +314,19 @@
         // Delete button was pressed
         $(".crud-delete").click(function(e){
             event.preventDefault();
-            $.ajax({
-                dataType: 'json',
-                type:'delete',
-                url: familyTreesUrl + '/' + saveId,
-                success: function(data) {
-                    if (data.errors) {
-                        toastr.error(data.errors, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: familyTreesUrl + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -352,19 +337,15 @@
                 var deferreds = [];
                 $.each(childLists, function(index, item) {
                     deferreds.push(
-                        $.ajax({
-                            dataType: 'json',
-                            type:'delete',
-                            url: familyTreesUrl + '/' + item['id'],
-                        })
+                        $.ajax({ dataType: 'json', type:'delete', timeout: 3000, url: familyTreesUrl + '/' + item['id'] })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
-                    toastr.success('Data was successfully saved.', 'Success');
+                    saveSuccessMessage();
                     $(".modal").modal('hide'); // hide model form
                     reloadList();
                 }).fail(function(e){
-                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                    deleteSuccessMessage();
                 });
             }
         });

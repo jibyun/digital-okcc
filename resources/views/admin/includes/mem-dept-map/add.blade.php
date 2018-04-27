@@ -44,6 +44,22 @@
                             </div>
                         </div>
                     </div>
+                    {{--  Manager  --}}
+                    <div class="form-group row">
+                        <label for="manager" class="col-sm-3 col-form-label text-right">{{ __('messages.adm_table.manager') }}</label>
+                        <div class="btn-group col-sm-9">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="manager" id="manager1" value="1">{{ __('messages.adm_table.manager_input') }}
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="manager" id="manager2" value="0" checked>{{ __('messages.adm_table.nomanager_input') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row py-2">
                         <div class="col-sm-3 text-right py-2">{{ __('messages.adm_table.updated_by_name') }}</div>
                         <div class="col-sm-8 rounded bg-light py-2" style="margin-left: 20px"><span class="align-middle" name="users"></span></div>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Code_Category;
 use App\Http\Services\Log\SystemLog;
-use Exception;
+
 
 class Code_CategoriesController extends Controller {
     private $TABLE_NAME = "CODE_CATEGORIES";

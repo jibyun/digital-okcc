@@ -173,6 +173,7 @@ return [
         'category_name'         => 'Category Name',
         'category_kname'        => '카테고리명',
         'enable'                => 'Enable',
+        'manager'               => 'Manager',
         'field_name'            => 'Field Name',
         'memo'                  => 'Memo',
         'order'                 => 'Sort Order',
@@ -272,5 +273,7 @@ return [
         'upload_btn'            => 'Upload Image',
         'enable_input'          => 'Enable',
         'disable_input'         => 'Disable',
+        'manager_input'         => 'Team Manager',
+        'nomanager_input'       => 'Team Member',
     ],
 ];

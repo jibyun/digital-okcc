@@ -112,7 +112,7 @@
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
-            })
+            });
         }  
 
         // Get list from server and show
@@ -155,7 +155,7 @@
             })
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
-            })
+            });
         });
 
         // Edit 후 Submit 버튼을 눌렀다
@@ -172,7 +172,7 @@
                 memo: formId.find("textarea[name='memo']").val() 
             };
 
-            $.ajax({ dataType: 'json', timeout: 5000, method:'PUT', data: postData, url: url + '/' + saveId })
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: url + '/' + saveId })
             .done ( function(data) {
                 if (data.code == 'validation') {
                     validationMessage( data.errors );
@@ -188,7 +188,7 @@
             })
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
-            })
+            });
         });
 
         // Delete 버튼을 눌렀다.
@@ -206,7 +206,7 @@
             })
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
-            })
+            });
         });
 
         // display order를 바꿀 때마다 발생한다. (drar & drop)

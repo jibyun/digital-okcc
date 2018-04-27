@@ -46,14 +46,30 @@ function errorMessage( jqXHR ) { // jqXHR.status, jqXHR.statusText, jqXHR.respon
 
 function validationMessage( errors ) {
     var message = '';
-    for (i=0; i < data.errors.length; i++) {
-        message += data.errors[i] + ( i < data.errors.length -1 ? ' : ' : '' );
+    for (var i=0; i < errors.length; i++) {
+        message += errors[i] + ( i < errors.length -1 ? ' : ' : '' );
     } 
     toastr.error( message, 'Validation Failled!' );
 }
 
 function exceptionMessage( status, errors ) {
     toastr.error( 'Exception Status: ' + status + ' Status Text: ' + errors, 'Error Exception!' );
+}
+
+function saveErrorMessage() {
+    toastr.error( 'Error occured! Please Save again.', 'Save Failed!' );
+}
+
+function nomoreDataMessage() {
+    toastr.warning('There are no more data to add!', 'Warning');
+}
+
+function nomoreDeleteMessage() {
+    toastr.error('There is nothing to delete.', 'Failed');
+}
+
+function selectMemberMessage() {
+    toastr.warning("Select a Member first!", 'Warning');
 }
 
 function saveSuccessMessage() {
