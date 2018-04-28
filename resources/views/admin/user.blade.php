@@ -104,16 +104,13 @@
         function reloadList() {
             $('#createMemberCombo').val('').trigger('chosen:updated');
             $('#createPrivilegeCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: listURL + '?table=users',
-                success: function(data) { 
-                    users = data['users'];
-                    $table.bootstrapTable( 'load', { data: users } );
-                }, 
-                fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=users' })
+            .done ( function(data, textStatus, jqXHR) { 
+                users = data['users'];
+                $table.bootstrapTable( 'load', { data: users } );
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -151,30 +148,21 @@
 
         // fill autocomplete list of members and privilege
         function getDataforCombo() {
-            var deferreds = [];
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=members',
-                    success: function(data) { 
-                        fillMemberCombo($('#createMemberCombo'), data['members']);
-                        fillMemberCombo($('#editMemberCombo'), data['members']);
-                    },
+            $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=members' })
+            .done ( function(data, textStatus, jqXHR) { 
+                fillMemberCombo($('#createMemberCombo'), data['members']);
+                fillMemberCombo($('#editMemberCombo'), data['members']);
+                $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=privileges' })
+                .done ( function(data, textStatus, jqXHR) { 
+                    fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
+                    fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
                 })
-            );
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=privileges',
-                    success: function(data) { 
-                        fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
-                        fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
-                    },
-                })
-            );
-            $.when.apply($, deferreds).then( function() {
-            }).fail(function(e){
-                toastr.error('Error occured! Please Save again. message:' + e.message, 'Failed');
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
+                });
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
@@ -194,26 +182,23 @@
                 member_id: $('#createMemberCombo').val(),
                 privilege_id: $('#createPrivilegeCombo').val() 
             };
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#createForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", postData); // Add input data to table
+                    $('#createForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -230,26 +215,23 @@
                 privilege_id: $('#editPrivilegeCombo').val(),
                 privilege_name: $('#editPrivilegeCombo option:selected').text(),
             };
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: basicURL + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $('#editForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -262,26 +244,22 @@
                 name: saveName,
                 email: saveEmail + "__DELETED USER!!!",
             };
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: basicURL + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $('#editForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -300,7 +278,6 @@
                 $('#editMemberCombo').val(rec.member_id).trigger('chosen:updated');
                 $('#editPrivilegeCombo').val(rec.privilege_id).trigger('chosen:updated');
                 $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
-                form.find("#editForm").attr("action", basicURL + '/' + rec.id);
             } else if (column === 'delete') {
                 saveName = rec.name;
                 saveEmail = rec.email;

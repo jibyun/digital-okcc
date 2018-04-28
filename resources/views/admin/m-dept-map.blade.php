@@ -39,6 +39,7 @@
                 <th data-field="position_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.position_id') }}</th>
                 <th data-field="position_name">{{ __('messages.adm_table.position_name') }}</th>
                 <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter" data-searchable="false">{{ __('messages.adm_table.enable') }}</th>
+                <th data-field="manager" data-formatter="managerFormatter" data-searchable="false">{{ __('messages.adm_table.manager') }}</th>
                 <th data-field="updated_by" data-visible="false" data-searchable="false">{{ __('messages.adm_table.updated_by') }}</th>
                 <th data-field="updated_by_name">{{ __('messages.adm_table.updated_by_name') }}</th>
                 <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents" data-searchable="false">{{ __('messages.adm_table.edit_btn') }}</th>
@@ -86,9 +87,12 @@
 
         // column(name: enabled) initialize: display 'Enabled' or 'Disabled' instead of '1' or '0'
         function enabledFormatter(value, row, index) {
-            if (value === 1) { return 'Enabled'; } else { return 'Disabled'; }
+            if (value === 1) { return '{{ __('messages.adm_table.enable_input') }}'; } else { return '{{ __('messages.adm_table.disable_input') }}'; }
         }
 
+        function managerFormatter(value, row, index) {
+            if (value === 1) { return '{{ __('messages.adm_table.manager_input') }}'; } else { return '{{ __('messages.adm_table.nomanager_input') }}'; }
+        }
         // Row Style of main table
         function rowStyle(row, index) {
             return { css: { "padding": "0px 10px" } };
@@ -167,45 +171,36 @@
 
         // fill autocomplete list of members
         function getDataforCombo() {
-            $.ajax({
-                dataType: 'json',
-                url: memberListURL + '?table=members',
-                success: function(data) { 
-                    parentList = data['members'];
-                    fillMemberCombo($combo, data['members']);
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=members' })
+            .done ( function(data, textStatus, jqXHR) { 
+                parentList = data['members'];
+                fillMemberCombo($combo, data['members']);
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
         // Get list from server and fill combobox
         function getCodeList( category_id ) {
-            $.ajax({
-                dataType: 'json',
-                url: codesUrl + '?category_id=' + category_id,
-                success: function(data) { // What to do if we succeed
-                    category_id === DEPARTMENT_CODE ? departmentList = data['codes'] : positionList = data['codes'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + category_id })
+            .done ( function(data, textStatus, jqXHR) { 
+                category_id === DEPARTMENT_CODE ? departmentList = data['codes'] : positionList = data['codes'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }  
 
         // get current user info
         function getCurrentInfo() {
-            $.ajax({
-                dataType: 'json',
-                url: "{!! route('admin.users.get-current-users') !!}",
-                success: function(data) { 
-                    userName = data['user']['name'];
-                    userId = data['user']['id'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.users.get-current-users') !!}" })
+            .done ( function(data, textStatus, jqXHR) { 
+                userName = data['user']['name'];
+                userId = data['user']['id'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
@@ -213,21 +208,19 @@
         function reloadList() {
             $('#addDepartmentCombo').val('').trigger('chosen:updated');
             $('#addPositionCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: memDeptTreesUrl + '?parent_id=' + currentParentId,
-                success: function(data) { // What to do if we succeed
-                    if (data['result'].length > 0) {
-                        $table.bootstrapTable( 'load', { data: data['result'] } );
-                    } else {
-                        $table.bootstrapTable( 'removeAll' );
-                    } 
-                    childLists = data['result'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: memDeptTreesUrl + '?parent_id=' + currentParentId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['result'].length > 0) {
+                    $table.bootstrapTable( 'load', { data: data['result'] } );
+                } else {
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+                childLists = data['result'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
+
         } 
 
         function fillCodeCombo(comboBox, lists) {
@@ -260,7 +253,7 @@
                 $('#add-item').find('span[name=users]').text(userName);
                 $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
             } else {
-                toastr.warning("Select a Member first!", 'Warning');
+                selectMemberMessage();
             }
         }
 
@@ -277,30 +270,27 @@
                 position_id: $('#addPositionCombo').val(), 
                 position_name: $('#addPositionCombo').find('option:selected').text(),
                 enabled: Number(formId.find("input[name='enabled']:checked").val()),
+                manager: Number(formId.find("input[name='manager']:checked").val()),
                 updated_by: userId,
                 updated_by_name: userName,
             };
 
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#addForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", postData); // Add input data to table
+                    $('#addForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });    
 
@@ -316,49 +306,45 @@
                 position_id: $('#editPositionCombo').val(), 
                 position_name: $('#editPositionCombo').find('option:selected').text(),
                 enabled: Number(formId.find("input[name='enabled']:checked").val()),
+                manager: Number(formId.find("input[name='manager']:checked").val()),
                 updated_by: userId,
                 updated_by_name: userName,
             };
 
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: memDeptTreesUrl + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
         // Delete button was pressed
         $(".crud-delete").click(function(e){
             event.preventDefault();
-            $.ajax({
-                dataType: 'json',
-                type:'delete',
-                url: memDeptTreesUrl + '/' + saveId,
-                success: function(data) {
-                    if (data.errors) {
-                        toastr.error(data.errors, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: memDeptTreesUrl + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -376,8 +362,8 @@
                 $('#editDepartmentCombo').val(rec.department_id).trigger('chosen:updated');
                 $('#editPositionCombo').val(rec.position_id).trigger('chosen:updated');
                 form.find("input[name='enabled'][value='" + rec.enabled + "']").prop('checked', true);
+                form.find("input[name='manager'][value='" + rec.manager + "']").prop('checked', true);
                 form.find("span[name='users']").text(rec.updated_by_name + ' -> ' + userName );
-                form.find("#editForm").attr("action", memDeptTreesUrl + '/' + rec.id);
                 $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
                 // Open Bootstrap Model without Button Click
@@ -386,7 +372,8 @@
                 var dispId = $("#showBody");
                 dispId.find("span[name='department_name']").text(rec.department_name + ' (' + rec.department_id + ')');
                 dispId.find("span[name='position_name']").text(rec.position_name + ' (' + rec.position_id + ')');
-                dispId.find("span[name='enabled']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                dispId.find("span[name='enabled']").text( rec.enabled === 1 ? "{{ __('messages.adm_table.enable_input') }}" : "{{ __('messages.adm_table.disable_input') }}" );
+                dispId.find("span[name='manager']").text( rec.manager === 1 ? "{{ __('messages.adm_table.manager_input') }}" : "{{ __('messages.adm_table.nomanager_input') }}" );
                 dispId.find("span[name='updated_by']").text(rec.updated_by_name + ' (' + rec.updated_by + ')');
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show').draggable({ handle: ".modal-header" });
