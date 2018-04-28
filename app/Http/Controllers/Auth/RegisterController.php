@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Exception;
 
 use App\User;
 use App\Http\Services\Log\SystemLog;
@@ -64,13 +65,9 @@ class RegisterController extends Controller {
             'email.required'        => 'The email field can not be blank.',
         ]);
         $input['password'] = Hash::make($request->password);
+
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
             try {
                 $user = User::create($input);
@@ -78,19 +75,9 @@ class RegisterController extends Controller {
                     SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $user->id); 
                 }
                 $user->notify(new UserRegistered($user));
-                return response()
-                    ->json([
-                        'message' => 'Successfully created a new account.',
-                        'user' => $user,
-                        'status' => 200
-                    ], 200);
-            } catch (\Exception $exception) {
-                logger()->error($exception);
-                return response()
-                    ->json([
-                        'errors' => $exception,
-                        'message' => 'Failed',
-                    ], 200);
+                return response()->json([ 'user' => $user ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
             }
         }
     }

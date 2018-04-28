@@ -24,6 +24,7 @@ class CreateMemberDepartmentMapsTable extends Migration
             $table->unsignedInteger('position_id')->nullable()->comment('Foreign Key: ID of Codes Table');
             $table->boolean('enabled')->default(true)->comment('이 코드가 활성화 되었는지를 식별함'); 
             $table->unsignedInteger('updated_by')->nullable()->comment('Foreign Key: ID of Users Table');
+            $table->boolean('manager')->default(false)->comment('부서장인 경우 True롤 지정함'); 
 
             $table->timestamps();
 

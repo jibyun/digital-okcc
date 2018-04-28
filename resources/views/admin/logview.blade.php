@@ -130,13 +130,12 @@
             var to = $("#to").find('input[name=to]').val();
             var log = $('#log').val() ? $('#log').val() : '';
             var user = $('#user').val() ? $('#user').val() : '';
-            $.ajax({ dataType: 'json', url: baseURL + '?from=' + from + '&to=' + to + '&code_id=' + log + '&user_id=' + user,
-                success: function(data) { 
-                    $table.bootstrapTable( 'load', { data: data['logs'] } );
-                }, 
-                fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error('Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: baseURL + '?from=' + from + '&to=' + to + '&code_id=' + log + '&user_id=' + user })
+            .done ( function(data, textStatus, jqXHR) { 
+                $table.bootstrapTable( 'load', { data: data['logs'] } );
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 

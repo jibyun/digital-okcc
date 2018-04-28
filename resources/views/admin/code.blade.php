@@ -112,26 +112,23 @@
 
         // Reload data from server and refresh table
         function reloadList() {
-            $.ajax({
-                dataType: 'json',
-                url: url + '?category_id=' + currentCategoryId,
-                success: function(data) { // What to do if we succeed
-                    if (data['codes'].length > 0) {
-                        if (data['max_order'].length != 0) { maxOrder = ++data['max_order']; } else { maxOrder = 1; }
-                        maxId = ++data['max_id'];
-                        codes = data['codes'];
-                        $table.bootstrapTable( 'load', { data: codes } );
-                    } else {
-                        maxOrder = 1;
-                        maxId = currentCategoryId * 10000 + 1;
-                        codes = '';
-                        $table.bootstrapTable( 'removeAll' );
-                    } 
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error( 'Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!' );
-                }
-            });
+            $.ajax({ dataType: 'json', timeout: 3000, url: url + '?category_id=' + currentCategoryId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['codes'].length > 0) {
+                    if (data['max_order'].length != 0) { maxOrder = ++data['max_order']; } else { maxOrder = 1; }
+                    maxId = ++data['max_id'];
+                    codes = data['codes'];
+                    $table.bootstrapTable( 'load', { data: codes } );
+                } else {
+                    maxOrder = 1;
+                    maxId = currentCategoryId * 10000 + 1;
+                    codes = '';
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            })
         } 
 
         function buildCategoriesCombo(categories) {
@@ -161,18 +158,15 @@
         function getInitList() {
             initTable();
             // get categories table to ID="categoriesCombo"
-            $.ajax({
-                dataType: 'json',
-                url: "{!! route('admin.categories.index') !!}",
-                success: function(data) { // What to do if we succeed
-                    var categories = data['categories'];
-                    currentCategoryId = categories[0]['id'];
-                    buildCategoriesCombo(categories);
-                    reloadList();
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error( 'Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!' );
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.categories.index') !!}" })
+            .done ( function(data, textStatus, jqXHR) { 
+                var categories = data['categories'];
+                currentCategoryId = categories[0]['id'];
+                buildCategoriesCombo(categories);
+                reloadList();
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }  
 
@@ -196,26 +190,22 @@
                 sysmetic: 0 
             };
 
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#createForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", postData); // Add input data to table
+                    $('#createForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -235,45 +225,40 @@
                 sysmetic: 0
             };
 
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 5000, method:'PUT', data: postData, url: url + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $('#editForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
         // Delete 버튼을 눌렀다.
         $("body").on("click", ".crud-delete", function() {
-            $.ajax({
-                dataType: 'json',
-                type:'delete',
-                url: url + '/' + saveId,
-                success: function(data) {
-                    if (data.errors) {
-                        toastr.error(data.errors, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: url + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -332,7 +317,6 @@
                 form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
                 form.find("textarea[name='memo']").val(rec.memo);
                 form.find("input[name='order']").val(rec.order);
-                form.find("#editForm").attr("action", url + '/' + rec.id);
                 $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
                 // Open Bootstrap Model without Button Click

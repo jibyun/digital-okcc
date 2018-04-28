@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\User;
 use App\Member;
 use App\Privilege;
@@ -38,30 +40,15 @@ class UsersController extends Controller {
         ]);
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
                 $user = $userUpdate->fill($input)->save();
                 SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
-                return response()
-                    ->json([
-                        'message' => 'Successfully created a new account.',
-                        'user' => $user,
-                        'status' => 200
-                    ], 200);
-            } catch (\Exception $exception) {
-                logger()->error($exception);
-                return response()
-                    ->json([
-                        'errors' => $exception,
-                        'message' => 'Failed',
-                    ], 200);
+                return response()->json([ 'user' => $user ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
             }
         }
     }
