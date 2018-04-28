@@ -3,6 +3,7 @@
 namespace App\Http\Services\Log;
 
 use Illuminate\Exception;
+use Config;
 use App\System_Log;
 
 class SystemLog {
@@ -14,30 +15,23 @@ class SystemLog {
      */
     public static function write($code_id, $memo) {
         switch ($code_id) {
-            case 110001:
+            case Config::get('app.admin.logLogin'):
                 $memo = 'LOGIN ' . $memo;   break;
-            case 110002:
+            case Config::get('app.admin.logLogOut'):
                 $memo = 'LOGOUT ' . $memo;  break;
-            case 110003:
+            case Config::get('app.admin.logInsert'):
                 $memo = 'INSERT ' . $memo;  break;
-            case 110004:
+            case Config::get('app.admin.logUpdate'):
                 $memo = 'UPDATE ' . $memo;  break;
-            case 110005:
+            case Config::get('app.admin.logDelete'):
                 $memo = 'DELETE ' . $memo;  break;
         }
         $input = array( 'code_id' => $code_id, 'user_id' => \Auth::user()->id, 'memo' => $memo);
 
         try {
-            $result = System_Log::create($input);
-            return response()->json( [
-                    'message' => __('messages.log.success_message'),
-                    'result' => $result,
-                    'status' => 200 ], 200);
+            return System_Log::create($input);
         } catch (Exception $ex) {
-            return response()->json([
-                    'errors' => $ex,
-                    'message' => __('messages.log.error_message'),
-                    'status' => 405 ], 200);
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
     }
 
