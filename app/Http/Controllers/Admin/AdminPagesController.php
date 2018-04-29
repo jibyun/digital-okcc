@@ -85,4 +85,8 @@ class AdminPagesController extends Controller {
     public function cellOrginizer() {
         return view('admin.cell');
     }
+
+    public function departmentOrginizer() {
+        return view('admin.department');
+    }
 }

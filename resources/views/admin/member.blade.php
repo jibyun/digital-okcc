@@ -70,12 +70,17 @@
     </table>
 </div>
 @include('admin.includes.members.crop')
+@include('admin.includes.members.delete')
 {{-- End Container --}}
 @endsection
 
 @section('scripts')
 
     <script type="text/javascript">
+        const DELETED_MEMBER = '{{ config('app.admin.deletedMember') }}'; 
+        const MEMBER_STATUS = '{{ config('app.admin.memberStatus') }}'; 
+        const LAYMAN_STATUS = '{{ config('app.admin.laymanStatus') }}'; 
+        const UNBAPTIZED_STATUS = '{{ config('app.admin.unbaptizedStatus') }}'; 
         const $table = $('#table');
         const codesURL = "{!! route('admin.codes.index') !!}";
         const membesURL = "{!! route('admin.members.index') !!}";
@@ -158,32 +163,28 @@
             });
         }
 
-        $.ajax({
-            dataType: 'json',
-            url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=1&category_id[]=2&category_id[]=4&category_id[]=6&category_id[]=7&category_id[]=8',
-            success: function(data) { 
-                fillCombo( $('#selectStatusCombo'), data['codes'][0], "select" );
-                fillCombo( $('#selectDutyCombo'), data['codes'][1], "duty" );
-                fillCombo( $('#selectLevelCombo'), data['codes'][2], "level" );
-                fillCombo( $('#selectCityCombo'), data['codes'][3], "city" );
-                fillCombo( $('#selectProvinceCombo'), data['codes'][4], "province" );
-                fillCombo( $('#selectCountryCombo'), data['codes'][5], "country" );
-            }, 
-            fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
-            }
+        $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=1&category_id[]=2&category_id[]=4&category_id[]=6&category_id[]=7&category_id[]=8' })
+        .done ( function(data, textStatus, jqXHR) { 
+            fillCombo( $('#selectStatusCombo'), data['codes'][0], "select" );
+            fillCombo( $('#selectDutyCombo'), data['codes'][1], "duty" );
+            fillCombo( $('#selectLevelCombo'), data['codes'][2], "level" );
+            fillCombo( $('#selectCityCombo'), data['codes'][3], "city" );
+            fillCombo( $('#selectProvinceCombo'), data['codes'][4], "province" );
+            fillCombo( $('#selectCountryCombo'), data['codes'][5], "country" );
+        }) 
+        .fail ( function(jqXHR, textStatus, errorThrown) { 
+            errorMessage( jqXHR );
         });
 
         // reload data from server and refresh table
         function reloadList() {
-            $.ajax({ dataType: 'json', url: membesURL,
-                success: function(data) { 
-                    memberLists = data['members'];
-                    $table.bootstrapTable( 'load', { data: memberLists } );
-                }, 
-                fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: membesURL })
+            .done ( function(data, textStatus, jqXHR) { 
+                memberLists = data['members'];
+                $table.bootstrapTable( 'load', { data: memberLists } );
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -256,11 +257,10 @@
         });
 
         // delete record but I will just add 'DELETED' to email address 
-        $("#deleteRecordButton").click( function(e) {
-            e.preventDefault();
+        $(".crud-delete").click( function(e) {
             var form = $("#editForm");
             form.find("input[name='first_name']").val(form.find("input[name='first_name']").val() + "__DELETED__");
-            $('#selectStatusCombo').val(19999);
+            $('#selectStatusCombo').val( DELETED_MEMBER );
             var postData = fillPostData();
             doPutOrPost('PUT', postData);
             $("#showPanel").collapse("hide");
@@ -320,9 +320,9 @@
             $('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
             form.find('img').attr('src', "{{ asset('images/photo.png') }}");
 
-            $('#selectStatusCombo').val('10001').trigger('chosen:updated'); // Member
-            $('#selectDutyCombo').val('29999').trigger('chosen:updated'); // Layman
-            $('#selectLevelCombo').val('49999').trigger('chosen:updated'); // Unbaptized
+            $('#selectStatusCombo').val( MEMBER_STATUS ).trigger('chosen:updated'); // Member
+            $('#selectDutyCombo').val( LAYMAN_STATUS).trigger('chosen:updated'); // Layman
+            $('#selectLevelCombo').val( UNBAPTIZED_STATUS ).trigger('chosen:updated'); // Unbaptized
         }
 
         function fillShowPanel(rec) {
@@ -406,21 +406,18 @@
 
         // click close button on edit collasped div
         $("#cancelEditButton").click(function(e) {
-            e.preventDefault();
             $("#editPanel").collapse("hide");
             $('#contentTitle').text("");
         });
 
         // click close button on show collasped div
         $("#closeShowPanel").click(function(e) {
-            e.preventDefault();
             $("#showPanel").collapse("hide");
             $('#contentTitle').text("");
         });
 
         // click create new record
         $("#createNewRecord").click(function(e) {
-            e.preventDefault();
             openEditPanel("create", null);
         });
 
@@ -429,10 +426,10 @@
             saveId = Number(rec.id);
             if (column === 'edit' || column === "clone") {
                 openEditPanel(column, rec);
-            } else { // delete and show
-                if (column === "delete") {
-                    fillEditPanel(rec);
-                }
+            } else if (column === 'delete') { 
+                fillEditPanel(rec);
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
+            } else {
                 openShowPanel(column, rec);
             }
         });
@@ -445,8 +442,7 @@
         /* functions for uploading photos */
         // click close button on edit collasped div
         $("#getPhotoButton").click(function(e) {
-            e.preventDefault();
-            $("#crop-item").modal('show');
+            $("#crop-item").modal('show').draggable({ handle: ".modal-header" });
         });
 
         var $uploadCrop;
@@ -505,5 +501,8 @@
 
     {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
+
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
 @endsection

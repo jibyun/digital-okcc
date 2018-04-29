@@ -167,9 +167,20 @@ class MemDeptMapsController extends Controller {
         $exception = DB::table('members')
             ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
             ->join('codes', 'member_department_maps.department_id', '=', 'codes.id')
-            ->where('codes.code_category_id', '=', '10')->pluck('members.id')->all();
+            ->where('codes.code_category_id', '=', $CELL_CATEGORY)->pluck('members.id')->all();
 
         $result = Member::whereNotIn('id', $exception)->where('primary', 1)->get(['members.*']);
+        $result = array( "members" => json_decode(json_encode($result), true) );
+        return response()->json($result);
+    }
+
+    public function getMembersNotAssignedDept(Request $request) {
+        $exception = DB::table('members')
+            ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
+            ->join('codes', 'member_department_maps.department_id', '=', 'codes.id')
+            ->where('codes.id', '=', $request->department_id)->pluck('members.id')->all();
+
+        $result = Member::whereNotIn('id', $exception)->get(['members.*']);
         $result = array( "members" => json_decode(json_encode($result), true) );
         return response()->json($result);
     }
