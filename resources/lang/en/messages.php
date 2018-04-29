@@ -97,24 +97,8 @@ return [
         'header_menu_member'    => 'Members',
         'header_menu_finance'   => 'Finance',
         'header_menu_inventory' => 'Inventories',
-        // side menu of level 1
-        'side_users'            => 'Users',
-        'side_members'          => 'Members',
-        // side menu of level 2
-        'side_pri_role'         => 'Privileges & Roles',
-        'side_regstration'      => 'User Registration',
-        'side_logview'          => 'Log View',
-        'side_category'         => 'Categories',
-        'side_code'             => 'Codes',
-        'side_d_tree'           => 'Department Tree',
-        'side_member'           => 'Members',
-        'side_family_tree'      => 'Family Tree',
-        'side_m_dept'           => 'Member > Department',
-        // side menu of level 3
-        'side_privilege'        => 'Privileges',
-        'side_role'             => 'Roles',
-        'side_p_role'           => 'Privileges > Roles',
-        'side_organize_cell'    => 'Cell Orginizer'
+        'side_users'                 => 'Users',
+        'side_pri_role' => 'Privilege & Role',
     ],
 
     // using Admin System log 
@@ -154,19 +138,7 @@ return [
         'order'                 => 'Make Display Order',
         'upload_photo'          => 'Upload Photo',
         'cell_organizer'        => 'Cell Organizer',
-    ],
-
-    // Title using Admin 
-    'adm_name' => [
-        'category'              => 'Category',
-        'code'                  => 'Code',
-        'add'                   => 'Add :name',
-        'edit'                  => 'Edit :name',
-        'show'                  => 'Show :name',
-        'delete'                => 'Delete :name',
-        'order'                 => 'Make Display Order',
-        'upload_photo'          => 'Upload Photo',
-        'cell_organizer'        => 'Cell Organizer',
+        'dept_organizer'        => 'Department Organizer',
     ],
 
     // using Admin table & CRUD
@@ -261,6 +233,9 @@ return [
         'child_member'          => 'Family Member',
         'confirm_mesg'          => 'Once deleted data can not be recovered.<br/>Do you want to really DELETE?',
         'fake_delete'           => 'In this case, the data will not be actually deleted .<br/>Do you want to really DELETE?',
+        'unassigned_label'      => 'Unassigned Member',
+        'assigned_label'        => 'Assigned Member',
+        'allmember_label'       => 'OKCC Member',
 
         // components on table
         'edit_btn'              => 'Edit',
@@ -273,6 +248,9 @@ return [
         'delete_member_btn'     => 'Delete Member',
         'save_btn'              => 'Save Changes',
         'upload_btn'            => 'Upload Image',
+        'manager_btn'           => 'As a Manager',
+        'member_btn'            => 'As a Member',
+        'leave_btn'             => 'Leave',
         'enable_input'          => 'Enable',
         'disable_input'         => 'Disable',
         'manager_input'         => 'Team Manager',

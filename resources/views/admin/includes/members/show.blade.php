@@ -36,9 +36,6 @@
                     <button id="closeShowPanel" class="btn btn-secondary" type="button" title="{{ __('messages.adm_table.close_panel_btn') }}">
                         <i class="fa fa-times mr-2" aria-hidden="true"></i>{{ __('messages.adm_table.close_panel_btn') }}
                     </button>
-                    <button id="deleteRecordButton" class="btn btn-danger ml-2" type="button" title="{{ __('messages.adm_table.delete_member_btn') }}">
-                        <i class="fa fa-thumbs-o-down mr-2" aria-hidden="true"></i>{{ __('messages.adm_table.delete_member_btn') }}
-                    </button>
                 </div>
             </div>
         </div>

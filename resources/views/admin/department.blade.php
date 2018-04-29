@@ -24,13 +24,13 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.cell_organizer') }}</h4>
+    <h4>{{ __('messages.adm_title.dept_organizer') }}</h4>
 
     <div class="row">
         <div class="col-sm-5">
             <div id="leftToolbar">
                 <div class='form-inline'>
-                    <label class="form-control" style="background-color: #3366ff; color: #ffffff;">{{ __('messages.adm_table.unassigned_label') }}</label>
+                    <label class="form-control" style="background-color: #3366ff; color: #ffffff;">{{ __('messages.adm_table.allmember_label') }}</label>
                 </div>
             </div>
             <table id="leftTable" class="table table-striped table-hover table-responsive-md table-bordered" 
@@ -101,10 +101,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-        const CELL_CATEGORY = '{{ config('app.admin.cellCategoryId') }}';
+        const DEPT_CATEGORY = '{{ config('app.admin.deptCategoryId') }}';
         const NOT_ASSIGN = 999999;
-        const MANAGER_POSITION = '{{ config('app.admin.cellManagerPositionId') }}'; 
-        const DEFAULT_POSITION = '{{ config('app.admin.cellMemberPositionId') }}';
+        const MANAGER_POSITION = '{{ config('app.admin.deptManagerPositionId') }}'; 
+        const DEFAULT_POSITION = '{{ config('app.admin.deptMemberPositionId') }}';
         const CODE_URL = "{!! route('admin.code.getCodesByCategoryIds') !!}";
         const $leftTable = $('#leftTable');
         const $rightTable = $('#rightTable');
@@ -155,7 +155,7 @@
         }
 
         function fillRightCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + CELL_CATEGORY })
+            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY })
             .done ( function(data, textStatus, jqXHR) { 
                 var html = '';
                 $('#rightCombo').empty();
@@ -171,9 +171,10 @@
                 $('#rightCombo').on('change', function() {
                     reloadList( this.value );
                     saveDepartmentId = this.value;
+                    reloadList( NOT_ASSIGN, saveDepartmentId );
                 })
                 // Load initial data
-                reloadList( NOT_ASSIGN );
+                reloadList( NOT_ASSIGN, $('#rightCombo').find('option:selected').val() );
                 reloadList( $('#rightCombo').find('option:selected').val() );
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
@@ -182,10 +183,10 @@
         }
  
         // Reload data from server and refresh table
-        function reloadList( $department_id ) {
+        function reloadList( $department_id, $sub_department_id ) {
             var $url, $table;
             if ( $department_id === NOT_ASSIGN ) {
-                $url = "{!! route('admin.member-dept-trees.getmembers-notassigned') !!}";
+                $url = "{!! route('admin.member-dept-trees.getmembers-notbelongin_dept') !!}" + "?department_id=" + $sub_department_id;
                 $table = $leftTable
             } else {
                 $url = "{!! route('admin.member-dept-trees.getmembers-department') !!}" + '?department_id=' + $department_id;
