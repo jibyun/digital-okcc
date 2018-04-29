@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Config;
 
 use App\Code;
 use App\Member_Department_Map;
@@ -54,16 +55,12 @@ class MemDeptMapsController extends Controller {
             'department_id' => 'required',
             'position_id' => 'required',
             'enabled' => 'required|boolean',
+            'manager' => 'required|boolean',
             'updated_by' => 'required',
         ];
 
         //Define messages
-        $messages = [
-            'member_id.required' => 'The member field can not be blank.',
-            'department_id.required' => 'The department code field can not be blank.',
-            'position_id.required' => 'The positon code field can not be blank.',
-            'updated_by.required' => 'The user code field for updated_by field can not be blank.',
-        ];
+        $messages = [];
 
         $validator = \Validator::make( $input, $rules, $messages );
 
@@ -72,7 +69,7 @@ class MemDeptMapsController extends Controller {
         } else {
             try {
                 $result = Member_Department_Map::create($request->all());
-                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                SystemLog::write( Config::get('app.admin.logInsert'), $this->TABLE_NAME . ' [ID] ' . $result->id );
                 return response()->json([ 'codes' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -94,16 +91,12 @@ class MemDeptMapsController extends Controller {
             'department_id' => 'required',
             'position_id' => 'required',
             'enabled' => 'required|boolean',
+            'manager' => 'required|boolean',
             'updated_by' => 'required',
         ];
 
         //Define messages
-        $messages = [
-            'member_id.required' => 'The member field can not be blank.',
-            'department_id.required' => 'The department code field can not be blank.',
-            'position_id.required' => 'The positon code field can not be blank.',
-            'updated_by.required' => 'The user code field for updated_by field can not be blank.',
-        ];
+        $messages = [];
 
         $validator = \Validator::make( $input, $rules, $messages );
 
@@ -113,7 +106,7 @@ class MemDeptMapsController extends Controller {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($previousRecord, $input, ['department_name', 'position_name', 'updated_by_name']); 
                 $result = $previousRecord->fill($input)->save();
-                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write( config('app.admin.logUpdate'), $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail );
                 return response()->json([ 'categories' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -129,7 +122,7 @@ class MemDeptMapsController extends Controller {
     public function destroy($id) {
         try {
             Member_Department_Map::find($id)->delete();
-            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write( config('app.admin.logDelete'), $this->TABLE_NAME . ' [ID] ' . $id );
             return response()->json([ 'message' => 'DELETED!' ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -162,7 +155,7 @@ class MemDeptMapsController extends Controller {
         $result = DB::table('members')
             ->join('member_department_maps', 'members.id', '=', 'member_department_maps.member_id')
             ->where('department_id', $request->department_id)
-            ->orderBy('department_id', 'ASC')->get(['members.*', 'member_department_maps.id as xid']);
+            ->orderBy('department_id', 'ASC')->get(['members.*', 'member_department_maps.id as xid', 'member_department_maps.manager as manager']);
 
         $result = array( "members" => json_decode(json_encode($result), true) );
         return response()->json($result);

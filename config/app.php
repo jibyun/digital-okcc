@@ -236,5 +236,23 @@ return [
     'MemberList_Bookmark' => '[{"title":"2","children":["20001","20002", "20003", "20004", "20005"]}, 
                               {"title":"5","children":["50001","50002", "50003", "50004", 
                               "50005", "50006", "50007", "50008", "50009", "50010"]}]',
+                                  
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration used in Admin
+    |--------------------------------------------------------------------------
+    */
+    'admin' => [
+
+        'cellCategoryId'            => '10', // cell category id
+        'cellMemberPositionId'      => '120012', // cell member position id
+        'cellManagerPositionId'     => '120008', // cell manager position id
+        'logLogIn'                  => '110001', // INSERT log id
+        'logLogOut'                 => '110002', // INSERT log id
+        'logInsert'                 => '110003', // INSERT log id
+        'logUpdate'                 => '110004', // INSERT log id
+        'logDelete'                 => '110005', // INSERT log id
+        
+    ],
 
 ];
