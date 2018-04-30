@@ -71,6 +71,20 @@ class UsersController extends Controller {
                 array_push($arr, $this->reinforceMember($value));
             }
             $result = array("members" => $arr);
+        } else if ($request->table == 'householders') {
+            $memberArray = Member::where('primary', 1)->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->get();
+            $arr = array();
+            foreach ($memberArray as $value) {
+                array_push($arr, $this->reinforceMember($value));
+            }
+            $result = array("members" => $arr);
+        } else if ($request->table == 'family') {
+            $memberArray = Member::where('primary', 0)->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->get();
+            $arr = array();
+            foreach ($memberArray as $value) {
+                array_push($arr, $this->reinforceMember($value));
+            }
+            $result = array("members" => $arr);
         } else { // privilege
             $privilegeArray = Privilege::get();
             $arr = array();
@@ -117,6 +131,7 @@ class UsersController extends Controller {
             $tmp['label'] = $v['kor_name'];
         } else {
             $tmp['label'] = !trim($v['first_name']) ? trim($v['last_name']) : trim($v['first_name']) . ' ' . trim($v['last_name']);
+            $tmp['label'] .= ' (' . $v['kor_name'] . ')';
         }
         $tmp['kor_name'] = $v->kor_name;
         $tmp['tel_home'] = $v->tel_home;

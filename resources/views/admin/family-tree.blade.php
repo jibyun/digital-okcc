@@ -11,8 +11,8 @@
     <h4>{{ __('messages.adm_title.title', ['title' => 'Family Tree']) }}</h4>
     <div id="toolbar">
         <div class='form-inline py-2'>
-            <div class='mr-2' style="width: 200px;">
-                <select id='membersCombo' class="form-group form-control mr-2" style="width: 200px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
+            <div class='mr-2' style="width: 300px;">
+                <select id='membersCombo' class="form-group form-control mr-2" style="width: 300px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
                 </select>
             </div>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
@@ -96,17 +96,15 @@
             ].join('');
         }
 
-        function initTable() {
-            $table.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'left' },{},{ align: 'left' },{ align: 'center', clickToSelect: false }]
+        $table.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'left' },{},{ align: 'left' },{ align: 'center', clickToSelect: false }]
+        });
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
             });
-            $(window).resize(function () {
-                $table.bootstrapTable('resetView', {
-                    height: getHeight()
-                });
-            });
-        }
+        });
 
         $popover.popover({
             title: 'Member Summary',
@@ -154,61 +152,30 @@
         }
 
         // fill autocomplete list of members
-        function getDataforCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=members' })
-            .done ( function(data, textStatus, jqXHR) { 
-                parentList = data['members'];
-                fillMemberCombo($combo, data['members']);
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }
+        $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=householders' })
+        .done ( function(data, textStatus, jqXHR) { 
+            parentList = data['members'];
+            fillMemberCombo($combo, data['members']);
+        }) 
+        .fail ( function(jqXHR, textStatus, errorThrown) { 
+            errorMessage( jqXHR );
+        });
 
         // Get list from server and fill combobox
-        function getRelationList() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + RELATION_CODE })
-            .done ( function(data, textStatus, jqXHR) { 
-                relationList = data['codes'];
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }  
-
-        // Reload data from server and refresh table
-        function reloadList() {
-            $('#addMemberCombo').val('').trigger('chosen:updated');
-            $('#addRelationCombo').val('').trigger('chosen:updated');
-            $.ajax({ dataType: 'json', timeout: 3000, url: familyTreesUrl + '?parent_id=' + currentParentId })
-            .done ( function(data, textStatus, jqXHR) { 
-                if (data['result'].length > 0) {
-                    $table.bootstrapTable( 'load', { data: data['result'] } );
-                } else {
-                    $table.bootstrapTable( 'removeAll' );
-                } 
-                childLists = data['result'];
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        } 
-
-        initTable();
-        getRelationList();
-        getDataforCombo();
+        $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + RELATION_CODE })
+        .done ( function(data, textStatus, jqXHR) { 
+            relationList = data['codes'];
+            fillAddRelationCombo($('#addRelationCombo'), relationList);
+        }) 
+        .fail ( function(jqXHR, textStatus, errorThrown) { 
+            errorMessage( jqXHR );
+        });
 
         function fillAddMemberCombo(memberCombo, members) {
             memberCombo.empty();
             var html = '<option value=""></option>';
             $.each(members, function( index, member ) {
-                var fullName;
-                if (!member['first_name'] && !member['last_name']) {
-                    fullName = member['kor_name'];
-                } else {
-                    fullName = !member['first_name'] ? member['last_name'] : member['first_name'] + ' ' + member['last_name'];
-                }
-                html += '<option value="' + member['id'] + '">' + fullName + '</option>';
+                html += '<option value="' + member['idx'] + '">' + member['label'] + '</option>';
             });
             memberCombo.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
@@ -236,18 +203,31 @@
             });
         }
 
+        // Reload data from server and refresh table
+        function reloadList() {
+            $('#addMemberCombo').val('').trigger('chosen:updated');
+            $('#addRelationCombo').val('').trigger('chosen:updated');
+            $.ajax({ dataType: 'json', timeout: 3000, url: familyTreesUrl + '?parent_id=' + currentParentId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['result'].length > 0) {
+                    $table.bootstrapTable( 'load', { data: data['result'] } );
+                } else {
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+                childLists = data['result'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            });
+        } 
+
         // click addChild button
         function addChild() {
             if (currentParentId) {
-                $.ajax({ dataType: 'json', timeout: 3000, method:'GET', url: getCodesNotInChild + '?parent_id=' + currentParentId })
+                $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=family' })
                 .done ( function(data) {
-                    if (data.length < 1) {
-                        nomoreDataError();
-                    } else {
-                        fillAddMemberCombo($('#addMemberCombo'), data["members"]);
-                        fillAddRelationCombo($('#addRelationCombo'), relationList);
-                        $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
-                    }
+                    fillAddMemberCombo($('#addMemberCombo'), data["members"]);
+                    $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
                 })
                 .fail ( function(jqXHR, textStatus, errorThrown) { 
                     errorMessage( jqXHR );

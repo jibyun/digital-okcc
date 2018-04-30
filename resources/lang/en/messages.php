@@ -234,6 +234,12 @@ return [
         'unassigned_label'      => 'Unassigned Member',
         'assigned_label'        => 'Assigned Member',
         'allmember_label'       => 'OKCC Member',
+        'checkif_householder'   => 'Check if Householder',
+        'essential_field'       => 'Essential Field: Name, Gender, Phone number, ...',
+        'date_field'            => 'Date Field: Birthdate, Baptism at, Register at, ...',
+        'contact_field'         => 'Contact Field: Email, Home Phone, Cell Phone, ...',
+        'address_field'         => 'Address Field: Postal Code, Street, City, ...',
+        'status_field'          => 'Status Field: Member Status, Batism Status, ...',
 
         // components on table
         'edit_btn'              => 'Edit',
