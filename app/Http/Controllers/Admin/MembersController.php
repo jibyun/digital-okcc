@@ -54,8 +54,6 @@ class MembersController extends Controller {
         $input = $request->all();
         $validator = \Validator::make( $input, $this->getRules(), $this->getMessages() );
 
-        $validator = \Validator::make( $input, $rules, $messages );
-
         if ($validator->fails()) {
             return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
@@ -121,6 +119,7 @@ class MembersController extends Controller {
             "status_id"             => "sometimes|exists:codes,id",
             "level_id"              => "sometimes|exists:codes,id",
             "duty_id"               => "sometimes|exists:codes,id",
+            'primary'               => [ 'required', Rule::in([1, 0]) ],
         ];
     }
 

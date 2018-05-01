@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
     {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css" />
+    <style>
+        .card {
+            border-width: 0;
+        }
+        .card-header {
+            background-color: darkolivegreen;
+            color: antiquewhite;
+        }
+        .btn-link {
+            color: antiquewhite;
+            text-decoration: none !important
+        }
+        .btn-link:hover {
+            text-decoration: none;
+            color: orange;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -82,6 +99,7 @@
         const LAYMAN_STATUS = '{{ config('app.admin.laymanStatus') }}'; 
         const UNBAPTIZED_STATUS = '{{ config('app.admin.unbaptizedStatus') }}'; 
         const $table = $('#table');
+        const $editPanel = $('#editPanel');
         const codesURL = "{!! route('admin.codes.index') !!}";
         const membesURL = "{!! route('admin.members.index') !!}";
 
@@ -94,6 +112,7 @@
         var memberLists = new Array(); // Member List
         var saveIndex; // Row index of the table
         var saveId; // Primary key of the table
+        var uploadCrop;
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -149,9 +168,9 @@
 
         function fillCombo($element, codeData, kind) {
             $element.empty();
-            var html = '<option value=""></option>';
+            var html = '';
             $.each(codeData, function( index, codes ) {
-                html += '<option value="' + codes['id'] + '">' + ( kind === 'province' ? codes['kor_txt'] + ' (' + codes['txt'] + ')' : codes['txt'] )  + '</option>';
+                html += '<option value=' + codes['id'] + '>' + ( kind === 'province' ? codes['kor_txt'] + ' (' + codes['txt'] + ')' : codes['txt'] )  + '</option>';
             });
             $element.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
@@ -165,12 +184,17 @@
 
         $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=1&category_id[]=2&category_id[]=4&category_id[]=6&category_id[]=7&category_id[]=8' })
         .done ( function(data, textStatus, jqXHR) { 
-            fillCombo( $('#selectStatusCombo'), data['codes'][0], "select" );
+            fillCombo( $('#selectStatusCombo'), data['codes'][0], "status" );
             fillCombo( $('#selectDutyCombo'), data['codes'][1], "duty" );
             fillCombo( $('#selectLevelCombo'), data['codes'][2], "level" );
             fillCombo( $('#selectCityCombo'), data['codes'][3], "city" );
             fillCombo( $('#selectProvinceCombo'), data['codes'][4], "province" );
             fillCombo( $('#selectCountryCombo'), data['codes'][5], "country" );
+            uploadCrop = $('#upload-photo').croppie({
+                viewport: { width: 150, height: 150, type: 'square' },
+                boundary: { width: 250, height: 250 }
+            });
+            uploadCrop.croppie('bind', { url: "{{ asset('images/photo.png') }}" });
         }) 
         .fail ( function(jqXHR, textStatus, errorThrown) { 
             errorMessage( jqXHR );
@@ -191,76 +215,73 @@
         reloadList();
 
         function fillPostData() {
-            var form = $("#editForm");
             return {
-                first_name: form.find("input[name='first_name']").val(),
-                middle_name: form.find("input[name='middle_name']").val(),
-                last_name: form.find("input[name='last_name']").val(),
-                kor_name: form.find("input[name='kor_name']").val(),
-                gender: form.find("input[name='gender']:checked").val(),
-                dob: form.find("input[name='dob']").val(),
-                baptism_at: form.find("input[name='baptism_at']").val(),
-                register_at: form.find("input[name='register_at']").val(),
-                tel_home: form.find("input[name='tel_home']").val(),
-                tel_cell: form.find("input[name='tel_cell']").val(),
-                tel_office: form.find("input[name='tel_office']").val(),
-                email: form.find("input[name='email']").val(),
-                postal_code: form.find("input[name='postal_code']").val(),
-                address: form.find("input[name='address']").val(),
-                photo: $("#photo_filename").val(),
-                city_id: $('#selectCityCombo').val(),
-                city_name: $('#selectCityCombo option:selected').text(),
-                province_id: $('#selectProvinceCombo').val(),
-                province_name: $('#selectProvinceCombo option:selected').text(),
-                country_id: $('#selectCountryCombo').val(),
-                country_name: $('#selectCountryCombo option:selected').text(),
-                status_id: $('#selectStatusCombo').val(),
-                status_name: $('#selectStatusCombo option:selected').text(),
-                level_id: $('#selectLevelCombo').val(),
-                level_name: $('#selectLevelCombo option:selected').text(),
-                duty_id: $('#selectDutyCombo').val(),
-                duty_name: $('#selectDutyCombo option:selected').text(),
-                primary: (form.find("input[name='primary']").prop('checked') ? 1 : 0),
+                first_name: $editPanel.find("input[name='first_name']").val(),
+                middle_name: $editPanel.find("input[name='middle_name']").val(),
+                last_name: $editPanel.find("input[name='last_name']").val(),
+                kor_name: $editPanel.find("input[name='kor_name']").val(),
+                gender: $editPanel.find("input[name='gender']:checked").val(),
+                dob: $editPanel.find("input[name='dob']").val(),
+                baptism_at: $editPanel.find("input[name='baptism_at']").val(),
+                register_at: $editPanel.find("input[name='register_at']").val(),
+                tel_home: $editPanel.find("input[name='tel_home']").val(),
+                tel_cell: $editPanel.find("input[name='tel_cell']").val(),
+                tel_office: $editPanel.find("input[name='tel_office']").val(),
+                email: $editPanel.find("input[name='email']").val(),
+                postal_code: $editPanel.find("input[name='postal_code']").val(),
+                address: $editPanel.find("input[name='address']").val(),
+                photo: $editPanel.find("#photo_filename").val(),
+                city_id: $editPanel.find('#selectCityCombo').val(),
+                city_name: $editPanel.find('#selectCityCombo option:selected').text(),
+                province_id: $editPanel.find('#selectProvinceCombo').val(),
+                province_name: $editPanel.find('#selectProvinceCombo option:selected').text(),
+                country_id: $editPanel.find('#selectCountryCombo').val(),
+                country_name: $editPanel.find('#selectCountryCombo option:selected').text(),
+                status_id: $editPanel.find('#selectStatusCombo').val(),
+                status_name: $editPanel.find('#selectStatusCombo option:selected').text(),
+                level_id: $editPanel.find('#selectLevelCombo').val(),
+                level_name: $editPanel.find('#selectLevelCombo option:selected').text(),
+                duty_id: $editPanel.find('#selectDutyCombo').val(),
+                duty_name: $editPanel.find('#selectDutyCombo option:selected').text(),
+                primary: ($editPanel.find("input[name='primary']").prop('checked') ? 1 : 0),
             };
         }
 
         function doPutOrPost(method, postData) {
             var url = ( method === "POST" ) ? "{!! route('admin.members.store') !!}" : "{{ route('admin.members.index') }}" + '/' + saveId; 
-            $.ajax({ dataType: 'json', method: method, data: postData, url: url, 
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
+            $.ajax({ dataType: 'json', timeout: 3000, method:method, data: postData, url: url })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    if ( method === "POST" ) {
+                        $table.bootstrapTable("append", postData);
                     } else {
-                        toastr.success(data.message, 'Success');
-                        if ( method === "POST" ) {
-                            $table.bootstrapTable("append", postData);
-                        } else {
-                            $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        }
-                        $("#editPanel").collapse("hide");
-                        $('#contentTitle').text("");
-                        reloadList();
+                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
                     }
+                    $("#editPanel").collapse("hide");
+                    $('#contentTitle').text("");
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
-        $("#saveRecordButton").click( function(e) {
-            e.preventDefault();
+        $("#saveRecordButton").click( function() {
             var postData = fillPostData();
-            var parameter = $('#saveRecordButton').hasClass('store') ? "POST" : "PUT";
+            var parameter = $editPanel.find('#saveRecordButton').hasClass('store') ? "POST" : "PUT";
             doPutOrPost(parameter, postData);
         });
 
         // delete record but I will just add 'DELETED' to email address 
-        $(".crud-delete").click( function(e) {
-            var form = $("#editForm");
-            form.find("input[name='first_name']").val(form.find("input[name='first_name']").val() + "__DELETED__");
-            $('#selectStatusCombo').val( DELETED_MEMBER );
+        $(".crud-delete").click( function() {
+            $editPanel.find("input[name='first_name']").val($editPanel.find("input[name='first_name']").val() + "__DELETED__");
+            $editPanel.find('#selectStatusCombo').val( DELETED_MEMBER );
             var postData = fillPostData();
             doPutOrPost('PUT', postData);
             $("#showPanel").collapse("hide");
@@ -268,77 +289,51 @@
         });
 
         function fillEditPanel( rec ) {
-            var form = $("#editForm");
-            // if profile image is existed?
-            if ( rec.photo ) {
-                $.ajax({
-                    url: "{!! asset('uploads/" + rec.photo + "') !!}",
-                    type:'HEAD',
-                    success: function() {
-                        form.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
-                    },
-                    error: function() {
-                        form.find('img').attr('src', "{!! asset('images/photo.png') !!}");
-                    }
-                });
-            }
-            $("#photo_filename").val(rec.photo);
-            form.find("input[name='first_name']").val(rec.first_name);
-            form.find("input[name='middle_name']").val(rec.middle_name);
-            form.find("input[name='last_name']").val(rec.last_name);
-            form.find("input[name='kor_name']").val(rec.kor_name);
-            form.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
-            form.find("input[name='dob']").val(rec.dob);
-            form.find("input[name='primary']").prop('checked', ( rec.primary ? true : false )); 
-            form.find("input[name='baptism_at']").val(rec.baptism_at);
-            form.find("input[name='register_at']").val(rec.register_at);
-            form.find("input[name='tel_home']").val(rec.tel_home);
-            form.find("input[name='tel_cell']").val(rec.tel_cell);
-            form.find("input[name='tel_office']").val(rec.tel_office);
-            form.find("input[name='email']").val(rec.email);
-            form.find("input[name='postal_code']").val(rec.postal_code);
-            form.find("input[name='address']").val(rec.address);
-            $('#selectStatusCombo').val(rec.status_id).trigger('chosen:updated');
-            $('#selectDutyCombo').val(rec.duty_id).trigger('chosen:updated'); 
-            $('#selectLevelCombo').val(rec.level_id).trigger('chosen:updated');
-            $('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
-            $('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
-            $('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
+            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            $editPanel.find("#photo_filename").val(rec.photo);
+            $editPanel.find("input[name='first_name']").val(rec.first_name);
+            $editPanel.find("input[name='middle_name']").val(rec.middle_name);
+            $editPanel.find("input[name='last_name']").val(rec.last_name);
+            $editPanel.find("input[name='kor_name']").val(rec.kor_name);
+            $editPanel.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
+            $editPanel.find("input[name='dob']").val(rec.dob);
+            $editPanel.find("input[name='primary']").prop('checked', ( rec.primary ? true : false )); 
+            $editPanel.find("input[name='baptism_at']").val(rec.baptism_at);
+            $editPanel.find("input[name='register_at']").val(rec.register_at);
+            $editPanel.find("input[name='tel_home']").val(rec.tel_home);
+            $editPanel.find("input[name='tel_cell']").val(rec.tel_cell);
+            $editPanel.find("input[name='tel_office']").val(rec.tel_office);
+            $editPanel.find("input[name='email']").val(rec.email);
+            $editPanel.find("input[name='postal_code']").val(rec.postal_code);
+            $editPanel.find("input[name='address']").val(rec.address);
+            $editPanel.find('#selectStatusCombo').val(rec.status_id).trigger('chosen:updated');
+            $editPanel.find('#selectDutyCombo').val(rec.duty_id).trigger('chosen:updated'); 
+            $editPanel.find('#selectLevelCombo').val(rec.level_id).trigger('chosen:updated');
+            $editPanel.find('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
+            $editPanel.find('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
+            $editPanel.find('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
         }
 
         function fillEditPanelForClone( rec ) {
-            var form = $("#editForm");
-            $('#editForm')[0].reset();
-
-            form.find("input[name='last_name']").val(rec.last_name);
-            form.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
-            form.find("input[name='tel_home']").val(rec.tel_home);
-            form.find("input[name='postal_code']").val(rec.postal_code);
-            form.find("input[name='address']").val(rec.address);
-            $('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
-            $('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
-            $('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
-            form.find('img').attr('src', "{{ asset('images/photo.png') }}");
-
-            $('#selectStatusCombo').val( MEMBER_STATUS ).trigger('chosen:updated'); // Member
-            $('#selectDutyCombo').val( LAYMAN_STATUS).trigger('chosen:updated'); // Layman
-            $('#selectLevelCombo').val( UNBAPTIZED_STATUS ).trigger('chosen:updated'); // Unbaptized
+            clearNormalFields();
+            $editPanel.find("input[name='last_name']").val(rec.last_name);
+            $editPanel.find("input[name='gender'][value='" + rec.gender + "']").prop('checked', true);
+            $editPanel.find("input[name='tel_home']").val(rec.tel_home);
+            $editPanel.find("input[name='postal_code']").val(rec.postal_code);
+            $editPanel.find("input[name='address']").val(rec.address);
+            $editPanel.find("input[name='gender'][value='M']").prop('checked', true);
+            $editPanel.find("input[name='primary']").prop('checked', false); 
+            $editPanel.find('#selectCityCombo').val(rec.city_id).trigger('chosen:updated');
+            $editPanel.find('#selectProvinceCombo').val(rec.province_id).trigger('chosen:updated');
+            $editPanel.find('#selectCountryCombo').val(rec.country_id).trigger('chosen:updated');
+            $editPanel.find('#selectStatusCombo').val( MEMBER_STATUS ).trigger('chosen:updated'); // Member
+            $editPanel.find('#selectDutyCombo').val( LAYMAN_STATUS).trigger('chosen:updated'); // Layman
+            $editPanel.find('#selectLevelCombo').val( UNBAPTIZED_STATUS ).trigger('chosen:updated'); // Unbaptized
         }
 
         function fillShowPanel(rec) {
             var panel = $("#showPanel");
-            if ( rec.photo ) {
-                $.ajax({
-                    url: "{!! asset('uploads/" + rec.photo + "') !!}",
-                    type:'HEAD',
-                    success: function() {
-                        panel.find('img').attr('src', "{!! asset('uploads/" + rec.photo + "') !!}");
-                    },
-                    error: function() {
-                        panel.find('img').attr('src', "{{ asset('images/photo.png') }}");
-                    }
-                });
-            }
+            panel.find("img").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
             panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
             panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
             panel.find("span[name='birthdate']").text(' ' + (!rec.dob ? '' : rec.dob));
@@ -364,6 +359,8 @@
             if ($("#editPanel").is(":hidden")) { // if editPanel is closed
                 $("#showPanel").collapse("hide");
                 $("#editPanel").collapse("show");
+                $('#leftCollapseOne').collapse("show");
+                $('#rightCollapseOne').collapse("show");
                 if (reason === "edit") {
                     $('#contentTitle').text("> Editing...");
                     fillEditPanel(rec);
@@ -375,18 +372,28 @@
                     $('#saveRecordButton').removeClass('store update').addClass('store');
                 } else {
                     $('#contentTitle').text("> Creating...");
-                    $('#editForm')[0].reset();
-                    $("#photoPlace").find('img').attr('src', "{{ asset('images/photo.png') }}");
-                    // TODO: 정확한 데이터가 확정되면 디폴트 값을 넣는다
-                    $('#selectStatusCombo').val('10001').trigger('chosen:updated');
-                    $('#selectDutyCombo').val('29999').trigger('chosen:updated'); 
-                    $('#selectLevelCombo').val('49999').trigger('chosen:updated');
-                    $('#selectCityCombo').val($('#selectCityCombo option:contains("Ottawa")').val()).trigger('chosen:updated');
-                    $('#selectProvinceCombo').val($('#selectProvinceCombo option:contains("ON")').val()).trigger('chosen:updated');
-                    $('#selectCountryCombo').val($('#selectCountryCombo option:contains("Canada")').val()).trigger('chosen:updated');
+                    clearNormalFields();
+                    clearSpecialFields();
                     $('#saveRecordButton').removeClass('store update').addClass('store');
                 }
             }
+        }
+
+        function clearNormalFields() { 
+            $editPanel.find('input:text').val(''); 
+            $editPanel.find("input[name='email']").val('');
+            $editPanel.find("img[name='photo']").attr('src', "{{ asset('images/photo.png') }}");
+        }
+
+        function clearSpecialFields() {
+            $editPanel.find("input[name='gender'][value='M']").prop('checked', true);
+            $editPanel.find("input[name='primary']").prop('checked', true); 
+            $editPanel.find('#selectStatusCombo').val(MEMBER_STATUS).trigger('chosen:updated');
+            $editPanel.find('#selectDutyCombo').val(LAYMAN_STATUS).trigger('chosen:updated'); 
+            $editPanel.find('#selectLevelCombo').val(UNBAPTIZED_STATUS).trigger('chosen:updated');
+            $editPanel.find('#selectCityCombo').val($('#selectCityCombo option:contains("Ottawa")').val()).trigger('chosen:updated');
+            $editPanel.find('#selectProvinceCombo').val($('#selectProvinceCombo option:contains("ON")').val()).trigger('chosen:updated');
+            $editPanel.find('#selectCountryCombo').val($('#selectCountryCombo option:contains("Canada")').val()).trigger('chosen:updated');
         }
 
         function openShowPanel(reason, rec) {
@@ -445,20 +452,10 @@
             $("#crop-item").modal('show').draggable({ handle: ".modal-header" });
         });
 
-        var $uploadCrop;
-
-        $('#crop-item').on('shown.bs.modal', function () {
-            $uploadCrop = $('#upload-photo').croppie({
-                viewport: { width: 150, height: 150, type: 'square' },
-                boundary: { width: 250, height: 250 }
-            });
-            $uploadCrop.croppie('bind', { url: "{{ asset('images/photo.png') }}" });
-        });
-
         $('#upload-file').on('change', function () { 
             var reader = new FileReader();
             reader.onload = function (e) {
-                $uploadCrop.croppie('bind', {
+                uploadCrop.croppie('bind', {
                     url: e.target.result
                 });
             }
@@ -466,19 +463,18 @@
         });
 
         $('.upload-result').on('click', function (ev) {
-            $uploadCrop.croppie('result', {
+            uploadCrop.croppie('result', {
                 type: 'canvas',
                 size: 'viewport'
             }).then(function (resp) {
-                $.ajax({
-                    url: "{!! route('admin.photo-crop.post') !!}",
-                    type: "POST",
-                    data: {"image":resp},
-                    success: function (data) {
-                        $("#photoPlace").find('img').attr('src', "{!! asset('uploads/" + data.filename + "') !!}");
-                        $('#photo_filename').val(data.filename);
-                        $("#crop-item").modal('hide');
-                    }
+                $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: {"image":resp}, url: "{!! route('admin.photo-crop.post') !!}" })
+                .done ( function(data) {
+                    $editPanel.find('img[name="photo"]').attr('src', "{{ asset('storage/app/public/uploads/') }}" + '/' + data.filename);
+                    $editPanel.find('#photo_filename').val(data.filename);
+                    $("#crop-item").modal('hide');
+                })
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
                 });
             });
         }); 
