@@ -289,7 +289,7 @@
         });
 
         function fillEditPanel( rec ) {
-            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? "{{ asset('storage/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
             $editPanel.find("#photo_filename").val(rec.photo);
             $editPanel.find("input[name='first_name']").val(rec.first_name);
             $editPanel.find("input[name='middle_name']").val(rec.middle_name);
@@ -333,7 +333,7 @@
 
         function fillShowPanel(rec) {
             var panel = $("#showPanel");
-            panel.find("img").attr('src', (rec.photo) ? "{{ asset('storage/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            panel.find("img").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
             panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
             panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
             panel.find("span[name='birthdate']").text(' ' + (!rec.dob ? '' : rec.dob));
@@ -469,7 +469,7 @@
             }).then(function (resp) {
                 $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: {"image":resp}, url: "{!! route('admin.photo-crop.post') !!}" })
                 .done ( function(data) {
-                    $editPanel.find('img[name="photo"]').attr('src', "{{ asset('storage/uploads/') }}" + '/' + data.filename);
+                    $editPanel.find('img[name="photo"]').attr('src', "{{ asset('storage/app/public/uploads/') }}" + '/' + data.filename);
                     $editPanel.find('#photo_filename').val(data.filename);
                     $("#crop-item").modal('hide');
                 })
