@@ -6,3 +6,4 @@ tests/**
 vendor/**
 store/**
 public/uploads/**
+vcode.code-workspace
