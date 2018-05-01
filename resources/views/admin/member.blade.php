@@ -284,7 +284,7 @@
             $editPanel.find('#selectStatusCombo').val( DELETED_MEMBER );
             var postData = fillPostData();
             doPutOrPost('PUT', postData);
-            $("#showPanel").collapse("hide");
+            $(".modal").modal('hide'); 
             $('#contentTitle').text("");
         });
 
