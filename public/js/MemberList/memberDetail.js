@@ -55,7 +55,7 @@ $( function() {
     // click save button on editpanel
     $("#saveEditButton").click(function(e) {
         var url = memberEditUrl+'/'+saveId; 
-            doPost(url, fillPostData());
+            doPost(url, GetPostData("editForm"));
 
     });
 
@@ -304,8 +304,8 @@ function fillData(parentId,rec){
 
 }
 
-function fillPostData() {
-    var form = $("#editForm");
+function GetPostData(id) {
+    var form = $("#"+id);
         event.preventDefault();
       
         var result={};
