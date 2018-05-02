@@ -60,4 +60,36 @@ class User extends Authenticatable {
     public function member_histories() {
         return $this->hasMany('App\Member_History');
     }
+
+    /**
+     * Return the JSON array of roles
+     */
+    public function roles() {
+        $roles = array();
+        $privilege = $this->privilege()->select('id')->first();
+        if ($privilege !== null) {
+            $privilege_role_maps = Privilege_Role_Map::with(['privilege', 'role'])
+            ->where('privilege_id', $privilege->id)
+            ->get();
+            
+            foreach ($privilege_role_maps as $privilege_role_map) {
+                array_push($roles, $privilege_role_map->role->txt);
+            }
+        }
+        return json_encode($roles);
+    }
+
+    /**
+     * Check the current user has given role.
+     * 
+     * @return 1 if it has, otherwise emtpy.
+     */
+    public function hasRole($role) {
+        $role_id = Role::where('txt', $role)->select('id')->first();
+        return null !== $this->privilege()
+                             ->whereHas('privilege_role_maps', function($query) use ($role_id) {
+                                    $query -> where('role_id', $role_id->id);
+                                })
+                             ->first();
+    }
 }

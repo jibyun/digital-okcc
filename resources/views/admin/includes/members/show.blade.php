@@ -9,7 +9,7 @@
                 <div class="col-sm-8 py-2 px-3 rounded bg-white" style="height: 150px">
                     <span class="h6-font-size pr-3" name="eng_name"></span><span name="kor_name"></span><br/>
                     <hr class="my-1"/>
-                    <span class="px-2"><i class="fa fa-fw fa-birthday-cake" aria-hidden="true"></i><span name="birthdate"></span></span>(<span name="gender"></span>)<br/>
+                    <span class="px-2"><i class="fa fa-fw fa-birthday-cake" aria-hidden="true"></i><span name="birthdate"></span></span>(<span name="gender"></span>)<span name="primary" class="ml-2"></span><br/>
                     <span class="px-2"><i class="fa fa-fw fa-envelope-o" aria-hidden="true"></i><span name="email"></span></span><br/>
                     <span class="px-2"><i class="fa fa-fw fa-phone" aria-hidden="true"></i><span name="tel_home"></span></span><span><i class="fa fa-fw fa-mobile" aria-hidden="true"></i><span name="tel_cell"></span></span><br/>
                     <span class="px-2"><i class="fa fa-fw fa-building" aria-hidden="true"></i><span name="tel_office"></span></span><br/>
@@ -33,11 +33,8 @@
             </div>
             <div class="row m-3">
                 <div class="col-12 pr-0 text-right">
-                    <button id="closeShowPanel" class="btn btn-secondary" type="button" title="Close Panel">
-                        <i class="fa fa-times mr-2" aria-hidden="true"></i> Close Panel
-                    </button>
-                    <button id="deleteRecordButton" class="btn btn-danger ml-2" type="button" title="Delete Member">
-                        <i class="fa fa-thumbs-o-down mr-2" aria-hidden="true"></i> Delete Member
+                    <button id="closeShowPanel" class="btn btn-secondary" type="button" title="{{ __('messages.adm_table.close_panel_btn') }}">
+                        <i class="fa fa-times mr-2" aria-hidden="true"></i>{{ __('messages.adm_table.close_panel_btn') }}
                     </button>
                 </div>
             </div>

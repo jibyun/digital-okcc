@@ -13,10 +13,10 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.privilege_role') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege Mapping']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='privilegesCombo' class="form-group form-control mr-3">
+            <select id='privilegesCombo' class="form-group form-control mr-2" style="width: 180px">
             </select>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" title="Describe" data-content="">
                 <i class="fa fa-question" aria-hidden="true"></i>
@@ -27,7 +27,7 @@
             <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
                 <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
             </button>    
-            @include('admin.includes.export')                
+            @include('admin.includes.export', [ 'router' => 'admin.export.privilegerolemaps' ])               
         </div>
     </div>
 
@@ -35,20 +35,19 @@
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, 100, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
+            data-page-list="[5, 10, 25, ALL]" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="role_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Role Id</th>
-                <th data-field="role_txt" data-width="20%" data-filter-control="select" data-sortable="true" scope="col">Role Name</th>
-                <th data-field="role_memo" data-filter-control="select" data-sortable="true" scope="col" data-escape="true">Memo</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="role_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.role_id') }}</th>
+                <th data-field="role_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.role_name') }}</th>
+                <th data-field="role_memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -57,18 +56,11 @@
     @include('admin.includes.p-role-map.show')
     @include('admin.includes.p-role-map.delete')
     @include('admin.includes.p-role-map.deleteall')
-    <input id="signup-token" name="_token" type="hidden" value="{{csrf_token()}}">
 </div>
 {{-- End Container --}}
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
     <script type="text/javascript">
         // variables
         var $table = $('#mainTable');
@@ -168,38 +160,32 @@
         // Get list from server and fill combobox
         function getInitList() {
             initTable();
-            $.ajax({
-                dataType: 'json',
-                url: privilegesUrl,
-                success: function(data) { // What to do if we succeed
-                    privileges = data['privileges'];
-                    currentPrivilegeId = privileges[0]['id'];
-                    setPopover(0);
-                    buildPrivilegesCombo();
-                    reloadList();
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get privilege data from server: " + JSON.stringify(jqXHR), Failed);
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: privilegesUrl })
+            .done ( function(data, textStatus, jqXHR) { 
+                privileges = data['privileges'];
+                currentPrivilegeId = privileges[0]['id'];
+                setPopover(0);
+                buildPrivilegesCombo();
+                reloadList();
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }  
 
         // Reload data from server and refresh table
         function reloadList() {
-            $.ajax({
-                dataType: 'json',
-                url: privilegesRolesUrl + '?privilege_id=' + currentPrivilegeId,
-                success: function(data) { // What to do if we succeed
-                    if (data['result'].length > 0) {
-                        $table.bootstrapTable( 'load', { data: data['result'] } );
-                    } else {
-                        $table.bootstrapTable( 'removeAll' );
-                    } 
-                    privilegeRoleMaps = data['result'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: privilegesRolesUrl + '?privilege_id=' + currentPrivilegeId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['result'].length > 0) {
+                    $table.bootstrapTable( 'load', { data: data['result'] } );
+                } else {
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+                privilegeRoleMaps = data['result'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -207,23 +193,22 @@
 
         // click addRole button
         function addRoles() {
-            $.ajax({
-                dataType: 'json',
-                method:'GET',
-                url: getRolesNotInMap + '?privilege_id=' + currentPrivilegeId,
-                success: function(data) {
-                    if (data.length < 1) {
-                        toastr.error('There are no more data to add!', 'Warning');
-                    } else {
-                        $addTable.bootstrapTable( 'load', { data: data["roles"] } );
-                        $('#add-item').modal({show:true});
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'GET', url: getRolesNotInMap + '?privilege_id=' + currentPrivilegeId })
+            .done ( function(data) {
+                if (data.length < 1) {
+                    nomoreDataError();
+                } else {
+                    $addTable.bootstrapTable( 'load', { data: data["roles"] } );
+                    $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
         // Save button was pressed after selecting roles to add.
-        $(".add-roles").click(function(e){
+        $(".crud-submit").click(function(e){
             event.preventDefault();
             var selection = $addTable.bootstrapTable('getSelections');
             if (selection) { // if selected items are more than one?
@@ -235,20 +220,15 @@
                         role_id: item['id'],
                     };
                     deferreds.push(
-                        $.ajax({
-                            dataType: 'json',
-                            method: 'POST',
-                            url: privilegesRolesPostUrl,
-                            data: data
-                        })
+                        $.ajax({ dataType: 'json', method: 'POST', data: data, timeout: 3000, url: privilegesRolesPostUrl })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
-                    toastr.success('Data was successfully saved.', 'Success');
+                    saveSuccessMessage();
                     $(".modal").modal('hide'); // hide model form
                     reloadList();
                 }).fail(function(e){
-                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                    saveErrorMessage();
                 });
             }
         });
@@ -256,20 +236,19 @@
         // Delete button was pressed
         $(".crud-delete").click(function(e){
             event.preventDefault();
-            $.ajax({
-                dataType: 'json',
-                type:'delete',
-                url: privilegesRolesUrl + '/' + saveId,
-                success: function(data) {
-                    if (data.errors) {
-                        toastr.error(data.errors, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: privilegesRolesUrl + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -280,19 +259,15 @@
                 var deferreds = [];
                 $.each(privilegeRoleMaps, function(index, item) {
                     deferreds.push(
-                        $.ajax({
-                            dataType: 'json',
-                            type:'delete',
-                            url: privilegesRolesUrl + '/' + item['id'],
-                        })
+                        $.ajax({ dataType: 'json', type:'delete', timeout: 3000, url: privilegesRolesUrl + '/' + item['id'] })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
-                    toastr.success('Data was successfully saved.', 'Success');
+                    saveSuccessMessage();
                     $(".modal").modal('hide'); // hide model form
                     reloadList();
                 }).fail(function(e){
-                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                    deleteSuccessMessage();
                 });
             }
         });
@@ -310,8 +285,9 @@
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
-                $("#deleteall-item").modal('show');
+                $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
+                nomoreDeleteError();
                 toastr.error('There is nothing to delete.', 'Failed');
             }
         }
@@ -321,17 +297,14 @@
             saveId = Number(rec.id);
 
             if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
-                dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
                 dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -340,7 +313,7 @@
             saveIndex = $element.index();
         });
     </script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

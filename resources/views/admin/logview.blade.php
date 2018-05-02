@@ -9,52 +9,51 @@
 
 @section('content')
 <div class='container p-4'>
-    <span class="h4-font-size pr-3">{{ __('messages.adm_title.log') }}</span><span id="contentTitle" class="h6-font-size"></span>
+    <span class="h4-font-size pr-3">{{ __('messages.adm_title.title', ['title' => 'Log']) }}</span><span id="contentTitle" class="h6-font-size"></span>
     <div id="toolbar" class="form-inline">
         <div class="mr-2" style="width: 130px;">
-            <select id="log" class="form-control" name="log" data-placeholder="Select a Log">
+            <select id="log" class="form-control" style="width: 130px;" name="log" data-placeholder="{{ __('messages.adm_table.select_log') }}">
             </select>
         </div>
         <div class="mr-2" style="width: 140px;">
-            <select id="user" class="form-control" name="user" data-placeholder="Select a User">
+            <select id="user" class="form-control" style="width: 140px;" name="user" data-placeholder="{{ __('messages.adm_table.select_user') }}">
             </select>
         </div>
         <div class="input-group date mr-2" id="from" data-target-input="nearest" style="width: 150px;">
-            <input type="text" class="form-control datetimepicker-input" data-target="#from" name="from" placeholder="From: YYYY-MM-DD" />
+            <input type="text" class="form-control datetimepicker-input" data-target="#from" name="from" placeholder="{{ __('messages.adm_table.from_ph') }}" />
             <div class="input-group-append" data-target="#from" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
         </div>
         <div id="test"></div>
         <div class="input-group date mr-2" id="to" data-target-input="nearest" style="width: 150px;">
-            <input type="text" class="form-control datetimepicker-input" data-target="#to" name="to" placeholder="To: YYYY-MM-DD" />
+            <input type="text" class="form-control datetimepicker-input" data-target="#to" name="to" placeholder="{{ __('messages.adm_table.to_ph') }}" />
             <div class="input-group-append" data-target="#to" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
         </div>
-        @include('admin.includes.export')
+        @include('admin.includes.export', [ 'router' => 'admin.export.logs' ]) 
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
             data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
             data-row-style="rowStyle"
-            data-show-columns="true" >
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="created_at" data-width="150px" data-filter-control="select" data-sortable="true" scope="col" data-visible="true">Created</th>
-                <th data-field="code_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Code Id</th>
-                <th data-field="code_name" data-width="100px" data-filter-control="select" data-sortable="true" scope="col" data-visible="true">Kind</th>
-                <th data-field="user_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">User Id</th>
-                <th data-field="user_name" data-width="150px" data-filter-control="select" data-sortable="true" scope="col" data-visible="true">User</th>
-                <th data-field="memo" data-filter-control="select" data-sortable="false" scope="col" data-visible="true" data-escape="true">Memo</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="created_at" data-width="150px" data-sortable="true">{{ __('messages.adm_table.created_at') }}</th>
+                <th data-field="code_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.code_id') }}</th>
+                <th data-field="code_name" data-width="100px" data-sortable="true" data-visible="true">{{ __('messages.adm_table.code_name') }}</th>
+                <th data-field="user_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.user_id') }}</th>
+                <th data-field="user_name" data-width="150px" data-sortable="true" data-visible="true">{{ __('messages.adm_table.user_name') }}</th>
+                <th data-field="memo" data-visible="true">{{ __('messages.adm_table.memo') }}</th>
             </tr>
         </thead>
     </table>
@@ -63,12 +62,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
 
     <script type="text/javascript">
         const $table = $('#table');
@@ -108,8 +101,8 @@
             $element.chosen({
                 case_sensitive_search: false,
                 search_contains: true, // Setting this option to true allows matches starting from anywhere within a word. 
-                no_results_text: "Oops, nothing found!",
-                placeholder_text_single: "Please Select One!",
+                no_results_text: 'Oops, nothing found!', // didn't be applied by localization
+                placeholder_text_single: 'Fail to get data from server: ', // didn't be applied by localization
             });
         }
 
@@ -118,7 +111,7 @@
                 fillCombo( $('#log'), data['codes'][0], "log" );
             }, 
             fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
+                toastr.error('Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!');
             }
         });
 
@@ -127,7 +120,7 @@
                 fillCombo( $('#user'), data['users'], "user" );
             }, 
             fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
+                toastr.error('Fail to get data from server: ' + JSON.stringify(jqXHR), 'Failed!');
             }
         });
 
@@ -137,13 +130,12 @@
             var to = $("#to").find('input[name=to]').val();
             var log = $('#log').val() ? $('#log').val() : '';
             var user = $('#user').val() ? $('#user').val() : '';
-            $.ajax({ dataType: 'json', url: baseURL + '?from=' + from + '&to=' + to + '&code_id=' + log + '&user_id=' + user,
-                success: function(data) { 
-                    $table.bootstrapTable( 'load', { data: data['logs'] } );
-                }, 
-                fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: baseURL + '?from=' + from + '&to=' + to + '&code_id=' + log + '&user_id=' + user })
+            .done ( function(data, textStatus, jqXHR) { 
+                $table.bootstrapTable( 'load', { data: data['logs'] } );
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -168,7 +160,5 @@
     {{-- Tempus Dominus Bootstrap 4: The plugin provide a robust date and time picker designed to integrate into your Bootstrap project. https://tempusdominus.github.io/bootstrap-4/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
-    
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
+
 @endsection

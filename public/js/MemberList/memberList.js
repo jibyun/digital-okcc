@@ -47,8 +47,16 @@ $(document).ready(function () {
 
     // search button click
     $("#btnSearch").button().click(function(){
-        var url = searchUrl + "/" + $("#inputSearch").val();
-        restApiCall(url, "GET", null, memberListSuccess, null);
+        searchMember($("#inputSearch").val());
+    });
+
+    // search button click
+    $("#inputSearch").keypress(function(e) {
+        if (e.which === 13) {
+            $(this).attr("disabled", "disabled");
+            searchMember($("#inputSearch").val());
+            $(this).removeAttr("disabled");
+        }
     });
     
     
@@ -59,6 +67,18 @@ $(document).ready(function () {
 });
 
 
+/**
+ * Search member by given string
+ * 
+ * @param {string} searchString 
+ */
+function searchMember(searchString) {
+    // TODO: Unselect tree, update title
+    updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
+    var url = searchUrl + "/" + searchString;
+    restApiCall(url, "GET", null, memberListSuccess, null);
+}
+
 function loadTable(url) {
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
@@ -66,7 +86,10 @@ function loadTable(url) {
 function memberListSuccess(response) {
     var tableData = JSON.parse(response.data);
     var table = $('#bt_table');
-    table.bootstrapTable('load', tableData);
+    table.bootstrapTable('load', tableData.members);
+    // Update manager info
+    $('#member_header_panel').text(tableData.managerInfo);
+    showMainConent();
 }
 
 /**
@@ -139,9 +162,12 @@ function showMainConent() {
 
 function treeSelectionChanged(id, data) {
     updateTitle($('#pageTitle'), data.text);
-    loadTable(memberListUrl + "/" + data.code);
-    showMainConent();
-
+    // This is the special case for all member.
+    if (data.code === "0000") {
+        loadTable(memberListUrl);
+    } else {
+        loadTable(memberListUrl + "/" + data.code);
+    }
 }
 
 function memberListBackHandler() {

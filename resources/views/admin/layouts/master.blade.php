@@ -37,25 +37,14 @@
 
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
-        {{-- Basic Scripts --}}
-        <script src="{{ asset('js/admin.js') }}"></script>
 
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 
-        {{-- jQuery plugin to export a html table to JSON, XML, CSV, TSV, TXT, SQL, Word, Excel, PNG and PDF https://github.com/hhurz/tableExport.jquery.plugin --}}
-        {{-- To save the generated export files on client side, include in your html code: --}}
-        <script type="text/javascript" src="{{ asset('js/exportPlugins/FileSaver/FileSaver.min.js') }}"></script>
-        {{-- To export the table in XLSX (Excel 2007+ XML Format) format, you need to include additionally: --}}
-        <script type="text/javascript" src="{{ asset('js/exportPlugins/js-xlsx/xlsx.core.min.js') }}"></script>
-        {{-- To export the table as a PDF file the following includes are required: --}}
-        <script type="text/javascript" src="{{ asset('js/exportPlugins/jsPDF/jspdf.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/exportPlugins/jsPDF-AutoTable/jspdf.plugin.autotable.js') }}"></script>
-        {{-- <script type="text/javascript" src="tableExport.min.js"></script> --}}
-        <script type="text/javascript" src="{{ asset('js/tableExport.min.js') }}"></script>
-        
         {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        {{-- Basic Scripts --}}
+        <script src="{{ asset('js/admin.js') }}"></script>
 
         {{-- for additional scripts --}}
         @yield('scripts')

@@ -1,3 +1,4 @@
+@auth
 <div class="d-flex">
     <nav class="sidebar bg-dark">
         <ul class="list-unstyled">
@@ -18,3 +19,8 @@
         @yield('content')
     </div>
 </div>
+@else
+<div style="min-height:100%;margin-bottom:100px;">
+    @yield('content')
+</div>
+@endauth

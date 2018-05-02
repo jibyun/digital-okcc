@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Code;
 use App\Http\Services\Log\SystemLog;
 
@@ -66,21 +68,15 @@ class CodesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $result = Code::create($request->all());
-            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully created.',
-                    'codes' => $result,
-                    'status' => 200
-                ], 200);
+            try {
+                $result = Code::create($request->all());
+                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                return response()->json([ 'codes' => $result ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -111,22 +107,16 @@ class CodesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $detail = SystemLog::createLogForUpdatedFields($codeUpdate, $input, null); 
-            $codes = $codeUpdate->fill($input)->save();
-            SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully updated.',
-                    'codes' => $codes,
-                    'status' => 200
-                ], 200);
+            try {
+                $detail = SystemLog::createLogForUpdatedFields($codeUpdate, $input, null); 
+                $codes = $codeUpdate->fill($input)->save();
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                return response()->json([ 'categories' => $codes ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -137,18 +127,9 @@ class CodesController extends Controller {
         try {
             Code::find($id)->delete();
             SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully deleted.',
-                    'status' => 200
-                ], 200);
-        } catch (\Exception $e) {
-            return response()
-                ->json([
-                    'errors' => $e->getMessage(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
     }
 

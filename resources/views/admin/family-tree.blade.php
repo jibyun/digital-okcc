@@ -8,47 +8,43 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.family_tree') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Family Tree']) }}</h4>
     <div id="toolbar">
-        <div class='row py-2'>
-            <div class="col-sm-3">
-                <select id='membersCombo' class="form-group form-control mr-3" style="width: 70%;" data-placeholder="Select Correct Member">
+        <div class='form-inline py-2'>
+            <div class='mr-2' style="width: 300px;">
+                <select id='membersCombo' class="form-group form-control mr-2" style="width: 300px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
                 </select>
             </div>
-            <div class="form-inline">
-                <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
-                    <i class="fa fa-question" aria-hidden="true"></i>
-                </button>
-                <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Family" onclick="addChild();">
-                    <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_family') }}
-                </button>
-                <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
-                    <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
-                </button> 
-                @include('admin.includes.export') 
-            </div>
+            <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
+                <i class="fa fa-question" aria-hidden="true"></i>
+            </button>
+            <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Family" onclick="addChild();">
+                <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_family') }}
+            </button>
+            <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
+                <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
+            </button> 
+            @include('admin.includes.export', [ 'router' => 'admin.export.familytrees' ])     
         </div>
     </div>
 
     <table  id="mainTable" class="table table-striped table-bordered" 
             data-side-pagination="client"
             data-pagination="true" 
-            data-page-list="[5, 10, 25, 50, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
-            data-row-style="rowStyle">
+            data-page-list="[5, 10, 25, ALL]" 
+            data-row-style="rowStyle"
+            >
         <thead>
             <tr>
-                <th data-field="id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Id</th>
-                <th data-field="child_id" data-filter-control="select" data-sortable="false" scope="col" data-visible="false">Child Id</th>
-                <th data-field="child_name" data-width="25%" data-filter-control="select" scope="col">Name</th>
-                <th data-field="child_birth" data-width="10%" data-filter-control="select" scope="col">Birthdate</th>
-                <th data-field="child_gender" data-width="5%" data-filter-control="select" scope="col">Gender</th>
-                <th data-field="child_email" data-filter-control="select" scope="col">Email</th>
-                <th data-field="child_relation_id" data-filter-control="select" scope="col" data-visible="false">Relation Id</th>
-                <th data-field="child_relation_name" data-width="20%" data-filter-control="select" scope="col">Relation</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="child_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.child_id') }}</th>
+                <th data-field="child_name" data-width="25%">{{ __('messages.adm_table.child_name') }}</th>
+                <th data-field="child_birth" data-width="10%">{{ __('messages.adm_table.dob') }}</th>
+                <th data-field="child_gender" data-width="5%">{{ __('messages.adm_table.gender') }}</th>
+                <th data-field="child_email">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="child_relation_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.relation_id') }}</th>
+                <th data-field="child_relation_name" data-width="20%">{{ __('messages.adm_table.relation_name') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -63,12 +59,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
     <script type="text/javascript">
         const $table = $('#mainTable');
         const $addTable = $('#addTable');
@@ -106,17 +96,15 @@
             ].join('');
         }
 
-        function initTable() {
-            $table.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'left' },{},{ align: 'left' },{ align: 'center', clickToSelect: false }]
+        $table.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'center' },{ align: 'center' },{ align: 'left' },{},{ align: 'left' },{ align: 'center', clickToSelect: false }]
+        });
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
             });
-            $(window).resize(function () {
-                $table.bootstrapTable('resetView', {
-                    height: getHeight()
-                });
-            });
-        }
+        });
 
         $popover.popover({
             title: 'Member Summary',
@@ -164,70 +152,30 @@
         }
 
         // fill autocomplete list of members
-        function getDataforCombo() {
-            $.ajax({
-                dataType: 'json',
-                url: memberListURL + '?table=members',
-                success: function(data) { 
-                    parentList = data['members'];
-                    fillMemberCombo($combo, data['members']);
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get member data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
-            });
-        }
+        $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=householders' })
+        .done ( function(data, textStatus, jqXHR) { 
+            parentList = data['members'];
+            fillMemberCombo($combo, data['members']);
+        }) 
+        .fail ( function(jqXHR, textStatus, errorThrown) { 
+            errorMessage( jqXHR );
+        });
 
         // Get list from server and fill combobox
-        function getRelationList() {
-            $.ajax({
-                dataType: 'json',
-                url: codesUrl + '?category_id=' + RELATION_CODE,
-                success: function(data) { // What to do if we succeed
-                    relationList = data['codes'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get department data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
-            });
-        }  
-
-        // Reload data from server and refresh table
-        function reloadList() {
-            $('#addMemberCombo').val('').trigger('chosen:updated');
-            $('#addRelationCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: familyTreesUrl + '?parent_id=' + currentParentId,
-                success: function(data) { // What to do if we succeed
-                    if (data['result'].length > 0) {
-                        $table.bootstrapTable( 'load', { data: data['result'] } );
-                    } else {
-                        $table.bootstrapTable( 'removeAll' );
-                    } 
-                    childLists = data['result'];
-                }, 
-                error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("can't get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
-            });
-        } 
-
-        initTable();
-        getRelationList();
-        getDataforCombo();
+        $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + RELATION_CODE })
+        .done ( function(data, textStatus, jqXHR) { 
+            relationList = data['codes'];
+            fillAddRelationCombo($('#addRelationCombo'), relationList);
+        }) 
+        .fail ( function(jqXHR, textStatus, errorThrown) { 
+            errorMessage( jqXHR );
+        });
 
         function fillAddMemberCombo(memberCombo, members) {
             memberCombo.empty();
             var html = '<option value=""></option>';
             $.each(members, function( index, member ) {
-                var fullName;
-                if (!member['first_name'] && !member['last_name']) {
-                    fullName = member['kor_name'];
-                } else {
-                    fullName = !member['first_name'] ? member['last_name'] : member['first_name'] + ' ' + member['last_name'];
-                }
-                html += '<option value="' + member['id'] + '">' + fullName + '</option>';
+                html += '<option value="' + member['idx'] + '">' + member['label'] + '</option>';
             });
             memberCombo.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
@@ -255,22 +203,34 @@
             });
         }
 
+        // Reload data from server and refresh table
+        function reloadList() {
+            $('#addMemberCombo').val('').trigger('chosen:updated');
+            $('#addRelationCombo').val('').trigger('chosen:updated');
+            $.ajax({ dataType: 'json', timeout: 3000, url: familyTreesUrl + '?parent_id=' + currentParentId })
+            .done ( function(data, textStatus, jqXHR) { 
+                if (data['result'].length > 0) {
+                    $table.bootstrapTable( 'load', { data: data['result'] } );
+                } else {
+                    $table.bootstrapTable( 'removeAll' );
+                } 
+                childLists = data['result'];
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            });
+        } 
+
         // click addChild button
         function addChild() {
             if (currentParentId) {
-                $.ajax({
-                    dataType: 'json',
-                    method:'GET',
-                    url: getCodesNotInChild + '?parent_id=' + currentParentId,
-                    success: function(data) {
-                        if (data.length < 1) {
-                            toastr.error('There are no more data to add!', 'Warning');
-                        } else {
-                            fillAddMemberCombo($('#addMemberCombo'), data["members"]);
-                            fillAddRelationCombo($('#addRelationCombo'), relationList);
-                            $('#add-item').modal({show:true});
-                        }
-                    }
+                $.ajax({ dataType: 'json', timeout: 3000, url: memberListURL + '?table=family' })
+                .done ( function(data) {
+                    fillAddMemberCombo($('#addMemberCombo'), data["members"]);
+                    $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
+                })
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
                 });
             }
         }
@@ -311,26 +271,22 @@
                 child_relation_name: relationCombo.find('option:selected').text(),
             }
 
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", tableData); // Add input data to table
-                        $('#addForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", tableData); // Add input data to table
+                    $('#addForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });    
 
@@ -338,20 +294,19 @@
         // Delete button was pressed
         $(".crud-delete").click(function(e){
             event.preventDefault();
-            $.ajax({
-                dataType: 'json',
-                type:'delete',
-                url: familyTreesUrl + '/' + saveId,
-                success: function(data) {
-                    if (data.errors) {
-                        toastr.error(data.errors, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: familyTreesUrl + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -362,19 +317,15 @@
                 var deferreds = [];
                 $.each(childLists, function(index, item) {
                     deferreds.push(
-                        $.ajax({
-                            dataType: 'json',
-                            type:'delete',
-                            url: familyTreesUrl + '/' + item['id'],
-                        })
+                        $.ajax({ dataType: 'json', type:'delete', timeout: 3000, url: familyTreesUrl + '/' + item['id'] })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
-                    toastr.success('Data was successfully saved.', 'Success');
+                    saveSuccessMessage();
                     $(".modal").modal('hide'); // hide model form
                     reloadList();
                 }).fail(function(e){
-                    toastr.error('Error occured! Please Save again.' + deferreds.length + ' message:' + e.message, 'Failed');
+                    deleteSuccessMessage();
                 });
             }
         });
@@ -392,7 +343,7 @@
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
-                $("#deleteall-item").modal('show');
+                $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 toastr.error('There is nothing to delete.', 'Failed');
             }
@@ -402,19 +353,15 @@
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
             if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
-                dispId.find("span[name='child_txt']").text(rec.child_name + ' (' + rec.child_id + ')');
-                dispId.find("span[name='relation']").text(rec.child_relation_name + ' (' + rec.child_relation_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
                 dispId.find("span[name='child_txt']").text(rec.child_name + ' (' + rec.child_id + ')');
                 dispId.find("span[name='relation']").text(rec.child_relation_name + ' (' + rec.child_relation_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -426,7 +373,7 @@
     
     {{-- chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
 @endsection

@@ -7,36 +7,35 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.user') }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'User']) }}</h4>
     <div id="toolbar">
-        <button class="btn btn-info mr-1" type="button" title="Create" data-toggle="modal" data-target="#create-item">
+        <button class="btn btn-info mr-1" type="button" title="Create" id='create-button'>
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.register') }}
         </button>
-        @include('admin.includes.export')
+        @include('admin.includes.export', [ 'router' => 'admin.export.users' ])    
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
-            data-toolbar="#toolbar"
+    data-toolbar="#toolbar"
             data-side-pagination="client"
             data-search="true" 
+            data-search-on-enter-key="true"
             data-pagination="true" 
             data-page-list="[5, 10, 25, ALL]" 
-            data-mobile-responsive="true" 
-            data-click-to-select="true" 
-            data-filter-control="true" 
             data-row-style="rowStyle"
-            data-show-columns="true">
+            data-show-columns="true"
+            >
         <thead>
             <tr>
-                <th data-field="id" scope="col" data-visible="false">Id</th>
-                <th data-field="name" data-width="25%" data-filter-control="select" data-sortable="true" scope="col">User Name</th>
-                <th data-field="email" data-width="43%" data-filter-control="select" data-sortable="true" scope="col">Email</th>
-                <th data-field="member_id" scope="col" data-visible="false">Member Id</th>
-                <th data-field="member_name" scope="col" data-visible="false">Member Name</th>
-                <th data-field="privilege_id" scope="col" data-visible="false">Privilege Id</th>
-                <th data-field="privilege_name" data-filter-control="select" data-sortable="true" scope="col">Privilege</th>
-                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-events="editEvents">Edit</th>
-                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents">Del</th>
+                <th data-field="id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="name" data-width="25%" data-sortable="true">{{ __('messages.adm_table.user_name') }}</th>
+                <th data-field="email" data-width="43%" data-sortable="true">{{ __('messages.adm_table.email') }}</th>
+                <th data-field="member_id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_id') }}</th>
+                <th data-field="member_name" data-searchable="false" data-visible="false">{{ __('messages.adm_table.member_name') }}</th>
+                <th data-field="privilege_id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.privilege_id') }}</th>
+                <th data-field="privilege_name" data-sortable="true">{{ __('messages.adm_table.privilege_name') }}</th>
+                <th data-field="edit" data-width="3%" data-formatter="editFormatter" data-searchable="false" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
+                <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-searchable="false" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
@@ -51,13 +50,6 @@
 @endsection
 
 @section('scripts')
-    {{-- for Toast --}}
-    <script type="text/javascript">
-        toastr.options.progressBar = true;
-        toastr.options.timeOut = 5000; // How long the toast will display without user interaction
-        toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
-    </script>
-
     <script type="text/javascript">
         const $table = $('#table');
         const listURL = "{!! route('admin.users.get-users') !!}";
@@ -65,6 +57,7 @@
         var users;
         var saveIndex; // Row index of the table
         var saveId; // Primary key of the table
+        var saveName, saveEmail;
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -78,7 +71,7 @@
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
+                '<a href="#"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -111,16 +104,13 @@
         function reloadList() {
             $('#createMemberCombo').val('').trigger('chosen:updated');
             $('#createPrivilegeCombo').val('').trigger('chosen:updated');
-            $.ajax({
-                dataType: 'json',
-                url: listURL + '?table=users',
-                success: function(data) { 
-                    users = data['users'];
-                    $table.bootstrapTable( 'load', { data: users } );
-                }, 
-                fail: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
-                    toastr.error("Fail to get data from server: " + JSON.stringify(jqXHR), 'Failed');
-                }
+            $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=users' })
+            .done ( function(data, textStatus, jqXHR) { 
+                users = data['users'];
+                $table.bootstrapTable( 'load', { data: users } );
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         } 
 
@@ -158,30 +148,21 @@
 
         // fill autocomplete list of members and privilege
         function getDataforCombo() {
-            var deferreds = [];
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=members',
-                    success: function(data) { 
-                        fillMemberCombo($('#createMemberCombo'), data['members']);
-                        fillMemberCombo($('#editMemberCombo'), data['members']);
-                    },
+            $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=members' })
+            .done ( function(data, textStatus, jqXHR) { 
+                fillMemberCombo($('#createMemberCombo'), data['members']);
+                fillMemberCombo($('#editMemberCombo'), data['members']);
+                $.ajax({ dataType: 'json', timeout: 3000, url: listURL + '?table=privileges' })
+                .done ( function(data, textStatus, jqXHR) { 
+                    fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
+                    fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
                 })
-            );
-            deferreds.push(
-                $.ajax({
-                    dataType: 'json',
-                    url: listURL + '?table=privileges',
-                    success: function(data) { 
-                        fillPrivilegeCombo($('#createPrivilegeCombo'), data['privileges']);
-                        fillPrivilegeCombo($('#editPrivilegeCombo'), data['privileges']);
-                    },
-                })
-            );
-            $.when.apply($, deferreds).then( function() {
-            }).fail(function(e){
-                toastr.error('Error occured! Please Save again. message:' + e.message, 'Failed');
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
+                });
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         }
 
@@ -190,7 +171,7 @@
         reloadList();
 
         // pressed save register button
-        $(".crud-register").click(function(e){
+        $(".crud-submit").click(function(e){
             e.preventDefault();
             var formId = $("#create-item");
             var form_action = formId.find("form").attr("action");
@@ -201,26 +182,23 @@
                 member_id: $('#createMemberCombo').val(),
                 privilege_id: $('#createPrivilegeCombo').val() 
             };
-            $.ajax({
-                dataType: 'json',
-                method:'POST',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable("append", postData); // Add input data to table
-                        $('#createForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+
+            $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable("append", postData); // Add input data to table
+                    $('#createForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -237,26 +215,23 @@
                 privilege_id: $('#editPrivilegeCombo').val(),
                 privilege_name: $('#editPrivilegeCombo option:selected').text(),
             };
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: basicURL + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $('#editForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
         });
 
@@ -266,30 +241,30 @@
             var formId = $("#edit-item");
             var form_action = formId.find("form").attr("action");
             var postData = {
-                name: $("#deleteBody").find("span[name='name']").text(),
-                email: $("#deleteBody").find("span[name='email']").text() + "__DELETED USER!!!",
+                name: saveName,
+                email: saveEmail + "__DELETED USER!!!",
             };
-            $.ajax({
-                dataType: 'json',
-                method: 'PUT',
-                url: form_action,
-                data: postData,
-                success: function(data) {
-                    if (data.errors) {
-                        var message = '';
-                        for (i=0; i < data.errors.length; i++) {
-                            message += data.errors[i] + (i < data.errors.length -1 ? ' | ' : '');
-                        } 
-                        toastr.error(message, data.message);
-                    } else {
-                        toastr.success(data.message, 'Success');
-                        $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
-                        $('#editForm')[0].reset(); // Clear create form 
-                        $(".modal").modal('hide'); // hide model form
-                        reloadList();
-                    }
+            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: basicURL + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'validation') {
+                    validationMessage( data.errors );
+                } else if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    saveSuccessMessage();
+                    $table.bootstrapTable('updateRow', {index: saveIndex, row: postData});
+                    $('#editForm')[0].reset(); // Clear create form 
+                    $(".modal").modal('hide'); // hide model form
+                    reloadList();
                 }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
             });
+        });
+
+        $('#create-button').click( function(e) {
+            $("#create-item").modal('show').draggable({ handle: ".modal-header" });
         });
 
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
@@ -302,16 +277,13 @@
                 // VERY IMPORTANT!!! If you use chosen, when you want to change a selection, you have to add .trigger('chosen:updated')
                 $('#editMemberCombo').val(rec.member_id).trigger('chosen:updated');
                 $('#editPrivilegeCombo').val(rec.privilege_id).trigger('chosen:updated');
-                form.find("#editForm").attr("action", basicURL + '/' + rec.id);
+                $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
-                var dispId = $("#deleteBody");
-                dispId.find("span[name='name']").text(rec.name);
-                dispId.find("span[name='email']").text(rec.email);
-                dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
-                dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
+                saveName = rec.name;
+                saveEmail = rec.email;
                 $("#edit-item").find("#editForm").attr("action", basicURL + '/' + rec.id);
                 // Open Bootstrap Model without Button Click
-                $("#delete-item").modal('show');
+                $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
                 dispId.find("span[name='name']").text(rec.name);
@@ -319,7 +291,7 @@
                 dispId.find("span[name='member_name']").text(rec.member_name + ' (' + rec.member_id + ')');
                 dispId.find("span[name='privilege_name']").text(rec.privilege_name + ' (' + rec.privilege_id + ')');
                 // Open Bootstrap Model without Button Click
-                $("#show-item").modal('show');
+                $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
         });
 
@@ -331,7 +303,7 @@
 
     {{-- Chosen user interface CDN for autocomplete input --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.jquery.min.js"></script>
-    
-    {{-- export EXCEL, PDF, PNG, JSON --}}
-    <script src="{{ asset('js/export.js') }}"></script>
+    {{-- to implement make display order --}}
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+ 
 @endsection

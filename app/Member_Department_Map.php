@@ -13,7 +13,7 @@ class Member_Department_Map extends Model {
     public $incrementing = true;
     // The attributes that are mass assignable.
     protected $fillable = [
-        'id', 'member_id', 'department_id', 'position_id', 'started_at', 'finished_at', 'enabled', 'updated_by'
+        'id', 'member_id', 'department_id', 'position_id', 'enabled', 'updated_by', 'manager'
     ];
 
     // Relationship with between members table and member_id
@@ -34,5 +34,10 @@ class Member_Department_Map extends Model {
     // Relationship with Users table
     public function userByUpdatedById() {
         return $this->belongsTo('App\User', 'updated_by', 'id');
+    }
+
+    // Relationship with members table
+    public function membersByMemberId() {
+        return $this->hasMany(App\Member::class);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Member;
 use App\Http\Services\Log\SystemLog;
 
@@ -35,21 +37,15 @@ class MembersController extends Controller {
         $validator = \Validator::make( $input, $this->getRules(), $this->getMessages() );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $result = Member::create($input);
-            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
-            return response()
-                ->json([
-                    'message' => 'The item was successfully created.',
-                    'codes' => $result,
-                    'status' => 200
-                ], 200);
+            try {
+                $result = Member::create($input);
+                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                return response()->json([ 'codes' => $result ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -59,31 +55,16 @@ class MembersController extends Controller {
         $validator = \Validator::make( $input, $this->getRules(), $this->getMessages() );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($memberUpdate, $input, 
                     ['city_name', 'province_name', 'country_name', 'status_name', 'level_name', 'duty_name']); 
                 $result = $memberUpdate->fill($input)->save();
                 SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
-                return response()
-                    ->json([
-                        'message' => 'The item was successfully updated.',
-                        'user' => $result,
-                        'status' => 200
-                    ], 200);
-            } catch (\Exception $exception) {
-                return response()
-                    ->json([
-                        'errors' => $exception,
-                        'message' => 'Failed',
-                        'status' => 422
-                    ], 200);
+                return response()->json([ 'user' => $result ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
             }
         }
     }
@@ -138,6 +119,7 @@ class MembersController extends Controller {
             "status_id"             => "sometimes|exists:codes,id",
             "level_id"              => "sometimes|exists:codes,id",
             "duty_id"               => "sometimes|exists:codes,id",
+            'primary'               => [ 'required', Rule::in([1, 0]) ],
         ];
     }
 
