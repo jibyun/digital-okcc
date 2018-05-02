@@ -78,9 +78,27 @@ Route::resource('admin/family-trees', 'Admin\FamilyTreesController', [ 'except' 
 // Members and Departments Mapping
 Route::get('admin/member-dept-map', 'Admin\AdminPagesController@memberDeptMap')->name('admin.member-dept.map');
 Route::get('admin/getCodesNotInChildByMDMap', 'Admin\MemDeptMapsController@getcodes_notin_child')->name('admin.member-dept-trees.getcodes-notin-child');
+Route::get('admin/getMembersByDepartmentId', 'Admin\MemDeptMapsController@getMembersByDepartmentId')->name('admin.member-dept-trees.getmembers-department');
+Route::get('admin/getMembersNotAssignedCell', 'Admin\MemDeptMapsController@getMembersNotAssignedCell')->name('admin.member-dept-trees.getmembers-notassigned');
+Route::get('admin/getMembersNotAssignedDept', 'Admin\MemDeptMapsController@getMembersNotAssignedDept')->name('admin.member-dept-trees.getmembers-notbelongin_dept');
 Route::resource('admin/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Image Upload
 Route::post('admin/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
+// Cell, Department Organizer
+Route::get('admin/cell-orginizer', 'Admin\AdminPagesController@cellOrginizer')->name('admin.cell.orginizer');
+Route::get('admin/dept-orginizer', 'Admin\AdminPagesController@departmentOrginizer')->name('admin.dept.orginizer');
+// Route for export/download tabledata to .csv, .xls or .xlsx
+Route::get('admin/exportCategories', 'Admin\ExportsController@exportCategories')->name('admin.export.categories');
+Route::get('admin/exportCodes', 'Admin\ExportsController@exportCodes')->name('admin.export.codes');
+Route::get('admin/exportPrivileges', 'Admin\ExportsController@exportPrivileges')->name('admin.export.privileges');
+Route::get('admin/exportRoles', 'Admin\ExportsController@exportRoles')->name('admin.export.roles');
+Route::get('admin/exportUsers', 'Admin\ExportsController@exportUsers')->name('admin.export.users');
+Route::get('admin/exportLogs', 'Admin\ExportsController@exportLogs')->name('admin.export.logs');
+Route::get('admin/exportMembers', 'Admin\ExportsController@exportMembers')->name('admin.export.members');
+Route::get('admin/exportPrivilegeRoleMaps', 'Admin\ExportsController@exportPrivilegeRoleMaps')->name('admin.export.privilegerolemaps');
+Route::get('admin/exportDepartmentTrees', 'Admin\ExportsController@exportDepartmentTrees')->name('admin.export.departmenttrees');
+Route::get('admin/exportFamilyTrees', 'Admin\ExportsController@exportFamilyTrees')->name('admin.export.familytrees');
+Route::get('admin/exportMemDeptMaps', 'Admin\ExportsController@exportMemDeptMaps')->name('admin.export.memdeptmaps');
 
 /*
 |--------------------------------------------------------------------------
@@ -137,3 +155,22 @@ Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@get
  * 
  */
 Route::get('okcc/util/adduser/{id}/{password}', 'Rest\Util\UtilsController@addUser');
+
+/*
+* Method: GET
+* URL: /okcc/member/getMembers: Retrieve member
+*/
+Route::get('okcc/member/getMember/{id}', 'Rest\MemberList\MemberController@show')->middleware('auth');
+
+/*
+* Method: GET
+* URL: /okcc/member/getCategory: Retrieve category+code
+*/
+Route::get('okcc/member/getCategory', 'Rest\MemberList\MemberController@getCategory')->middleware('auth');
+
+/*
+* Method: POST
+* URL: /okcc/member/edit: edit member
+*/
+Route::post('okcc/member/edit/{id}', 'Rest\MemberList\MemberController@edit')->middleware('auth');
+
