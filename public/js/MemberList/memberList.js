@@ -58,16 +58,6 @@ $(document).ready(function () {
     showLandingContent();
 });
 
-/**
- * Member Detail menu select handler
- * It will hide all other side menus and show member details menu
- * @param {object} obj 
- */
-function memberDetailSelectHandler(obj) {
-    $('#sideMenuCategory').hide();
-    $('#sideMenuProfile').hide();
-    $('#sideMenuMemberDetail').show();
-}
 
 function loadTable(url) {
     restApiCall(url, "GET", null, memberListSuccess, null);
@@ -154,6 +144,14 @@ function treeSelectionChanged(id, data) {
 
 }
 
+function memberListBackHandler() {
+    $('#sideMenuCategory').show();
+    $('#sideMenuProfile').show();
+    $('#sideMenuMemberDetail').hide();
+
+    $('#divMainPanel').show();
+    $('#divMemberDetailPanel').hide();
+}
 /**
  * Member Detail menu select handler
  * It will hide all other side menus and show member details menu
@@ -163,6 +161,9 @@ function memberDetailSelectHandler(obj) {
     $('#sideMenuCategory').hide();
     $('#sideMenuProfile').hide();
     $('#sideMenuMemberDetail').show();
+
+    $('#divMainPanel').hide();
+    $('#divMemberDetailPanel').show();
 }
 
 /**
@@ -174,6 +175,7 @@ function memberDetailSelectHandler(obj) {
 function memberDetailBasicSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
+    $('#familyTab').click();
 }
 
 /**
@@ -185,6 +187,7 @@ function memberDetailBasicSelectHandler(obj) {
 function memberDetailHistorySelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
+    $('#historyTab').click();
 }
 
 /**
@@ -196,4 +199,5 @@ function memberDetailHistorySelectHandler(obj) {
 function memberDetailVisitSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
+    $('#visitTab').click();
 }
