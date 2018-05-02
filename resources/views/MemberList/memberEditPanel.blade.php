@@ -145,7 +145,7 @@
                             <div class="form-group row">
                                 <label for="city" class="col-sm-4 col-form-label s1-font-size text-left pr-0">City</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectCityCombo" class="form-control" name="city" data-placeholder="Select a City">
+                                    <select id="selectCityCombo" class="form-control" name="city_id" data-placeholder="Select a City">
         
                                     </select>
                                 </div>
@@ -154,7 +154,7 @@
                             <div class="form-group row">
                                 <label for="province" class="col-sm-4 col-form-label s1-font-size text-left pr-0">Province</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectProvinceCombo" class="form-control" name="province" data-placeholder="Select a Province">
+                                    <select id="selectProvinceCombo" class="form-control" name="province_id" data-placeholder="Select a Province">
         
                                     </select>
                                 </div>
@@ -163,7 +163,7 @@
                             <div class="form-group row">
                                 <label for="country" class="col-sm-4 col-form-label s1-font-size text-left pr-0">Country</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectCountryCombo" class="form-control" name="country" data-placeholder="Select a Country">
+                                    <select id="selectCountryCombo" class="form-control" name="country_id" data-placeholder="Select a Country">
         
                                     </select>
                                 </div>
@@ -173,7 +173,7 @@
                             <div class="form-group row">
                                 <label for="status" class="col-sm-4 col-form-label s1-font-size text-left pr-0">Member Status</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectStatusCombo" class="form-control" name="status" data-placeholder="Select a Member Status">
+                                    <select id="selectStatusCombo" class="form-control" name="status_id" data-placeholder="Select a Member Status">
         
                                     </select>
                                 </div>
@@ -182,7 +182,7 @@
                             <div class="form-group row">
                                 <label for="level" class="col-sm-4 col-form-label s1-font-size text-left pr-0">Baptism Status</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectLevelCombo" class="form-control" name="level" data-placeholder="Select a Baptism Status">
+                                    <select id="selectLevelCombo" class="form-control" name="level_id" data-placeholder="Select a Baptism Status">
         
                                     </select>
                                 </div>
@@ -191,7 +191,7 @@
                             <div class="form-group row">
                                 <label for="duty" class="col-sm-4 col-form-label s1-font-size text-left pr-0">Duty</label>
                                 <div class="col-sm-8 text-left">
-                                    <select id="selectDutyCombo" class="form-control" name="duty" data-placeholder="Select a Duty">
+                                    <select id="selectDutyCombo" class="form-control" name="duty_id" data-placeholder="Select a Duty">
         
                                     </select>
                                 </div>
@@ -201,9 +201,9 @@
                     <div class="row mt-4 mb-3 ml-3 mr-0">
                         <div class="col-12 pr-0 text-left">
                             <button id="cancelEditButton" class="btn btn-secondary" type="button" title="Cancel">
-                                <i class="fa fa-times mr-2" aria-hidden="true"></i> Cancel
+                                <i class="fa fa-times mr-2" aria-hidden="true"></i> Close
                             </button>
-                            <button id="saveRecordButton" class="btn btn-primary ml-2" type="button" title="Save Changes">
+                            <button id="saveEditButton" class="btn btn-primary ml-2" type="button" title="Save Changes">
                                 <i class="fa fa-check mr-2" aria-hidden="true"></i> Save Changes
                             </button>
                         </div>
