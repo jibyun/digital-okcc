@@ -12,6 +12,7 @@
                     <li><a href="{{ route('admin.family.map') }}"><i class="fa fa-fw fa-sitemap mr-1"></i>{{ __('messages.adm_title.title', ['title' => 'Family Tree']) }}</a></li>
                     <li><a href="{{ route('admin.member-dept.map') }}"><i class="fa fa-fw fa-files-o mr-1"></i>{{ __('messages.adm_title.title', ['title' => 'Department Enrollment']) }}</a></li>
                     <li><a href="{{ route('admin.cell.orginizer') }}"><i class="fa fa-fw fa-cubes mr-1"></i>{{ __('messages.adm_title.cell_organizer') }}</a></li>
+                    <li><a href="{{ route('admin.dept.orginizer') }}"><i class="fa fa-fw fa-cubes mr-1"></i>{{ __('messages.adm_title.dept_organizer') }}</a></li>
                 </ul>
             </li>
             {{-- Side menu for Users --}}

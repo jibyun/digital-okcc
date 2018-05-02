@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPagesController extends Controller {
     /**
@@ -73,9 +75,8 @@ class AdminPagesController extends Controller {
         $data = base64_decode($data);
 
         $image_name = 'photo'.time().'.png';
-        $path = public_path() . '/uploads/' . $image_name;
-
-        file_put_contents($path, $data);
+        $result = Storage::disk('uploads')->put($image_name, $data);
+ 
         return response()->json([ 'success'=>'done', 'filename'=>$image_name ]);
     }
 
@@ -84,5 +85,9 @@ class AdminPagesController extends Controller {
      */
     public function cellOrginizer() {
         return view('admin.cell');
+    }
+
+    public function departmentOrginizer() {
+        return view('admin.department');
     }
 }
