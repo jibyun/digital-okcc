@@ -19,13 +19,6 @@ class PrivilegesController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function start() {
-        return view('admin.privilege');
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index() {
         $privileges = Privilege::orderBy('id', 'ASC')->get();
         $result = array("privileges" => json_decode(json_encode($privileges), true));

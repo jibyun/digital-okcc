@@ -40,10 +40,10 @@
         </thead>
     </table>
 
-    @include('admin.includes.users.create')
-    @include('admin.includes.users.edit')
-    @include('admin.includes.users.show')
-    @include('admin.includes.users.delete')
+    @include('admin.users.includes.users.create')
+    @include('admin.users.includes.users.edit')
+    @include('admin.users.includes.users.show')
+    @include('admin.users.includes.users.delete')
 
 </div>
 {{-- End Container --}}

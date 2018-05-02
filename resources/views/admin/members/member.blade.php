@@ -29,8 +29,8 @@
 @section('content')
 <div class='container p-4'>
     <span class="h4-font-size pr-3">{{ __('messages.adm_title.title', ['title' => 'Member']) }}</span><span id="contentTitle" class="h6-font-size"></span>
-    @include('admin.includes.members.show')
-    @include('admin.includes.members.edit')
+    @include('admin.members.includes.members.show')
+    @include('admin.members.includes.members.edit')
     <div id="toolbar">
         <button id="createNewRecord" class="btn btn-info mr-1" type="button" title="Create">
             <i class="fa fa-fw fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create_member') }}
@@ -86,8 +86,8 @@
         </thead>
     </table>
 </div>
-@include('admin.includes.members.crop')
-@include('admin.includes.members.delete')
+@include('admin.members.includes.members.crop')
+@include('admin.members.includes.members.delete')
 {{-- End Container --}}
 @endsection
 
@@ -102,6 +102,7 @@
         const $editPanel = $('#editPanel');
         const codesURL = "{!! route('admin.codes.index') !!}";
         const membesURL = "{!! route('admin.members.index') !!}";
+        const host = location.hostname;
 
         var statusCodeLists = new Array(); // Member Status Code List
         var dutyCodeLists = new Array(); // Duty Code List
@@ -113,6 +114,7 @@
         var saveIndex; // Row index of the table
         var saveId; // Primary key of the table
         var uploadCrop;
+        var photoPath = (host && host.includes('office.okcc.ca')) ? "{{ asset('storage/app/public/uploads/') }}" : "{{ asset('storage/uploads/') }}";
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
@@ -289,7 +291,7 @@
         });
 
         function fillEditPanel( rec ) {
-            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
             $editPanel.find("#photo_filename").val(rec.photo);
             $editPanel.find("input[name='first_name']").val(rec.first_name);
             $editPanel.find("input[name='middle_name']").val(rec.middle_name);
@@ -333,7 +335,8 @@
 
         function fillShowPanel(rec) {
             var panel = $("#showPanel");
-            panel.find("img").attr('src', (rec.photo) ? "{{ asset('storage/app/public/uploads/') }}" + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+
+            panel.find("img").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
             panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
             panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
             panel.find("span[name='birthdate']").text(' ' + (!rec.dob ? '' : rec.dob));
@@ -469,7 +472,7 @@
             }).then(function (resp) {
                 $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: {"image":resp}, url: "{!! route('admin.photo-crop.post') !!}" })
                 .done ( function(data) {
-                    $editPanel.find('img[name="photo"]').attr('src', "{{ asset('storage/app/public/uploads/') }}" + '/' + data.filename);
+                    $editPanel.find('img[name="photo"]').attr('src', photoPath + '/' + data.filename);
                     $editPanel.find('#photo_filename').val(data.filename);
                     $("#crop-item").modal('hide');
                 })

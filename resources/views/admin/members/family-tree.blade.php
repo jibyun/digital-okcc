@@ -49,10 +49,10 @@
         </thead>
     </table>
 
-    @include('admin.includes.family-tree.add')
-    @include('admin.includes.family-tree.show')
-    @include('admin.includes.family-tree.delete')
-    @include('admin.includes.family-tree.deleteall')
+    @include('admin.members.includes.family-tree.add')
+    @include('admin.members.includes.family-tree.show')
+    @include('admin.members.includes.family-tree.delete')
+    @include('admin.members.includes.family-tree.deleteall')
 
 </div>
 {{-- End Container --}}

@@ -17,10 +17,6 @@ class MembersController extends Controller {
         $this->middleware('auth');
     }
 
-    public function start() {
-        return view('admin.member');
-    }
-
     public function index() {
         $members = Member::with(['codeByStatusId','codeByLevelId','codeByDutyId','codeByCityId','codeByProvinceId','codeByCountryId'])->orderBy('id', 'ASC')->get();
         $lists = array();

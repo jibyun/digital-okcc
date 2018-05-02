@@ -44,11 +44,11 @@
         </thead>
     </table>
 
-    @include('admin.includes.codes.create')
-    @include('admin.includes.codes.edit')
-    @include('admin.includes.codes.show')
-    @include('admin.includes.codes.delete')
-    @include('admin.includes.codes.order')
+    @include('admin.members.includes.codes.create')
+    @include('admin.members.includes.codes.edit')
+    @include('admin.members.includes.codes.show')
+    @include('admin.members.includes.codes.delete')
+    @include('admin.members.includes.codes.order')
 
 </div>
 {{-- End Container --}}
