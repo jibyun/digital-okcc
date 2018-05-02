@@ -15,15 +15,17 @@ class SearchController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * Display the search result
      *
      * @param  string  $search
      * @return \Illuminate\Http\Response
      */
     public function show($search)
     {
-        return $this->sendResponse(json_encode($this->searchService->getMemberList($search)),
-                                    "retrieved member successfully.");
+        $result = (object)array();
+        $result->members = $this->searchService->getMemberList($search);
+        return $this->sendResponse(json_encode($result),
+                                    "retrieved search result successfully.");
     }
 
 }

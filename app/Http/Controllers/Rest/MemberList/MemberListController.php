@@ -20,8 +20,9 @@ class MemberListController extends BaseController
      */
     public function index()
     {
-        // TODO: Error Handling
-        return $this->sendResponse(json_encode($this->memberListService->getAllMembers()),
+        $result = (object)array();
+        $result->members = $this->memberListService->getAllMembers();
+        return $this->sendResponse(json_encode($result),
                                     "retrieved all members successfully.");
     }
 
@@ -33,8 +34,11 @@ class MemberListController extends BaseController
      */
     public function show($code)
     {
-        // TODO: Error Handling
-        return $this->sendResponse(json_encode($this->memberListService->getMemberList($code)), "retrieved members successfully.");
+        $result = (object)array();
+        $result->managerInfo = $this->memberListService->getManagerInfo($code);
+        $result->members = $this->memberListService->getMemberList($code);
+
+        return $this->sendResponse(json_encode($result), "retrieved members successfully.");
     }
 
     /**
@@ -46,7 +50,6 @@ class MemberListController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function getSettings() {
-        // TODO: Error Handling
         $settings = (object)array();
         $settings->bookmark = $this->memberListService->getBookmark();
         $settings->columninfos = $this->memberListService->getColumnInfos();

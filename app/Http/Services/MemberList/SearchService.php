@@ -23,8 +23,7 @@ class SearchService
      * 
      */
     public function getMemberList($search) {
-        $memberList = Member::with(['codeByStatusId', 'codeByLevelId', 'codeByDutyId',
-                                    'codeByCityId','codeByProvinceId','codeByCountryId'])
+        $memberList = CommonService::getMemberListWithCodeValue()
                         ->where(
                             DB::raw("CONCAT(first_name, ' ', last_name, ' ', kor_name)"), 
                             'like', '%' . $search . '%')
