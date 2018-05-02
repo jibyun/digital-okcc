@@ -18,6 +18,9 @@ class Member extends Model {
         'register_at', 'baptism_at'
     ];
 
+    // The custom attributes 
+    protected $appends = ['english_name','duty_txt','level_txt','status_txt','city_txt','province_txt','country_txt'];
+
     // Relationship with between codes table and city_id
     public function codeByCityId() {
         return $this->belongsTo('App\Code', 'city_id', 'id');
@@ -60,7 +63,7 @@ class Member extends Model {
 
     // Relationship with family_maps table
     public function family_maps() {
-        return $this->hasMany('App\Family_Map');
+        return $this->hasMany('App\Family_Map','member_pri_id', 'id');
     }
 
     // Relationship with member_department_maps table
@@ -82,4 +85,42 @@ class Member extends Model {
     public function duty() {
         return $this->belongsTo('App\Code', 'duty_id', 'id')->select('id', 'txt');
     }
+
+     // Relationship with family_maps table
+     public function familyPrimaryMap() {
+        return $this->belongsToMany('App\Member', 'family_maps', 'member_sub_id', 'member_pri_id');
+    }
+
+
+    public function getEnglishNameAttribute() {
+        return $this->attributes['first_name'].' '.$this->attributes['middle_name'].' '.$this->attributes['last_name'];
+    }
+
+    
+
+    public function getCityTxtAttribute() {
+        return $this->codeByCityId()->first()->txt;
+    }
+
+    public function getProvinceTxtAttribute() {
+        return $this->codeByProvinceId()->first()->txt;
+    }
+
+    public function getCountryTxtAttribute() {
+        return $this->codeByCountryId()->first()->txt;
+    }
+
+    public function getLevelTxtAttribute() {
+        return $this->codeByLevelId()->first()->txt;
+    }
+
+    public function getStatusTxtAttribute() {
+        return $this->codeByStatusId()->first()->txt;
+    }
+
+    public function getDutyTxtAttribute() {
+        return $this->duty()->first()->txt;
+    }
+
+    
 }
