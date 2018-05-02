@@ -288,13 +288,18 @@ class MemberListService
 
 
         //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-        $result=array();
+       // $result=array();
 
-        $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,10))->get();
+        $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,9))->get();
 
         $menuList=array();
         foreach($cates as $cate){
-            $menu=$this->makeMenu($cate);  //code_category->menu_level1
+            //code_category->menu_level1 //$this->makeMenu($cate);
+            $menu=(object)array();
+            $menu->text = $cate->txt;
+            $menu->code = $cate->id;
+            $menu->selectable=false;
+
             $children=array();
             foreach($cate->codes as $code){
                 array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
@@ -311,7 +316,10 @@ class MemberListService
     private function childMenu($code)
     {
         $subList=$code->children()->get();
-        $menu=$this->makeMenu($code);
+        $menu=(object)array();
+        $menu->text = $code->txt;
+        $menu->code = $code->id;
+        $menu->selectable=false;
 
         if($subList->count()>0){
             $children=array();
@@ -322,6 +330,7 @@ class MemberListService
         }
         else{
             $menu->selectable=true;
+            $menu->children=null;
         }
         return $menu;
     }
