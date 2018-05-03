@@ -142,7 +142,10 @@ function initializeTable(columnInfo) {
         columns: columnInfo,
         pagination: true,
         pageSize: 10,
-        showColumns: true
+        showColumns: true,
+        search: true,
+        searchOnEnterKey: true,
+        toolbar: '#member_table_toolbar',
     });
 }
 
