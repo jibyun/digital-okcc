@@ -158,6 +158,7 @@ function showLandingContent() {
 function showMainConent() {
     $('#LandingContent').hide();
     $('#MainContent').show();
+    memberListViewHandler();
 }
 
 function treeSelectionChanged(id, data) {
@@ -170,7 +171,7 @@ function treeSelectionChanged(id, data) {
     }
 }
 
-function memberListBackHandler() {
+function memberListViewHandler() {
     $('#sideMenuCategory').show();
     $('#sideMenuProfile').show();
     $('#sideMenuMemberDetail').hide();

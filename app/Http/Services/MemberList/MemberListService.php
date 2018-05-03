@@ -347,15 +347,10 @@ class MemberListService
 
 
         foreach($cates as $cate){
-            //code_category->menu_level1 //$this->makeMenu($cate);
-            $menu=(object)array();
-            $menu->text = $cate->txt;
-            $menu->code = $cate->id;
-            $menu->selectable=false;
-
+            $menu=$this->makeMenu($cate);//code_category->menu_level1
             $children=array();
             foreach($cate->codes as $code){
-                array_push($children,$this->childMenu($code)); //code->menu_level2 with submenu
+                array_push($children,$this->childMenu($code)); //code->children menu
             }
             $menu->children=$children;
             array_push($menuList,$menu);
@@ -369,10 +364,7 @@ class MemberListService
     private function childMenu($code)
     {
         $subList=$code->children()->get();
-        $menu=(object)array();
-        $menu->text = $code->txt;
-        $menu->code = $code->id;
-        $menu->selectable=false;
+        $menu=$this->makeMenu($code);
 
         if($subList->count()>0){
             $children=array();
@@ -383,7 +375,6 @@ class MemberListService
         }
         else{
             $menu->selectable=true;
-            $menu->children=null;
         }
         return $menu;
     }

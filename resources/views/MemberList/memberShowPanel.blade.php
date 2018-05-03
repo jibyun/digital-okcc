@@ -35,7 +35,7 @@
                     <span class="px-2"><i class="fa fa-fw fa-tint" aria-hidden="true"></i><span name="duty_txt"> </span></span><br>
                 </div>
             </div>
-            <div class="row m-3">
+            {{-- <div class="row m-3">
                 <div class="col-12 pr-0 text-right">
                     <button title="Edit Member" class="btn btn-secondary" id="editMemberBtn" type="button">
                         <i class="fa fa-edit mr-2" aria-hidden="true"></i> Edit Member
@@ -44,7 +44,7 @@
                         <i class="fa fa-trash mr-2" aria-hidden="true"></i> Delete Member
                     </button>
                 </div>
-            </div>
+            </div> --}}
         </div>
             
     </div>
