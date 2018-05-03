@@ -48,5 +48,53 @@
 
         {{-- for additional scripts --}}
         @yield('scripts')
+
+        <script>
+            $( function () {
+                var getMenuItem = function ( itemData ) {
+                    var item = $("<li>").append(
+                        $("<a>", {
+                            'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                            'html': '<i class="fa fa-fw ' + itemData.icon + ' mr-1"></i>' + itemData.text,
+                            'data-toggle': (itemData.sub_menu) ? 'collapse' : '',
+                        })
+                    );
+
+                    if ( itemData.sub_menu ) {
+                        var subList = $("<ul>").attr('id', itemData.text).attr('aria-expanded', false).addClass('list-unstyled collapse');
+                        itemData.isOpened ? subList.addClass('show') : '';
+                        $.each( itemData.sub_menu, function ( index, submenu ) {
+                            subList.append( getMenuItem( submenu ) );
+                        });
+                        item.append(subList);
+                    } else {
+                        if (itemData.route) {
+                            urlRoute = itemData.route.replace(/^https?:\/\//,'');
+                            urlPage = location.href.replace(/^https?:\/\//,'');
+                            if (urlRoute == urlPage) {
+                                item.addClass('active');
+                            }
+                        }
+                    }
+
+                    return item;
+                };
+
+                $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+
+                $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" + '?name=' + $('ul#topMenu').find('li.active').attr('name') })
+                .done ( function(data, textStatus, jqXHR) { 
+                    var $menu = $("#sidemenu");
+                    $.each( data.menu, function ( index, menu ) {
+                        $menu.append(
+                            getMenuItem( menu )
+                        );
+                    });
+                }) 
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
+                });
+            });
+        </script>
     </body>
 </html>
