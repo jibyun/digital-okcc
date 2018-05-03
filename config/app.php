@@ -243,7 +243,6 @@ return [
     |--------------------------------------------------------------------------
     */
     'admin' => [
-
         'cellCategoryId'            => '10', // CELL category id
         'deptCategoryId'            => '5', // DEPARTMENT category id
         'cellManagerPositionId'     => '120008', // cell manager position id
@@ -259,7 +258,6 @@ return [
         'memberStatus'              => '10001', // Member Status is 'Member'
         'laymanStatus'              => '29999', // Duty is 'Layman'
         'unbaptizedStatus'          => '49999', // Level is 'Unbaptized'
-
     ],
-
+    
 ];
