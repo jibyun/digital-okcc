@@ -1,3 +1,9 @@
+<?php
+    function menu( $menuStr = '/' ) {
+        return strstr( request()->path(), $menuStr );
+    }
+?>
+
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
@@ -17,9 +23,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="#">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('users') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.users') }}">{{ __('messages.adm_layout.header_menu_user') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
             @guest

@@ -94,11 +94,12 @@ return [
     // using in Admin Layout
     'adm_layout' => [
         // header
+        'header_menu_user'      => 'Users',
         'header_menu_member'    => 'Members',
-        'header_menu_finance'   => 'Finance',
+        'header_menu_finance'   => 'Finances',
         'header_menu_inventory' => 'Inventories',
-        'side_users'                 => 'Users',
-        'side_pri_role' => 'Privilege & Role',
+        'side_users'            => 'Users',
+        'side_pri_role'         => 'Privilege & Role',
     ],
 
     // using Admin System log 

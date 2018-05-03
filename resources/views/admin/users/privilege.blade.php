@@ -2,12 +2,12 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.title', ['title' => 'Role']) }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege']) }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" id='create-button'>
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
         </button>
-        @include('admin.includes.export', [ 'router' => 'admin.export.roles' ])    
+        @include('admin.includes.export', [ 'router' => 'admin.export.privileges' ])    
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -23,7 +23,7 @@
         <thead>
             <tr>
                 <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="txt" data-width="15%" data-sortable="true">{{ __('messages.adm_table.role_name') }}</th>
+                <th data-field="txt" data-width="15%" data-sortable="true">{{ __('messages.adm_table.privilege_name') }}</th>
                 <th data-field="memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
                 <th data-field="edit" data-width="3%" data-searchable="false" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
                 <th data-field="delete" data-width="3%" data-searchable="false" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
@@ -31,10 +31,10 @@
         </thead>
     </table>
 
-    @include('admin.includes.roles.create')
-    @include('admin.includes.roles.edit')
-    @include('admin.includes.roles.show')
-    @include('admin.includes.roles.delete')
+    @include('admin.users.includes.privileges.create')
+    @include('admin.users.includes.privileges.edit')
+    @include('admin.users.includes.privileges.show')
+    @include('admin.users.includes.privileges.delete')
 
 </div>
 {{-- End Container --}}
@@ -42,10 +42,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-        var url = "{!! route('admin.roles.index') !!}";
+        var url = "{!! route('admin.privileges.index') !!}";
         var saveIndex; // Row index of the table
-        var saveId; // Primary key of roles
-        var roles; // cached roles
+        var saveId; // Primary key of privileges
+        var privileges; // cached privileges
         var $table = $('#table');
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
@@ -58,7 +58,7 @@
         // compose the column for edit button 
         function editFormatter(value, row, index) {
             return [
-                '<a href="#"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
+                '<a href="#" data-toggle="modal" data-target="#edit-item"><span class="text-primary h6-font-size"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i></span></a>'
             ].join('');
         }
 
@@ -91,12 +91,12 @@
         function reloadList() {
             $.ajax({ dataType: 'json', timeout: 3000, url: url })
             .done ( function(data, textStatus, jqXHR) { 
-                roles = data['roles'];
-                $table.bootstrapTable( 'load', { data: roles } );
+                privileges = data['privileges'];
+                $table.bootstrapTable( 'load', { data: privileges } );
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
-            });
+            })
         }  
 
         // Get list from server and show
@@ -163,6 +163,9 @@
                     reloadList();
                 }
             })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            });
         });
 
         // Delete 버튼을 눌렀다.

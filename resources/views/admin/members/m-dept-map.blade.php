@@ -48,10 +48,10 @@
         </thead>
     </table>
 
-    @include('admin.includes.mem-dept-map.add')
-    @include('admin.includes.mem-dept-map.edit')
-    @include('admin.includes.mem-dept-map.show')
-    @include('admin.includes.mem-dept-map.delete')
+    @include('admin.members.includes.mem-dept-map.add')
+    @include('admin.members.includes.mem-dept-map.edit')
+    @include('admin.members.includes.mem-dept-map.show')
+    @include('admin.members.includes.mem-dept-map.delete')
 
 </div>
 {{-- End Container --}}

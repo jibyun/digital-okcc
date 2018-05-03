@@ -20,13 +20,6 @@ class RolesController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function start() {
-        return view('admin.role');
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function index() {
         $roles = Role::orderBy('id', 'ASC')->get();
         $result = array("roles" => json_decode(json_encode($roles), true));

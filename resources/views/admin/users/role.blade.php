@@ -2,15 +2,12 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.title', ['title' => 'Category']) }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Role']) }}</h4>
     <div id="toolbar">
         <button class="btn btn-info mr-1" type="button" title="Create" id='create-button'>
             <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
         </button>
-        <button class="btn btn-warning btn-modal-target mr-1" type="button" title="Make Display Order" onclick="showOrder();">
-            <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>{{ __('messages.adm_button.order') }}
-        </button>
-        @include('admin.includes.export', [ 'router' => 'admin.export.categories' ])
+        @include('admin.includes.export', [ 'router' => 'admin.export.roles' ])    
     </div>
 
     <table  id="table" class="table table-striped table-bordered" 
@@ -25,24 +22,19 @@
             >
         <thead>
             <tr>
-                <th data-field="id" data-searchable="false" data-visible="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="txt" data-width="15%" data-searchable="false" data-sortable="true">{{ __('messages.adm_table.category_name') }}</th>
-                <th data-field="kor_txt" data-width="13%" data-sortable="true">{{ __('messages.adm_table.category_kname') }}</th>
-                <th data-field="enabled" data-width="7%" data-formatter="enabledFormatter">{{ __('messages.adm_table.enable') }}</th>
-                <th data-field="fieldName" data-width="15%" data-sortable="true">{{ __('messages.adm_table.field_name') }}</th>
+                <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
+                <th data-field="txt" data-width="15%" data-sortable="true">{{ __('messages.adm_table.role_name') }}</th>
                 <th data-field="memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
-                <th data-field="order" data-sortable="true" data-searchable="false" data-visible="false">{{ __('messages.adm_table.order') }}</th>
                 <th data-field="edit" data-width="3%" data-searchable="false" data-formatter="editFormatter" data-events="editEvents">{{ __('messages.adm_table.edit_btn') }}</th>
                 <th data-field="delete" data-width="3%" data-searchable="false" data-formatter="deleteFormatter" data-events="deleteEvents">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
 
-    @include('admin.includes.categories.create')
-    @include('admin.includes.categories.edit')
-    @include('admin.includes.categories.show')
-    @include('admin.includes.categories.delete')
-    @include('admin.includes.categories.order')
+    @include('admin.users.includes.roles.create')
+    @include('admin.users.includes.roles.edit')
+    @include('admin.users.includes.roles.show')
+    @include('admin.users.includes.roles.delete')
 
 </div>
 {{-- End Container --}}
@@ -50,12 +42,10 @@
 
 @section('scripts')
     <script type="text/javascript">
-        var url = "{!! route('admin.categories.index') !!}";
+        var url = "{!! route('admin.roles.index') !!}";
         var saveIndex; // Row index of the table
-        var saveId; // Primary key of categories
-        var maxOrder; // Max Order number
-        var categories; // cached categories
-        var displayOrder; // display order using changing order
+        var saveId; // Primary key of roles
+        var roles; // cached roles
         var $table = $('#table');
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
@@ -63,11 +53,6 @@
         // Row Style
         function rowStyle(row, index) {
             return { css: { "padding": "0px 10px" } };
-        }
-
-        // 리스트 테이블의 초기화: Enabled 컬럼이 1이면 Enabled를 0이면 Disabled로 표시한다.
-        function enabledFormatter(value, row, index) {
-            if (value === 1) { return 'Enabled'; } else { return 'Disabled'; }
         }
 
         // compose the column for edit button 
@@ -92,7 +77,7 @@
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight(),
-                columns: [ {},{ align: 'left' },{ align: 'left' },{ align: 'center' },{ align: 'left' },{ align: 'left' },{},{ align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
+                columns: [ {},{ align: 'left' },{ align: 'left' }, { align: 'center', clickToSelect: false }, { align: 'center', clickToSelect: false }]
             });
             // whenever being changed window's size, table's size should be also changed
             $(window).resize(function () {
@@ -106,9 +91,8 @@
         function reloadList() {
             $.ajax({ dataType: 'json', timeout: 3000, url: url })
             .done ( function(data, textStatus, jqXHR) { 
-                maxOrder = data['max_order'];
-                categories = data['categories'];
-                $table.bootstrapTable( 'load', { data: categories } );
+                roles = data['roles'];
+                $table.bootstrapTable( 'load', { data: roles } );
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
@@ -132,11 +116,7 @@
 
             var postData = { 
                 txt: formId.find("input[name='txt']").val(), 
-                kor_txt: formId.find("input[name='kor_txt']").val(), 
-                order: ++maxOrder, 
-                enabled: Number(formId.find("input[name='enable']:checked").val()), 
-                fieldName: formId.find("input[name='fieldName']").val(), 
-                memo: formId.find("textarea[name='memo']").val() 
+                memo: formId.find("textarea[name='memo']").val(), 
             };
 
             $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: form_action })
@@ -162,17 +142,14 @@
         $(".crud-update").click(function(e){
             e.preventDefault();
             var formId = $("#edit-item");
+            var form_action = formId.find("form").attr("action");
 
             var postData = { 
                 txt: formId.find("input[name='txt']").val(), 
-                kor_txt: formId.find("input[name='kor_txt']").val(), 
-                order: formId.find("input[name='order']").val(), 
-                enabled: Number(formId.find("input[name='enable']:checked").val()), 
-                fieldName: formId.find("input[name='fieldName']").val(), 
-                memo: formId.find("textarea[name='memo']").val() 
+                memo: formId.find("textarea[name='memo']").val(), 
             };
 
-            $.ajax({ dataType: 'json', timeout: 3000, method:'PUT', data: postData, url: url + '/' + saveId })
+            $.ajax({ dataType: 'json', timeout: 5000, method:'PUT', data: postData, url: url + '/' + saveId })
             .done ( function(data) {
                 if (data.code == 'validation') {
                     validationMessage( data.errors );
@@ -186,9 +163,6 @@
                     reloadList();
                 }
             })
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
         });
 
         // Delete 버튼을 눌렀다.
@@ -209,49 +183,6 @@
             });
         });
 
-        // display order를 바꿀 때마다 발생한다. (drar & drop)
-        $(function() {
-            $('#workTbody').sortable({
-               update: function(event, ui) {
-                  displayOrder = $(this).sortable('toArray');
-               }
-            });
-         });
-
-        // Save button was pressed after changing display order.
-        $(".make-order").click(function(e){
-            if (displayOrder) { // 한번이라도 순서를 바꿨으면?
-                var deferreds = [];
-                displayOrder.shift(); // sortable method로 리턴 받은 데이터의 배열 첫 항목이 비어있다.
-
-                // Async Ajax loop: https://stackoverflow.com/questions/18424712/how-to-loop-through-ajax-requests-inside-a-jquery-when-then-statment/18425082
-                $.each(displayOrder, function(index, dOrder){
-                    if (index !== dOrder - 1) {
-                        var category = categories[dOrder-1];
-                        category['order'] = index;
-                        deferreds.push(
-                            $.ajax({
-                                dataType: 'json',
-                                method: 'PUT',
-                                url: url + '/' +  category['id'],
-                                data: category,
-                            })
-                        );
-                    }
-                });
-
-                $.when.apply($, deferreds).then(function(){
-                    orderSuccessMessage();
-                    $(".modal").modal('hide'); // hide model form
-                    reloadList();
-                    displayOrder = '';
-                })
-                .fail( function() {
-                    orderErrorMessage();
-                });
-            }
-        });
-
         $('#create-button').click( function(e) {
             $("#create-item").modal('show').draggable({ handle: ".modal-header" });
         });
@@ -262,21 +193,15 @@
             if (column === 'edit') {
                 var form = $("#edit-item");
                 form.find("input[name='txt']").val(rec.txt);
-                form.find("input[name='kor_txt']").val(rec.kor_txt);
-                form.find("input[name='fieldName']").val(rec.fieldName);
-                form.find("input[name='enable'][value='" + rec.enabled + "']").prop('checked', true);
                 form.find("textarea[name='memo']").val(rec.memo);
-                form.find("input[name='order']").val(rec.order);
                 $("#edit-item").modal('show').draggable({ handle: ".modal-header" });
             } else if (column === 'delete') {
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
-                var showId = $("#showBody");
-                showId.find("span[name='txt']").text(rec.txt + '(' + rec.kor_txt + ')' );
-                showId.find("span[name='fieldName']").text(rec.fieldName);
-                showId.find("span[name='memo']").html(rec.memo);
-                showId.find("span[name='enable']").text( rec.enabled === 1 ? "Enabled" : "Disabled" );
+                var dispId = $("#showBody");
+                dispId.find("span[name='txt']").text(rec.txt);
+                dispId.find("span[name='memo']").html(rec.memo);
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
@@ -286,21 +211,8 @@
         $table.on('click-row.bs.table', function (e, row, $element) {
             saveIndex = $element.index();
         });
-        
     </script>
-
     {{-- to implement make display order --}}
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        // give #workTable drag-and-drop feature
-        $('#workTable').find('tbody').sortable();
-        function showOrder() {
-            $('#workTbody').load("{!! route('admin.categories.getCategories') !!}", function() {
-                displayOrder = '';
-                $('#make-order').modal({show:true}).draggable({ handle: ".modal-header" });
-            });
-        }
-
-    </script>
-
-    @endsection
+ 
+@endsection

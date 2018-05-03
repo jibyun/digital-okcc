@@ -16,15 +16,8 @@ class CodesController extends Controller {
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function start() {
-        return view('admin.code');
-    }
-
     public function get_codes() {
-        return view('admin.includes.codes.get-codes-for-order');
+        return view('admin.members.includes.codes.get-codes-for-order');
     }
 
     /**

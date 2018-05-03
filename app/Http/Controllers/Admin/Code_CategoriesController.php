@@ -17,15 +17,8 @@ class Code_CategoriesController extends Controller {
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function start() {
-        return view('admin.category');
-    }
-
     public function get_categories() {
-        return view('admin.includes.categories.get-categories-for-order');
+        return view('admin.members.includes.categories.get-categories-for-order');
     }
     
     /**

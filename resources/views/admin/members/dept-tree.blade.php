@@ -3,7 +3,7 @@
 @section('styles')
     {{-- IMPORTANT: OVERRIDE of selected row in Bootstrap table --}}
     <style>
-        #addTable .selected td{
+        #createTable .selected td{
             background-color:#031023 !important;
             color: cornsilk;
         }
@@ -13,21 +13,21 @@
 @section('content')
 
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.title', ['title' => 'Privilege Mapping']) }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Department Tree']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='privilegesCombo' class="form-group form-control mr-2" style="width: 180px">
+            <select id='departmentsCombo' class="form-group form-control mr-2" style="width: 180px;">
             </select>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" title="Describe" data-content="">
                 <i class="fa fa-question" aria-hidden="true"></i>
             </button>
-            <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Roles" onclick="addRoles();">
-                <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_role') }}
+            <button class="form-group form-control btn btn-info mr-2" type="button" title="Add Roles" onclick="addChild();">
+                <i class="fa fa-plus mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.add_department') }}
             </button>
             <button class="form-group btn btn-danger btn-modal-target mr-2" type="button" title="Clear All" onclick="clearAll();">
                 <i class="fa fa-times mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.clear_all') }}
-            </button>    
-            @include('admin.includes.export', [ 'router' => 'admin.export.privilegerolemaps' ])               
+            </button> 
+            @include('admin.includes.export', [ 'router' => 'admin.export.departmenttrees' ])                   
         </div>
     </div>
 
@@ -44,36 +44,38 @@
         <thead>
             <tr>
                 <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                <th data-field="role_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.role_id') }}</th>
-                <th data-field="role_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.role_name') }}</th>
-                <th data-field="role_memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="child_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.dept_id') }}</th>
+                <th data-field="child_txt" data-width="20%" data-sortable="true">{{ __('messages.adm_table.dept_name') }}</th>
+                <th data-field="child_memo" data-sortable="true">{{ __('messages.adm_table.memo') }}</th>
                 <th data-field="delete" data-width="3%" data-formatter="deleteFormatter" data-events="deleteEvents" data-searchable="false">{{ __('messages.adm_table.del_btn') }}</th>
             </tr>
         </thead>
     </table>
 
-    @include('admin.includes.p-role-map.add')
-    @include('admin.includes.p-role-map.show')
-    @include('admin.includes.p-role-map.delete')
-    @include('admin.includes.p-role-map.deleteall')
+    @include('admin.members.includes.dept-tree.add')
+    @include('admin.members.includes.dept-tree.show')
+    @include('admin.members.includes.dept-tree.delete')
+    @include('admin.members.includes.dept-tree.deleteall')
+
 </div>
 {{-- End Container --}}
 @endsection
 
 @section('scripts')
     <script type="text/javascript">
-        // variables
-        var $table = $('#mainTable');
-        var $addTable = $('#addTable');
-        var $combo = $("#privilegesCombo");
-        var privileges; // all items for combo box
-        var currentPrivilegeId; // current selected id in combo box
-        var currentPrivilegeTxt; // current selected text in combo box
-        var privilegeRoleMaps;
-        const privilegesRolesUrl = "{!! route('admin.p-role-map.index') !!}";
-        const privilegesRolesPostUrl = "{!! route('admin.p-role-map.store') !!}";
-        const privilegesUrl = "{!! route('admin.privileges.index') !!}";
-        const getRolesNotInMap = "{!! route('admin.roles.getroles-notin-map') !!}"
+        const $table = $('#mainTable');
+        const $addTable = $('#createTable');
+        const $combo = $("#departmentsCombo");
+        const DEPARTMENT_CODE = 5 // department id in categories table
+        const codesUrl = "{!! route('admin.codes.index') !!}";
+        const departmentTreesUrl = "{!! route('admin.department-trees.index') !!}";
+        const getCodesNotInChild = "{!! route('admin.department-trees.getcodes-notin-child') !!}"
+
+        var parentList; // all items for combo box
+        var currentParentId; // current selected parent code id in parentList combo box
+        var currentParentName; // current selected parent code name in parentList combo box
+        var saveId
+        var childLists;
 
         /* initialize Main table */
 
@@ -120,30 +122,31 @@
 
         $("#pop").popover();
         function setPopover(index) {
-            $('#pop').attr('title', privileges[index]['txt']);
-            currentPrivilegeTxt = privileges[index]['txt'];
-            $('#pop').attr('data-content', $.parseHTML(privileges[index]['memo'])); //TODO: change HTML
+            $('#pop').attr('title', parentList[index]['txt']);
+            currentParentId = parentList[index]['id'];
+            currentParentName = parentList[index]['txt'];
+            $('#pop').attr('data-content', $.parseHTML(parentList[index]['memo'])); 
         }
 
         /* main processes */
 
         $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
 
-        function buildPrivilegesCombo() {
+        function buildDepartmentsCombo() {
             var html = '';
-            for (var i=0; i < privileges.length; i++) {
-                html += '<option value="' + privileges[i]['id'] + '" ' + (i===0 ? 'selected' : '') + '>' + 
-                    privileges[i]['txt'] + '</option>';
+            for (var i=0; i < parentList.length; i++) {
+                html += '<option value="' + parentList[i]['id'] + '" ' + (i===0 ? 'selected' : '') + '>' + 
+                        parentList[i]['txt'] + '</option>';
             }
             $combo.append(html);    
             
-            // whenever change category combo 
+            // whenever changing selection of combo box
             $combo.change( function () {
                 $("select option:selected").each( function() {
-                    currentPrivilegeId = $(this).val();
+                    currentParentId = $(this).val();
                     reloadList();
-                    for (var i=0; i < privileges.length; i++) {
-                        if (currentPrivilegeId == privileges[i]['id']) {
+                    for (var i=0; i < parentList.length; i++) {
+                        if (currentParentId == parentList[i]['id']) {
                             setPopover(i);
                             break;
                         }
@@ -160,12 +163,13 @@
         // Get list from server and fill combobox
         function getInitList() {
             initTable();
-            $.ajax({ dataType: 'json', timeout: 3000, url: privilegesUrl })
+            $.ajax({ dataType: 'json', timeout: 3000, url: codesUrl + '?category_id=' + DEPARTMENT_CODE })
             .done ( function(data, textStatus, jqXHR) { 
-                privileges = data['privileges'];
-                currentPrivilegeId = privileges[0]['id'];
+                parentList = data['codes'];
+                currentParentId = parentList[0]['id'];
+                currentParentName = parentList[0]['txt'];
                 setPopover(0);
-                buildPrivilegesCombo();
+                buildDepartmentsCombo();
                 reloadList();
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
@@ -175,14 +179,14 @@
 
         // Reload data from server and refresh table
         function reloadList() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: privilegesRolesUrl + '?privilege_id=' + currentPrivilegeId })
+            $.ajax({ dataType: 'json', timeout: 3000, url: departmentTreesUrl + '?parent_id=' + currentParentId })
             .done ( function(data, textStatus, jqXHR) { 
                 if (data['result'].length > 0) {
                     $table.bootstrapTable( 'load', { data: data['result'] } );
                 } else {
                     $table.bootstrapTable( 'removeAll' );
                 } 
-                privilegeRoleMaps = data['result'];
+                childLists = data['result'];
             }) 
             .fail ( function(jqXHR, textStatus, errorThrown) { 
                 errorMessage( jqXHR );
@@ -191,15 +195,15 @@
 
         getInitList();
 
-        // click addRole button
-        function addRoles() {
-            $.ajax({ dataType: 'json', timeout: 3000, method:'GET', url: getRolesNotInMap + '?privilege_id=' + currentPrivilegeId })
+        // click addChild button
+        function addChild() {
+            $.ajax({ dataType: 'json', timeout: 3000, method:'GET', url: getCodesNotInChild + '?parent_id=' + currentParentId + '&category_id=' + DEPARTMENT_CODE })
             .done ( function(data) {
                 if (data.length < 1) {
                     nomoreDataError();
                 } else {
-                    $addTable.bootstrapTable( 'load', { data: data["roles"] } );
-                    $('#add-item').modal({show:true}).draggable({ handle: ".modal-header" });
+                    $addTable.bootstrapTable( 'load', { data: data["codes"] } );
+                    $('#create-item').modal({show:true}).draggable({ handle: ".modal-header" });
                 }
             })
             .fail ( function(jqXHR, textStatus, errorThrown) { 
@@ -216,11 +220,11 @@
                 // Async Ajax loop: https://stackoverflow.com/questions/18424712/how-to-loop-through-ajax-requests-inside-a-jquery-when-then-statment/18425082
                 $.each(selection, function(index, item) {
                     var data = {
-                        privilege_id: currentPrivilegeId, 
-                        role_id: item['id'],
+                        parent_id: currentParentId, 
+                        child_id: item['id'],
                     };
                     deferreds.push(
-                        $.ajax({ dataType: 'json', method: 'POST', data: data, timeout: 3000, url: privilegesRolesPostUrl })
+                        $.ajax({ dataType: 'json', method: 'POST', data: data, timeout: 3000, url: departmentTreesUrl })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
@@ -236,7 +240,7 @@
         // Delete button was pressed
         $(".crud-delete").click(function(e){
             event.preventDefault();
-            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: privilegesRolesUrl + '/' + saveId })
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: departmentTreesUrl + '/' + saveId })
             .done ( function(data) {
                 if (data.code == 'exception') {
                     exceptionMessage( data.status, data.errors );
@@ -255,11 +259,11 @@
         // Delete all button was pressed
         $(".crud-all").click(function(e){
             event.preventDefault();
-            if (privilegeRoleMaps) { // if selected items are more than one?
+            if (childLists) { // if selected items are more than one?
                 var deferreds = [];
-                $.each(privilegeRoleMaps, function(index, item) {
+                $.each(childLists, function(index, item) {
                     deferreds.push(
-                        $.ajax({ dataType: 'json', type:'delete', timeout: 3000, url: privilegesRolesUrl + '/' + item['id'] })
+                        $.ajax({ dataType: 'json', type:'delete', timeout: 3000, url: departmentTreesUrl + '/' + item['id'] })
                     );
                 });
                 $.when.apply($, deferreds).then( function() {
@@ -276,33 +280,31 @@
         function clearAll() {
             var deleteId = $("#deleteAllBody");
             deleteId.empty();
-            if (privilegeRoleMaps.length > 0) { // if selected items are more than one?
+            if (childLists.length > 0) { // if selected items are more than one?
                 var html = "";
-                $.each(privilegeRoleMaps, function(index, item) {
+                $.each(childLists, function(index, item) {
                     html += '<div class="row py-2">';
-                    html += '<div class="rounded bg-light py-2 col-sm-12"><span class="align-middle" name="role_name">' + item['role_txt'] + ' (' + item['role_id'] + ')</span></div>';
+                    html += '<div class="rounded bg-light py-2 col-sm-12"><span class="align-middle" name="child_name">' + item['child_txt'] + ' (' + item['child_id'] + ')</span></div>';
                     html += '</div>';
                 });
                 $("#deleteAllBody").prepend(html);
                 // Open Bootstrap Model without Button Click
                 $("#deleteall-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
-                nomoreDeleteError();
-                toastr.error('There is nothing to delete.', 'Failed');
+                nomoreDeleteMessage();
             }
         }
-     
+        
         // 테이블의 Column을 클릭하면 발생하는 이벤트를 핸들한다.
         $table.on('click-cell.bs.table', function (field, column, row, rec) {
             saveId = Number(rec.id);
-
             if (column === 'delete') {
                 // Open Bootstrap Model without Button Click
                 $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 var dispId = $("#showBody");
-                dispId.find("span[name='privilege_txt']").text(currentPrivilegeTxt + ' (' + currentPrivilegeId + ')');
-                dispId.find("span[name='role_txt']").text(rec.role_txt + ' (' + rec.role_id + ')');
+                dispId.find("span[name='parent_txt']").text(currentParentName + ' (' + currentParentId + ')');
+                dispId.find("span[name='child_txt']").text(rec.child_txt + ' (' + rec.child_id + ')');
                 // Open Bootstrap Model without Button Click
                 $("#show-item").modal('show').draggable({ handle: ".modal-header" });
             }
