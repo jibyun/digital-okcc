@@ -31,6 +31,10 @@ Route::get('/memberList', function () {
 |--------------------------------------------------------------------------
 */
 Route::get('admin', 'Admin\AdminPagesController@index')->name('admin'); // Index page
+Route::get('admin/users', 'Admin\AdminPagesController@users')->name('admin.users'); // Users landing page
+Route::get('admin/members', 'Admin\AdminPagesController@members')->name('admin.members'); // Members landing page
+Route::get('admin/finances', 'Admin\AdminPagesController@finances')->name('admin.finances'); // Finances landing page
+Route::get('admin/inventories', 'Admin\AdminPagesController@inventories')->name('admin.inventories'); // Inventories landing page
 
 /*
 |--------------------------------------------------------------------------

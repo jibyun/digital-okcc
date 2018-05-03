@@ -29,7 +29,7 @@
         {{-- for additional styles --}}
         @yield('styles')
     </head>
-    <body>
+    <body style="height: 100%">
 
         @include('admin.layouts.header')
         @include('admin.layouts.side')

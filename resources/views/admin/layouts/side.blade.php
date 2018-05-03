@@ -31,7 +31,7 @@
             </li>
         </ul>
     </nav>
-    <div class="container-fluid" style="margin: 15px 30px;">
+    <div class="container-fluid" style="margin: 15px 30px; min-height: 100%">
         @yield('content')
     </div>
 </div>

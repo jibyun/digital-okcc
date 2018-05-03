@@ -32,7 +32,7 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     color: rgba(255, 255, 255, .75);
 }
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
-    color: rgba(255, 255, 255, 1);
+    color: rgb(250, 203, 49);
 }
 .navbar.bg-dark {
     color: #fefefe;
@@ -40,11 +40,21 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     border: 1px solid #282828;
 }
 
+.navbar-dark .navbar-nav > li.active {
+    color: #f8f8f8;
+    background: #101010 !important;
+}
+.navbar-dark .navbar-nav > li.active > a,
+.navbar-dark .navbar-nav > li.active > a:hover,
+.navbar-dark .navbar-nav > li.active > a:focus {
+    color: #f8f8f8;
+}
+
 /* Side menu */
 .sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: calc(100vh - 102px);
+    min-height: calc(100vh - 96px);
     transition: all 0.3s;
     font-size: 1em;
     background-color: #1B5E20;
