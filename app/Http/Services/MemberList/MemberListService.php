@@ -340,7 +340,6 @@ class MemberListService
         array_push($menuList, $this->makeMenu($allMember));
 
 
- kw-1
         //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
        // $result=array();
 
