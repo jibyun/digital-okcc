@@ -21,7 +21,13 @@
     </div>
 </div>
 
-<div id="divMemberDetailPanel" style="display: none;">
+<div id="divMemberDetailPanel" style="display:none">
     {{--TODO Add Member Detail --}}
-    {{--@include('somthing?????') --}}
+    @include('MemberList.memberShowPanel')
+    @include('MemberList.memberEditPanel')
+    <div id="divMemberSubDetailPanel" >
+            {{--TODO Add Member Detail --}}
+            @include('MemberList.memberSubPanel')
+     </div>
+   
 </div>

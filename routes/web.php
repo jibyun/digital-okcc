@@ -154,6 +154,27 @@ Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@get
  */
 Route::get('okcc/util/adduser/{id}/{password}', 'Rest\Util\UtilsController@addUser');
 
+
+/*
+
+* Method: GET
+* URL: /okcc/member/getMembers: Retrieve member
+*/
+Route::get('okcc/member/getMember/{id}', 'Rest\MemberList\MemberController@show')->middleware('auth');
+
+/*
+* Method: GET
+* URL: /okcc/member/getCategory: Retrieve category+code
+*/
+Route::get('okcc/member/getCategory', 'Rest\MemberList\MemberController@getCategory')->middleware('auth');
+
+/*
+* Method: POST
+* URL: /okcc/member/edit: edit member
+*/
+Route::post('okcc/member/edit/{id}', 'Rest\MemberList\MemberController@edit')->middleware('auth');
+
+
 /*
 |--------------------------------------------------------------------------
 | Localization for Javascript
@@ -180,3 +201,4 @@ Route::get('/js/lang.js', function () {
     echo('window.i18n = ' . json_encode($strings) . ';');
     exit();
 })->name('assets.lang');
+
