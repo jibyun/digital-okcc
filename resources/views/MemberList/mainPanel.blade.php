@@ -9,7 +9,7 @@
 {{-- Main Page Content --}}
     <div id="MainContent" class="card-block">
     {{-- Header section --}}
-        <div id="mc_header"></div>
+        <div id="mc_header">@include('MemberList.headerPanel')</div>
     {{-- Toolbar section --}}
         <div id="mc_toolbar"></div>
     {{-- Table section --}}
@@ -21,7 +21,13 @@
     </div>
 </div>
 
-<div id="divMemberDetailPanel" style="display: none;">
+<div id="divMemberDetailPanel" style="display:none">
     {{--TODO Add Member Detail --}}
-    {{--@include('somthing?????') --}}
+    @include('MemberList.memberShowPanel')
+    @include('MemberList.memberEditPanel')
+    <div id="divMemberSubDetailPanel" >
+            {{--TODO Add Member Detail --}}
+            @include('MemberList.memberSubPanel')
+     </div>
+   
 </div>

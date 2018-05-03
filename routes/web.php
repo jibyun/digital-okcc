@@ -16,14 +16,12 @@ Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->na
 Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
 
 Route::get('/', function () {
-    return view('index');
+    return view('MemberList/memberList');
 })->middleware('auth');
-
-Route::post('apply', 'GuestController@apply')->name('apply'); 
 
 // memberList Landing page
 Route::get('/memberList', function () {
-    return view('MemberList\memberList');
+    return view('MemberList/memberList');
 })->middleware('auth')->name('memberList');
 /*
 |--------------------------------------------------------------------------
@@ -159,3 +157,52 @@ Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@get
  * 
  */
 Route::get('okcc/util/adduser/{id}/{password}', 'Rest\Util\UtilsController@addUser');
+
+
+/*
+
+* Method: GET
+* URL: /okcc/member/getMembers: Retrieve member
+*/
+Route::get('okcc/member/getMember/{id}', 'Rest\MemberList\MemberController@show')->middleware('auth');
+
+/*
+* Method: GET
+* URL: /okcc/member/getCategory: Retrieve category+code
+*/
+Route::get('okcc/member/getCategory', 'Rest\MemberList\MemberController@getCategory')->middleware('auth');
+
+/*
+* Method: POST
+* URL: /okcc/member/edit: edit member
+*/
+Route::post('okcc/member/edit/{id}', 'Rest\MemberList\MemberController@edit')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Localization for Javascript
+| This code is from 
+| https://medium.com/@serhii.matrunchyk/using-laravel-localization-with-javascript-and-vuejs-23064d0c210e
+|--------------------------------------------------------------------------
+*/
+Route::get('/js/lang.js', function () {
+    $strings = Cache::rememberForever('lang.js', function () {
+        $lang = config('app.locale');
+
+        $files   = glob(resource_path('lang/' . $lang . '/*.php'));
+        $strings = [];
+
+        foreach ($files as $file) {
+            $name           = basename($file, '.php');
+            $strings[$name] = require $file;
+        }
+
+        return $strings;
+    });
+
+    header('Content-Type: text/javascript');
+    echo('window.i18n = ' . json_encode($strings) . ';');
+    exit();
+})->name('assets.lang');
+
