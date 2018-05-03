@@ -1,7 +1,7 @@
 {{-- Table Toolbar --}}
 <div id="member_table_toolbar" class="form-inline hide">
     {{-- 회원구분 combobox --}}
-    <select id='cmbMemberLevel' class="form-control mr-2">
+    <select id='cmbMemberStatus' class="form-control mr-2">
     </select>
     {{-- Email Button --}}
     <button id="btnSendEmail" class="btn mr-2" type="button">

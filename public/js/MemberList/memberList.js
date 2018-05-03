@@ -18,6 +18,8 @@ $(document).ready(function () {
     $('#menu_member_detail_history').on('click', memberDetailHistorySelectHandler);
     // Member Details visit click event handler
     $('#menu_member_detail_visit').on('click', memberDetailVisitSelectHandler);
+    // Member Status Combobox change event handler
+    $('#cmbMemberStatus').on('change', memberStatusComboChangeHandler);
 
     // Show member category side bar as a default
     // TODO: move to function.
@@ -99,6 +101,7 @@ function settingsSuccess(response) {
     var settingsData = JSON.parse(response.data);
     var bookmarkData = settingsData.bookmark;
     var columnInfoData = settingsData.columninfos;
+    var memberStatusListData = settingsData.memberStatus;
     for (var i = 0; i < bookmarkData.length; i++) {
         var element = bookmarkData[i];
         console.log(element);
@@ -123,6 +126,16 @@ function settingsSuccess(response) {
             }));
         }
     }
+
+    // Set member status combo
+    // Clear existing item
+    $("#cmbMemberStatus").empty()
+    // Add the empty(for all member)
+    $('#cmbMemberStatus').append( new Option(i18n.messages.memberlist.allmember,'0000'));
+    $.each(memberStatusListData, function(i, el) 
+    { 
+        $('#cmbMemberStatus').append( new Option(el.txt,el.id) );
+    });
 
     initializeTable(columnInfoData);
 }
@@ -161,6 +174,7 @@ function showLandingContent() {
 function showMainConent() {
     $('#LandingContent').hide();
     $('#MainContent').show();
+    $('#member_table_toolbar').show();
 }
 
 function treeSelectionChanged(id, data) {
@@ -170,6 +184,15 @@ function treeSelectionChanged(id, data) {
         loadTable(memberListUrl);
     } else {
         loadTable(memberListUrl + "/" + data.code);
+    }
+}
+
+function memberStatusComboChangeHandler() {
+    var selectCode = this.value;
+    if (selectCode === "0000") {
+        loadTable(memberListUrl);
+    } else {
+        loadTable(memberListUrl + "/" + selectCode);
     }
 }
 
