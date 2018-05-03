@@ -22,11 +22,8 @@
 </div>
 
 <div id="divMemberDetailPanel" style="display:none">
-    {{--TODO Add Member Detail --}}
-    @include('MemberList.memberShowPanel')
-    @include('MemberList.memberEditPanel')
+        @include('MemberList.memberShowPanel')
     <div id="divMemberSubDetailPanel" >
-            {{--TODO Add Member Detail --}}
             @include('MemberList.memberSubPanel')
      </div>
    

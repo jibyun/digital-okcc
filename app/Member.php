@@ -87,7 +87,7 @@ class Member extends Model {
     }
 
      // Relationship with family_maps table
-     public function familyPrimaryMap() {
+     public function primaryMembers() {
         return $this->belongsToMany('App\Member', 'family_maps', 'member_sub_id', 'member_pri_id');
     }
 

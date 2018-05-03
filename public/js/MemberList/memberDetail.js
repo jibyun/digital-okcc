@@ -33,43 +33,9 @@ $( function() {
 
     // To List
     $("#ToListBtn").click(function(){
-        memberListBackHandler();
+        memberListViewHandler();
     });
     
-
-    // click edit button 
-    $("#editMemberBtn").click(function(e){
-        var url=memberUrl+"/"+saveId;
-        restApiCall(url, "GET", null, editMemberGetSuccess, null);
-       
-       
-    });
-
-     // click close button on editpanel
-    $("#cancelEditButton").click(function(e) {
-        $("#showPanel").collapse("show");
-        $("#editPanel").collapse("hide");
-       
-    });
-
-    // click save button on editpanel
-    $("#saveEditButton").click(function(e) {
-        var url = memberEditUrl+'/'+saveId; 
-            doPost(url, GetPostData("editForm"));
-
-    });
-
-    // click delete button on showpanel
-    $("#delMemberButton").click( function(e) {
-        if(confirm("Do you delete this?"))
-        {
-             //To do delete
-             
-            $("#ToListBtn").click();
-            $('#bt_table').bootstrapTable('remove', {field: 'id', values: [saveId]});
-        }
-       
-    });
     
     $('#dob').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#baptism_at').datetimepicker({ format: 'YYYY-MM-DD' });
@@ -82,9 +48,7 @@ function fillShowPanel(rec) {
    fillData("showPanel",rec);
 }
 
-function fillEditPanel( rec ) {
-    fillData("editForm",rec);
-}
+
 
 function memberGetSuccess(response) {
     
@@ -93,23 +57,13 @@ function memberGetSuccess(response) {
     memberDetailSelectHandler();
 }
 
-function editMemberGetSuccess(response) {
-    
-    current_member = JSON.parse(response.data);
-    fillEditPanel(current_member);
-    $("#showPanel").collapse("hide");
-    $("#editPanel").collapse("show");
-}
 
+function fillFamily(familys){
 
-
-function fillFamily(primarys){
-
-    var familys=null;
+   
     $('#tabs-1').children().remove();
-    if(primarys.length>0)
+    if(familys!=null && familys.length>0)
     {
-        familys=primarys[0].family_maps;
         for(var i= 0; i < familys.length; i++) {
             var item = familys[i];
             var parentid = 'family_' + i;
@@ -120,11 +74,11 @@ function fillFamily(primarys){
             }));
 
             $('#'+parentid).append($('<li/>', {
-                text: item.member_by_child_id.english_name,
+                text: item.english_name,
                 style: "display:inline-block;width:20%",
                 id: 'familyName_' + i
             })).append($('<li/>', {
-                text: item.code_by_relation_id.txt,
+                text: item.relation_txt,
                 style: "display:inline-block;width:40%",
                 id: 'relation_' + i
             }));
@@ -215,7 +169,7 @@ function fillVisit(visits){
 
 function fillWork(works){
     $('#tabs-4').children().remove();
-    if(works.length>0)
+    if(works!=null && works.length>0)
     {
         for(var i= 0; i < works.length; i++) {
             var item = works[i];
@@ -252,10 +206,10 @@ function fillWork(works){
 function openShowPanel(member) {
    
     fillShowPanel(member);
-    fillFamily(member.family_primary_map);
+    fillFamily(member.familys);
     fillHistory(member.member_histories);
     fillVisit(member.visits);
-    // fillWork(member.work); 
+    fillWork(member.work); 
 }
 
 function catesuccess(response) {
@@ -292,50 +246,10 @@ function fillData(parentId,rec){
     
     for(var item in rec)
     {
-      var selector=parentElement.find("[name='"+item+"']");
-      if($(selector).is("span"))
-        selector.text(rec[item]);
-      else selector.val(rec[item]);
-
-      if($(selector).is("select"))
-      selector.trigger('chosen:updated');
-      
+      parentElement.find("[name='"+item+"']").text(rec[item]);     
     }
 
 }
 
-function GetPostData(id) {
-    var form = $("#"+id);
-        event.preventDefault();
-      
-        var result={};
-        $.map(form.serializeArray(), function(n, i){
-            result[n['name']] = n['value'];
-        });
-       
-    return result;
-}
-
-
-function doPost(url, postData) {
-   
-    $.ajax({ dataType: 'json', method:'POST' ,data: postData, url: url, 
-        success: function(data) {
-            if (data.errors) {
-                var message = '';
-                if(data.errors.errorInfo && data.errors.errorInfo.length>2)
-                    message = data.errors.errorInfo[2];
-                
-                toastr.error(message, data.message);
-            } else {
-                toastr.success(data.message, 'Success');
-                fillShowPanel(data.member);
-                $('#bt_table').bootstrapTable('updateRow', {index: saveIndex, row: data.member});
-                
-
-            }
-        }
-    });
-}
 
 

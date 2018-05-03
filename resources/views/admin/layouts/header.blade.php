@@ -22,11 +22,11 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item rounded px-2 {{ menu('users') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.users') }}">{{ __('messages.adm_layout.header_menu_user') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
+        <ul id='topMenu' class="navbar-nav mr-auto">
+            <li class="nav-item rounded px-2 {{ menu('users') ? 'active' : '' }}" name="users"><a class="nav-link" href="{{ route('admin.users') }}">{{ __('messages.adm_layout.header_menu_user') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}" name="members"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}" name="finances"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}" name="inventories"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
             @guest

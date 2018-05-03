@@ -175,6 +175,7 @@ function showMainConent() {
     $('#LandingContent').hide();
     $('#MainContent').show();
     $('#member_table_toolbar').show();
+    memberListViewHandler();
 }
 
 function treeSelectionChanged(id, data) {
@@ -196,7 +197,7 @@ function memberStatusComboChangeHandler() {
     }
 }
 
-function memberListBackHandler() {
+function memberListViewHandler() {
     $('#sideMenuCategory').show();
     $('#sideMenuProfile').show();
     $('#sideMenuMemberDetail').hide();
