@@ -44,7 +44,7 @@ class ExportsController extends Controller {
     }
 
     public function exportMembers() {
-        return new MembersExport();
+        return (new MembersExport)->download('members.xlsx');
     }
 
     public function exportPrivilegeRoleMaps() {

@@ -6,6 +6,7 @@ var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
 var memberListSettingsUrl = 'okcc/memberList/settings';
+var memberListExportUrl = 'okcc/memberList/export';
 
 $(document).ready(function () {
 
@@ -20,6 +21,8 @@ $(document).ready(function () {
     $('#menu_member_detail_visit').on('click', memberDetailVisitSelectHandler);
     // Member Status Combobox change event handler
     $('#cmbMemberStatus').on('change', memberStatusComboChangeHandler);
+    // Save As button click event handler
+    $('#btnExport').on('submit', exportBtnClickHandler);
 
     // Show member category side bar as a default
     // TODO: move to function.
@@ -195,6 +198,12 @@ function memberStatusComboChangeHandler() {
     } else {
         loadTable(memberListUrl + "/" + selectCode);
     }
+}
+
+function exportBtnClickHandler(e) {
+    e.preventDefault();
+    $('#exportDialog').modal('hide');
+    return false;
 }
 
 function memberListViewHandler() {

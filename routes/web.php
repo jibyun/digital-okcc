@@ -148,6 +148,18 @@ Route::resource('okcc/memberList/search', 'Rest\MemberList\SearchController')->o
 Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@getSettings')->middleware('auth');
 
 /**
+ * Method: POST
+ * URL: /okcc/memberList/export: Export table data
+ * Body : JSON
+ *        filename: Save file name
+ *        type : excel/pdf - We support excel only
+ *        tablename: table name to export
+ *        field: field name to export
+ * 
+ */
+Route::post('okcc/memberList/export', 'Rest\MemberList\ExportController@export')->middleware('auth')->name('memberlist.export');
+
+/**
  * Method: GET
  * URL: /okcc/util/adduser/{id}/{password}: Add new user
  * This temporary restful api, and it will be removed later
@@ -157,7 +169,6 @@ Route::get('okcc/util/adduser/{id}/{password}', 'Rest\Util\UtilsController@addUs
 
 
 /*
-
 * Method: GET
 * URL: /okcc/member/getMembers: Retrieve member
 */
