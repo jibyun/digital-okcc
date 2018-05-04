@@ -16,7 +16,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Member Status',
             'kor_txt' => '교인상태',
             'memo' => 'A code category for identifying the status of OKCC members.',
-            'fieldName' => 'MEMBER_STATUS',
+            'fieldName' => 'status_id',
             'order' => 1
         ]);
         // Duty: 교회직분 - 담임목사, 부목사, 목사, 전도사, 교육목사, 교육전도사, 시무장로, 은퇴장로, 권사, 은퇴권사, 집사, 협동장로, 협동권사, 위원

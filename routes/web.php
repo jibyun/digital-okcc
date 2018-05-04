@@ -15,14 +15,10 @@ Auth::routes();
 Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('preregister');
 Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
 
-Route::get('/', function () {
-    return view('MemberList/memberList');
-})->middleware('auth');
-
+Route::get('/', 'MainController@index')->middleware('auth');
 // memberList Landing page
-Route::get('/memberList', function () {
-    return view('MemberList/memberList');
-})->middleware('auth')->name('memberList');
+Route::get('/memberList', 'MainController@memberList')->middleware('auth')->name('memberList');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Web Routes
@@ -187,23 +183,5 @@ Route::post('okcc/member/edit/{id}', 'Rest\MemberList\MemberController@edit')->m
 | https://medium.com/@serhii.matrunchyk/using-laravel-localization-with-javascript-and-vuejs-23064d0c210e
 |--------------------------------------------------------------------------
 */
-Route::get('/js/lang.js', function () {
-    $strings = Cache::rememberForever('lang.js', function () {
-        $lang = config('app.locale');
-
-        $files   = glob(resource_path('lang/' . $lang . '/*.php'));
-        $strings = [];
-
-        foreach ($files as $file) {
-            $name           = basename($file, '.php');
-            $strings[$name] = require $file;
-        }
-
-        return $strings;
-    });
-
-    header('Content-Type: text/javascript');
-    echo('window.i18n = ' . json_encode($strings) . ';');
-    exit();
-})->name('assets.lang');
+Route::get('/js/lang.js', 'MainController@language')->name('assets.lang');
 

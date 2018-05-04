@@ -46,6 +46,7 @@ class MemberListController extends BaseController
      * Settings contains
      *     Landing page bookmark
      *     Table Column info
+     *     List of Member Status
      * 
      * @return \Illuminate\Http\Response
      */
@@ -53,6 +54,7 @@ class MemberListController extends BaseController
         $settings = (object)array();
         $settings->bookmark = $this->memberListService->getBookmark();
         $settings->columninfos = $this->memberListService->getColumnInfos();
+        $settings->memberStatus = $this->memberListService->getMemberStatus();
         return $this->sendResponse(json_encode($settings), "retrieved settings successfully.");
     }
 }

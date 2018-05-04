@@ -65,6 +65,4 @@
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
 {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
- {{-- export EXCEL, PDF, PNG, JSON --}}
- <script src="{{ asset('js/export.js') }}"></script>
 @endsection

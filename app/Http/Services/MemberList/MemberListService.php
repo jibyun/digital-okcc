@@ -98,6 +98,16 @@ class MemberListService
     }
 
     /**
+     * Return the list of member status
+     * The member status code category is 1
+     * 
+     * @return Object Code
+     */
+    public function getMemberStatus() {
+        return Code::where('code_category_id', 1)->get();
+    }
+
+    /**
      * Get manager info string
      * It reads the Member_Department_Map table and build the manager info string
      * 

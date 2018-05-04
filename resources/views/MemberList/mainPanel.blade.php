@@ -11,7 +11,7 @@
     {{-- Header section --}}
         <div id="mc_header">@include('MemberList.headerPanel')</div>
     {{-- Toolbar section --}}
-        <div id="mc_toolbar"></div>
+        <div id="mc_toolbar" >@include('MemberList.tableToolbar')</div>
     {{-- Table section --}}
         <div id="mc_table">
             <table id="bt_table"></table>
