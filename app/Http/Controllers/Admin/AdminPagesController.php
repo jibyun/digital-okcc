@@ -52,7 +52,8 @@ class AdminPagesController extends Controller {
             case "users":       $menu = $this->getUsersMenu();          break;
             case "members":     $menu = $this->getMembersMenu();        break;
             case "finances":    $menu = $this->getFinancesMenu();       break;
-            default:            $menu = $this->getInventoriesMenu();
+            case "inventories": $menu = $this->getInventoriesMenu();    break;
+            default:            break;
         }
         $result = array( "menu" => json_decode( json_encode($menu), true ) );
         return response()->json( $result );
