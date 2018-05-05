@@ -2,6 +2,7 @@
 // Javascript for MemberList
 
 var sideMenuTree;
+var currentTitle = '';
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
@@ -21,8 +22,11 @@ $(document).ready(function () {
     $('#menu_member_detail_visit').on('click', memberDetailVisitSelectHandler);
     // Member Status Combobox change event handler
     $('#cmbMemberStatus').on('change', memberStatusComboChangeHandler);
-    // Save As button click event handler
-    $('#btnExport').on('submit', exportBtnClickHandler);
+    // Export button click event handler
+    $('#btnExport').on('click', exportBtnClickHandler);
+    // Save As Excel button click event handler
+    $('#btnSaveAsExcel').on('click', saveAsExportBtnClickHandler);
+
 
     // Show member category side bar as a default
     // TODO: move to function.
@@ -167,6 +171,7 @@ function initializeTable(columnInfo) {
 
 function updateTitle(obj, title) {
     obj.text(title);
+    currentTitle = title;
 }
 
 function showLandingContent() {
@@ -202,8 +207,24 @@ function memberStatusComboChangeHandler() {
 
 function exportBtnClickHandler(e) {
     e.preventDefault();
-    $('#exportDialog').modal('hide');
-    return false;
+    var params = '?filename=' + $('#txtFileName').val();
+
+    window.location.href = memberListExportUrl + params;
+}
+
+/**
+ * Save As Export button click handler
+ * Set the default filename in the input box
+ */
+function saveAsExportBtnClickHandler() {
+    var d = new Date();
+    var fileName = currentTitle.replace(' ', '_') + '_' + d.getFullYear() + d.getMonth() + d.getDay() + '_' +
+                                                          d.getHours() + d.getMinutes() + d.getSeconds() + '.xlsx';
+    $('#txtFileName').val(fileName);
+}
+
+function exportSuccess(response) {
+    console.log(response);
 }
 
 function memberListViewHandler() {

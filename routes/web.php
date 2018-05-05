@@ -148,7 +148,7 @@ Route::resource('okcc/memberList/search', 'Rest\MemberList\SearchController')->o
 Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@getSettings')->middleware('auth');
 
 /**
- * Method: POST
+ * Method: GET
  * URL: /okcc/memberList/export: Export table data
  * Body : JSON
  *        filename: Save file name
@@ -157,7 +157,7 @@ Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@get
  *        field: field name to export
  * 
  */
-Route::post('okcc/memberList/export', 'Rest\MemberList\ExportController@export')->middleware('auth')->name('memberlist.export');
+Route::get('okcc/memberList/export', 'Rest\MemberList\ExportController@export')->middleware('auth')->name('memberlist.export');
 
 /**
  * Method: GET

@@ -5,23 +5,22 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-            <h5 class="modal-title">Modal Heading</h5>
+            <h6 class="modal-title">{{ __('messages.memberlist.savetoexcel') }}</h6>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form method="POST" action="{{ route('memberlist.export') }}">
-            @csrf
             <!-- Modal body -->
             <div class="form-group modal-body">
-                <input type="text" name="fileName" class="form-control" placeholder="Filename" >
+                <label>{{ __('messages.memberlist.filename') }}</label>
+                <input id="txtFileName" type="text" name="fileName" class="form-control" >
             </div>
             
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button id="btnExport" type="submit" class="btn btn-secondary" >Save</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btnExport" type="button" class="btn btn-secondary" data-dismiss="modal">
+                    {{ __('messages.memberlist.save') }}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    {{ __('messages.memberlist.cancel') }}</button>
             </div>
-        </form>
-        
       </div>
     </div>
 </div>

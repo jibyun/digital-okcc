@@ -17,7 +17,11 @@ class ExportController extends BaseController
      * @return export file
      */
     public function export(Request $request) {
-        LOG::debug($request->all());
-        return (new MembersExport)->download($request->fileName);
+        $filename = "members.xlsx";
+        if (!empty(trim($request->filename))) {
+            // Also need to check the extention.
+            $filename = $request->filename;
+        }
+        return (new MembersExport)->download($filename);
     }
 }

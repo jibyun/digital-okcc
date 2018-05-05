@@ -60,7 +60,12 @@ return [
         'allmember' => 'All Member',
         'search_result' => 'Search Result',
         'toolbar_saveexcel' => 'Save as Excel',
-        'toolbar_email' => 'Email'
+        'toolbar_email' => 'Email',
+        // Export
+        'savetoexcel' => 'Save to Excel',
+        'filename' => 'File name',
+        'save' => 'Save',
+        'cancel' => 'Cancel'
         
         
 
