@@ -85,6 +85,7 @@ return [
         'member_details' => 'Member Details',
         'finance' => 'Finance',
         'inventory' => 'Inventories',
+        'admin' => 'Admin Page',
 
     ],
 

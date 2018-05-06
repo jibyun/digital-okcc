@@ -14,14 +14,20 @@ $(document).ready(function () {
         parent.addClass('show');
     }
 
-    // TODO: Need to enhanced
-    /*
-    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.indexOf("FINANCE_ACCESS_ROLE") > -1) {
+    // Hide/Show the Finance and Inventory menu
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes("FINANCE_ACCESS_ROLE") === true) {
         $('#menu_finance').show();
     }
-    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.indexOf("INVENTORY_ACCESS_ROLE") > -1) {
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes("INVENTORY_ACCESS_ROLE") === true) {
         $('#menu_inventory').show();
-    }*/
+    }
+
+    // Display the Admin page
+    if (USER_ROLES.includes("ADMIN_ACCESS_ROLE") === true) {
+        $('#userDropdownMenu').append($('<a href="admin" class="dropdown-item">' + 
+                                        '<i class="fa fa-cog fa-lg mr-2"></i>' + i18n.messages.top_menu.admin + '</a>'));
+    }
+
 });
 
 // When the user scrolls down 20px from the top of the document, show the button
