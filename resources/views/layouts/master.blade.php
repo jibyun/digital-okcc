@@ -36,11 +36,19 @@
 
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
-        {{-- Basic Scripts --}}
         <script src="{{ asset('js/okcc.js') }}"></script>
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+        {{-- jQuery idle timer --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-idletimer/1.0.0/idle-timer.min.js"></script>
         {{-- for additional scripts --}}
         @yield('scripts')
+        <script>
+            // Session timeout
+            $.idleTimer( '{{ config('session.lifetime') }}' * 60 * 1000 );
+            $( document ).bind( "idle.idleTimer", function(event, elem, obj){
+                window.location.href = '{{ url('/login') }}';
+            }); 
+        </script>
     </body>
 </html>

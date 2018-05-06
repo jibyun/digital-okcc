@@ -9,10 +9,8 @@ use Maatwebsite\Excel\Concerns\FromQuery; // Use an Eloquent query to populate t
 
 use App\Member;
 
-class MembersExport implements FromCollection, Responsable {
+class MembersExport implements FromCollection {
     use Exportable;
-
-    private $fileName = 'members.xlsx';
 
     public function collection() {
         return Member::all();
