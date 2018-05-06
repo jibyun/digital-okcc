@@ -6,11 +6,21 @@ use Illuminate\Contracts\Support\Responsable; // This contract allows objects to
 use Maatwebsite\Excel\Concerns\FromCollection; // Use a Laravel Collection to populate the export.
 use Maatwebsite\Excel\Concerns\Exportable; // Add download/store abilities right on the export class itself.
 use Maatwebsite\Excel\Concerns\FromQuery; // Use an Eloquent query to populate the export.
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 use App\Member;
 
-class MembersExport implements FromCollection {
+class MembersExport implements FromCollection, WithHeadings  {
     use Exportable;
+
+    public function headings(): array
+    {
+        return [
+            // Add head here.
+            '#',
+            'Date',
+        ];
+    }
 
     public function collection() {
         return Member::all();

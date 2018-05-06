@@ -30,10 +30,6 @@
 @endsection
 
 @section('scripts')
-<script>
-    // Get roles for current user
-    var USER_ROLES = "{{ Auth::user()->roles() }}";
-</script>
 <script src="js/lang.js"></script>
 <script src="{{ asset('js/MemberList/memberList.js') }}"></script>
 <script src="{{ asset('js/MemberList/memberDetail.js') }}"></script>

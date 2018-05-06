@@ -34,13 +34,12 @@
                     {{ Auth::user()->name }} <span class="caret"></span>
                 </a>
                 <!-- Dropdown menu for logout -->
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div id="userDropdownMenu" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
+                        <i class="fa fa-sign-out fa-lg mr-2"></i>{{ __('Log Out') }}
                     </a>
-
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
