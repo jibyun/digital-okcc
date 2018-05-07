@@ -45,6 +45,7 @@ return [
         'tel_home' => 'Tel (Home)',
         'tel_office' => 'Tel (Office)',
         'tel_cell' => 'Tel (Cell)',
+        'household' => 'Householder',
         'address' => 'Address',
         'postal_code' => 'Postal Code',
         'photo' => 'Photo',

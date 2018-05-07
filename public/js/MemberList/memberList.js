@@ -6,6 +6,7 @@ var currentTitle = '';
 var currentSelectedCode = '';
 var showMemberStatusCombo = false;
 var allMemberCode = '0000';
+var searchMemberCode = '9999';
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
@@ -88,7 +89,7 @@ function searchMember(searchString) {
     // TODO: Unselect tree, update title
     updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
     var url = searchUrl + "/" + searchString;
-    currentSelectedCode = '';
+    currentSelectedCode = searchMemberCode;
     showMemberStatusCombo = false;
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
@@ -223,7 +224,10 @@ function memberStatusComboChangeHandler() {
 
 function exportBtnClickHandler(e) {
     e.preventDefault();
-    var params = '?filename=' + $('#txtFileName').val();
+    var params = '';
+    params += '?filename=' + $('#txtFileName').val();
+    params += '&code=' + currentSelectedCode;
+    params += '&search=' + $("#inputSearch").val();
 
     window.location.href = memberListExportUrl + params;
 }
