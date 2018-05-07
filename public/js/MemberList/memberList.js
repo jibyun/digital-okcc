@@ -3,6 +3,9 @@
 
 var sideMenuTree;
 var currentTitle = '';
+var currentSelectedCode = '';
+var showMemberStatusCombo = false;
+var allMemberCode = '0000';
 var categoryUrl = 'okcc/memberList/categories';
 var searchUrl = 'okcc/memberList/search';
 var memberListUrl = 'okcc/memberList/memberList';
@@ -85,10 +88,13 @@ function searchMember(searchString) {
     // TODO: Unselect tree, update title
     updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
     var url = searchUrl + "/" + searchString;
+    currentSelectedCode = '';
+    showMemberStatusCombo = false;
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
 
-function loadTable(url) {
+function loadTable(code, url) {
+    currentSelectedCode = code;
     restApiCall(url, "GET", null, memberListSuccess, null);
 }
 
@@ -138,7 +144,7 @@ function settingsSuccess(response) {
     // Clear existing item
     $("#cmbMemberStatus").empty()
     // Add the empty(for all member)
-    $('#cmbMemberStatus').append( new Option(i18n.messages.memberlist.allmember,'0000'));
+    $('#cmbMemberStatus').append( new Option(i18n.messages.memberlist.allmember, allMemberCode));
     $.each(memberStatusListData, function(i, el) 
     { 
         $('#cmbMemberStatus').append( new Option(el.txt,el.id) );
@@ -183,25 +189,35 @@ function showMainConent() {
     $('#LandingContent').hide();
     $('#MainContent').show();
     $('#member_table_toolbar').show();
+    if (showMemberStatusCombo === true) {
+        $("#cmbMemberStatus").show();
+    } else {
+        $("#cmbMemberStatus").hide();
+    }
+
     memberListViewHandler();
 }
 
 function treeSelectionChanged(id, data) {
     updateTitle($('#pageTitle'), data.text);
     // This is the special case for all member.
-    if (data.code === "0000") {
-        loadTable(memberListUrl);
+    if (data.code === allMemberCode) {
+        showMemberStatusCombo = true;
+        loadTable(allMemberCode, memberListUrl);
     } else {
-        loadTable(memberListUrl + "/" + data.code);
+        showMemberStatusCombo = false;
+        loadTable(data.code, memberListUrl + "/" + data.code);
     }
 }
 
 function memberStatusComboChangeHandler() {
     var selectCode = this.value;
-    if (selectCode === "0000") {
-        loadTable(memberListUrl);
+    if (selectCode === allMemberCode) {
+        showMemberStatusCombo = true;
+        loadTable(allMemberCode, memberListUrl);
     } else {
-        loadTable(memberListUrl + "/" + selectCode);
+        showMemberStatusCombo = true;
+        loadTable(selectCode, memberListUrl + "/" + selectCode);
     }
 }
 
