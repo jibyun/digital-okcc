@@ -25,7 +25,10 @@
 <div id="divMemberDetailPanel" style="display:none">
         @include('MemberList.memberShowPanel')
     <div id="divMemberSubDetailPanel" >
-            @include('MemberList.memberSubPanel')
-     </div>
+        @include('MemberList.memberSubPanel')
+    </div>
+    <div>
+        @include('MemberList.memberHistory')
+    </div>
    
 </div>

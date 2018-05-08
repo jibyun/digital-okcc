@@ -54,6 +54,7 @@ function topFunction() {
  * @param {*} failureFunc failure function
  */
 function restApiCall(url, method, param, successFunc, failureFunc){
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
     $.ajax({
         url: url,
         type: method,

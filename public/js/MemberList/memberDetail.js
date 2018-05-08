@@ -5,9 +5,9 @@ var saveIndex; // Row index of the table
 var saveId; // Primary key of the table
 var current_member;
 
-$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
-
 $( function() {
+    // Create member history button click event handler
+    //$('#btnCreateHistory').on('click', createHistoryBtnClickHandler);
 
     $( "#tabs" ).tabs();
 

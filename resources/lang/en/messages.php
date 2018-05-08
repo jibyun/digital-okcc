@@ -77,6 +77,14 @@ return [
         'menu_basicinfo' => 'Basic Information',
         'menu_history' => 'History Information',
         'menu_visit' => 'Visit Information',
+        // Member History
+        'history_add' => 'Add',
+        'history_delete' => 'Delete',
+        'history_edit' => 'Edit',
+        'history_title' => 'Title',
+        'history_startdate' => 'Start Date',
+        'history_enddate' => 'End Date',
+        'history_memo' => 'Details'
     ],
 
     // Top Menu
