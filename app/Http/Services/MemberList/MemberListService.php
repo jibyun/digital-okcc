@@ -332,7 +332,7 @@ class MemberListService
      * @param string $code
      * @return object $category
      */
-    private function findCategoryByCode($code) {
+    public function findCategoryByCode($code) {
         $category = Code::where('id', $code)->first();
         Log::debug($category);
         return $category;

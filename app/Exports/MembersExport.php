@@ -94,6 +94,11 @@ class MembersExport implements FromQuery, WithHeadings, WithMapping  {
         } else if ($this->searchString != '') {
             return Member::query()->where(DB::raw("CONCAT(first_name, ' ', last_name, ' ', kor_name)"), 
                     'like', '%' . $this->searchString . '%');
+        } else if ($this->fieldName == 'department') {
+            $code = $this->fieldCode;
+            return Member::query()->whereHas('departmentId', function($query) use ($code) {
+                $query -> where('department_id', $code);
+                });
         } else {
             return Member::query()->where($this->fieldName, $this->fieldCode);
         }

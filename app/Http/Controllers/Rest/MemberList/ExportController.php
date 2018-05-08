@@ -36,7 +36,12 @@ class ExportController extends BaseController
 
         if ($fieldCode != "0000" && $fieldCode != "9999") {
             $memberService = new MemberListService();
+            $category = $memberService->findCategoryByCode($fieldCode);
             $fieldName = $memberService->findFieldByCode($fieldCode);
+            // This is the temporary solution.  need to re-visit
+            if ($category->code_category_id == 5 || $category->code_category_id == 10) {
+                $fieldName = "department";
+            }
         }
 
         // This code need to be optimize
