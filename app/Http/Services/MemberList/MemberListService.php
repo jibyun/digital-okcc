@@ -320,7 +320,7 @@ class MemberListService
      * @param string $code
      * @return string $fieldName
      */
-    private function findFieldByCode($code) {
+    public function findFieldByCode($code) {
         $category = $this->findCategoryByCode($code);
         $fieldName = Code_category::where('id', $category->code_category_id)->select('fieldName')->first();
         return $fieldName->fieldName;
@@ -332,7 +332,7 @@ class MemberListService
      * @param string $code
      * @return object $category
      */
-    private function findCategoryByCode($code) {
+    public function findCategoryByCode($code) {
         $category = Code::where('id', $code)->first();
         Log::debug($category);
         return $category;
