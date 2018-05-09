@@ -12,42 +12,43 @@ class CodesTableSeeder extends Seeder
     public function run()
     {
         // Member Status: 회원, 비정기출석, 장기결석, 해외거주, 이명, 사망, 전도대상자
-        DB::table('codes')->insert([ 'id' => 10001, 'code_category_id' => 1, 'order' => 10001, 'txt' => 'Member', 'kor_txt' => '회원' ]);
-        DB::table('codes')->insert([ 'id' => 10002, 'code_category_id' => 1, 'order' => 10002, 'txt' => 'Irregular Attendee', 'kor_txt' => '비정기출석' ]);
-        DB::table('codes')->insert([ 'id' => 10003, 'code_category_id' => 1, 'order' => 10003, 'txt' => 'Long-term Absentee', 'kor_txt' => '장기결석' ]);
-        DB::table('codes')->insert([ 'id' => 10004, 'code_category_id' => 1, 'order' => 10004, 'txt' => 'Overseas Resident', 'kor_txt' => '해외거주' ]);
-        DB::table('codes')->insert([ 'id' => 10005, 'code_category_id' => 1, 'order' => 10005, 'txt' => 'Moved Church', 'kor_txt' => '이명' ]);
-        DB::table('codes')->insert([ 'id' => 10006, 'code_category_id' => 1, 'order' => 10006, 'txt' => 'Pass Away', 'kor_txt' => '사망' ]);
-        DB::table('codes')->insert([ 'id' => 10007, 'code_category_id' => 1, 'order' => 10007, 'txt' => 'Target of Evangelism', 'kor_txt' => '전도대상자' ]);
+        DB::table('codes')->insert([ 'id' => 10001, 'code_category_id' => 1, 'order' => 1, 'txt' => 'Member', 'kor_txt' => '회원' ]);
+        DB::table('codes')->insert([ 'id' => 10002, 'code_category_id' => 1, 'order' => 2, 'txt' => 'Irregular Attendee', 'kor_txt' => '비정기출석' ]);
+        DB::table('codes')->insert([ 'id' => 10003, 'code_category_id' => 1, 'order' => 3, 'txt' => 'Long-term Absentee', 'kor_txt' => '장기결석' ]);
+        DB::table('codes')->insert([ 'id' => 10004, 'code_category_id' => 1, 'order' => 4, 'txt' => 'Overseas Resident', 'kor_txt' => '해외거주' ]);
+        DB::table('codes')->insert([ 'id' => 10005, 'code_category_id' => 1, 'order' => 5, 'txt' => 'Moved Church', 'kor_txt' => '이명' ]);
+        DB::table('codes')->insert([ 'id' => 10006, 'code_category_id' => 1, 'order' => 6, 'txt' => 'Pass Away', 'kor_txt' => '사망' ]);
+        DB::table('codes')->insert([ 'id' => 10007, 'code_category_id' => 1, 'order' => 7, 'txt' => 'Target of Evangelism', 'kor_txt' => '전도대상자' ]);
+        DB::table('codes')->insert([ 'id' => 19999, 'code_category_id' => 1, 'order' => 8, 'txt' => 'Deleted Member', 'kor_txt' => '삭제회원' ]);
 
         // Duty: 교회직분 - 담임목사, 부목사, 목사, 전도사, 교육목사, 교육전도사, 시무장로, 은퇴장로, 권사, 은퇴권사, 집사, 협동장로, 협동권사, 위원
-        DB::table('codes')->insert([ 'id' => 20001, 'code_category_id' => 2, 'order' => 20001, 'txt' => 'Senior Pastor', 'kor_txt' => '담임목사' ]);
-        DB::table('codes')->insert([ 'id' => 20002, 'code_category_id' => 2, 'order' => 20002, 'txt' => 'Associate Pastor', 'kor_txt' => '부목사' ]);
-        DB::table('codes')->insert([ 'id' => 20003, 'code_category_id' => 2, 'order' => 20003, 'txt' => 'Assitant Pastor', 'kor_txt' => '교육목사' ]);
-        DB::table('codes')->insert([ 'id' => 20004, 'code_category_id' => 2, 'order' => 20004, 'txt' => 'Pastor', 'kor_txt' => '목사' ]);
-        DB::table('codes')->insert([ 'id' => 20005, 'code_category_id' => 2, 'order' => 20005, 'txt' => 'Student Pastor', 'kor_txt' => '전도사' ]);
-        DB::table('codes')->insert([ 'id' => 20006, 'code_category_id' => 2, 'order' => 20006, 'txt' => 'Elders', 'kor_txt' => '시무장로' ]);
-        DB::table('codes')->insert([ 'id' => 20007, 'code_category_id' => 2, 'order' => 20007, 'txt' => 'Retired Elders', 'kor_txt' => '은퇴장로' ]);
-        DB::table('codes')->insert([ 'id' => 20008, 'code_category_id' => 2, 'order' => 20008, 'txt' => 'Senior Deaconess', 'kor_txt' => '권사' ]);
-        DB::table('codes')->insert([ 'id' => 20009, 'code_category_id' => 2, 'order' => 20009, 'txt' => 'Retired Senior Deaconess', 'kor_txt' => '은퇴권사' ]);
-        DB::table('codes')->insert([ 'id' => 20010, 'code_category_id' => 2, 'order' => 20010, 'txt' => 'Deacon & Deaconess', 'kor_txt' => '집사' ]);
-        DB::table('codes')->insert([ 'id' => 20011, 'code_category_id' => 2, 'order' => 20011, 'txt' => 'Cooperative Elder', 'kor_txt' => '협동장로' ]);
-        DB::table('codes')->insert([ 'id' => 20012, 'code_category_id' => 2, 'order' => 20012, 'txt' => 'Cooperative Senior Deaconess', 'kor_txt' => '협동권사' ]);
-        DB::table('codes')->insert([ 'id' => 20013, 'code_category_id' => 2, 'order' => 20013, 'txt' => 'Commissioner', 'kor_txt' => '위원' ]);
-        DB::table('codes')->insert([ 'id' => 20014, 'code_category_id' => 2, 'order' => 20014, 'txt' => 'Laymen', 'kor_txt' => '평신도' ]);
+        DB::table('codes')->insert([ 'id' => 20001, 'code_category_id' => 2, 'order' => 1, 'txt' => 'Senior Pastor', 'kor_txt' => '담임목사' ]);
+        DB::table('codes')->insert([ 'id' => 20002, 'code_category_id' => 2, 'order' => 2, 'txt' => 'Associate Pastor', 'kor_txt' => '부목사' ]);
+        DB::table('codes')->insert([ 'id' => 20003, 'code_category_id' => 2, 'order' => 3, 'txt' => 'Assitant Pastor', 'kor_txt' => '교육목사' ]);
+        DB::table('codes')->insert([ 'id' => 20004, 'code_category_id' => 2, 'order' => 4, 'txt' => 'Pastor', 'kor_txt' => '목사' ]);
+        DB::table('codes')->insert([ 'id' => 20005, 'code_category_id' => 2, 'order' => 5, 'txt' => 'Student Pastor', 'kor_txt' => '전도사' ]);
+        DB::table('codes')->insert([ 'id' => 20006, 'code_category_id' => 2, 'order' => 6, 'txt' => 'Elders', 'kor_txt' => '시무장로' ]);
+        DB::table('codes')->insert([ 'id' => 20007, 'code_category_id' => 2, 'order' => 7, 'txt' => 'Retired Elders', 'kor_txt' => '은퇴장로' ]);
+        DB::table('codes')->insert([ 'id' => 20008, 'code_category_id' => 2, 'order' => 8, 'txt' => 'Senior Deaconess', 'kor_txt' => '권사' ]);
+        DB::table('codes')->insert([ 'id' => 20009, 'code_category_id' => 2, 'order' => 9, 'txt' => 'Retired Senior Deaconess', 'kor_txt' => '은퇴권사' ]);
+        DB::table('codes')->insert([ 'id' => 20010, 'code_category_id' => 2, 'order' => 10, 'txt' => 'Deacon & Deaconess', 'kor_txt' => '집사' ]);
+        DB::table('codes')->insert([ 'id' => 20011, 'code_category_id' => 2, 'order' => 11, 'txt' => 'Cooperative Elder', 'kor_txt' => '협동장로' ]);
+        DB::table('codes')->insert([ 'id' => 20012, 'code_category_id' => 2, 'order' => 12, 'txt' => 'Cooperative Senior Deaconess', 'kor_txt' => '협동권사' ]);
+        DB::table('codes')->insert([ 'id' => 20013, 'code_category_id' => 2, 'order' => 13, 'txt' => 'Commissioner', 'kor_txt' => '위원' ]);
+        DB::table('codes')->insert([ 'id' => 29999, 'code_category_id' => 2, 'order' => 14, 'txt' => 'Laymen', 'kor_txt' => '평신도' ]);
 
         // Family Relations: 본인, 처, 자녀, 부모, 손주 
-        DB::table('codes')->insert([ 'id' => 30001, 'code_category_id' => 3, 'order' => 30001, 'txt' => 'Householder', 'kor_txt' => '본인' ]);
-        DB::table('codes')->insert([ 'id' => 30002, 'code_category_id' => 3, 'order' => 30002, 'txt' => 'Spouse', 'kor_txt' => '처' ]);
-        DB::table('codes')->insert([ 'id' => 30003, 'code_category_id' => 3, 'order' => 30003, 'txt' => 'Children', 'kor_txt' => '자녀' ]);
-        DB::table('codes')->insert([ 'id' => 30004, 'code_category_id' => 3, 'order' => 30004, 'txt' => 'Parent', 'kor_txt' => '부모' ]);
-        DB::table('codes')->insert([ 'id' => 30005, 'code_category_id' => 3, 'order' => 30005, 'txt' => 'Grandchild', 'kor_txt' => '손주' ]);
+        DB::table('codes')->insert([ 'id' => 30001, 'code_category_id' => 3, 'order' => 1, 'txt' => 'Householder', 'kor_txt' => '본인' ]);
+        DB::table('codes')->insert([ 'id' => 30002, 'code_category_id' => 3, 'order' => 2, 'txt' => 'Spouse', 'kor_txt' => '처' ]);
+        DB::table('codes')->insert([ 'id' => 30003, 'code_category_id' => 3, 'order' => 3, 'txt' => 'Children', 'kor_txt' => '자녀' ]);
+        DB::table('codes')->insert([ 'id' => 30004, 'code_category_id' => 3, 'order' => 4, 'txt' => 'Parent', 'kor_txt' => '부모' ]);
+        DB::table('codes')->insert([ 'id' => 30005, 'code_category_id' => 3, 'order' => 5, 'txt' => 'Grandchild', 'kor_txt' => '손주' ]);
 
         // Baptism Status: 세례, 유아세례, 입교, 영세
-        DB::table('codes')->insert([ 'id' => 40001, 'code_category_id' => 4, 'order' => 40001, 'txt' => 'Baptism', 'kor_txt' => '세례' ]);
-        DB::table('codes')->insert([ 'id' => 40002, 'code_category_id' => 4, 'order' => 40002, 'txt' => 'Infant Baptism', 'kor_txt' => '유아세례' ]);
-        DB::table('codes')->insert([ 'id' => 40003, 'code_category_id' => 4, 'order' => 40003, 'txt' => 'Confirmation', 'kor_txt' => '입교' ]);
-        DB::table('codes')->insert([ 'id' => 40004, 'code_category_id' => 4, 'order' => 40004, 'txt' => 'Unbaptized', 'kor_txt' => '무세' ]);
+        DB::table('codes')->insert([ 'id' => 40001, 'code_category_id' => 4, 'order' => 1, 'txt' => 'Baptism', 'kor_txt' => '세례' ]);
+        DB::table('codes')->insert([ 'id' => 40002, 'code_category_id' => 4, 'order' => 2, 'txt' => 'Infant Baptism', 'kor_txt' => '유아세례' ]);
+        DB::table('codes')->insert([ 'id' => 40003, 'code_category_id' => 4, 'order' => 3, 'txt' => 'Confirmation', 'kor_txt' => '입교' ]);
+        DB::table('codes')->insert([ 'id' => 49999, 'code_category_id' => 4, 'order' => 4, 'txt' => 'Unbaptized', 'kor_txt' => '무세' ]);
 
         // Department: 당회, 권사회, 집사회, 교육부, 성가대, 단기선교회, 남선교회, 제1여선교회, 제2여선교회 등
         DB::table('codes')->insert([ 'id' => 50001, 'code_category_id' => 5, 'order' => 50001, 'txt' => 'Session', 'kor_txt' => '당회' ]);
@@ -348,5 +349,19 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 110003, 'code_category_id' => 11, 'order' => 3, 'txt' => 'INSERT', 'kor_txt' => '추가' ]);
         DB::table('codes')->insert([ 'id' => 110004, 'code_category_id' => 11, 'order' => 4, 'txt' => 'UPDATE', 'kor_txt' => '수정' ]);
         DB::table('codes')->insert([ 'id' => 110005, 'code_category_id' => 11, 'order' => 5, 'txt' => 'DELETE', 'kor_txt' => '삭제' ]);
+
+        // POSITION
+        DB::table('codes')->insert([ 'id' => 120001, 'code_category_id' => 12, 'order' => 1, 'txt' => 'President', 'kor_txt' => '회장' ]);
+        DB::table('codes')->insert([ 'id' => 120002, 'code_category_id' => 12, 'order' => 2, 'txt' => 'Vice President', 'kor_txt' => '부회장' ]);
+        DB::table('codes')->insert([ 'id' => 120003, 'code_category_id' => 12, 'order' => 3, 'txt' => 'Supervisor', 'kor_txt' => '부서장' ]);
+        DB::table('codes')->insert([ 'id' => 120004, 'code_category_id' => 12, 'order' => 4, 'txt' => 'Director', 'kor_txt' => '총무' ]);
+        DB::table('codes')->insert([ 'id' => 120005, 'code_category_id' => 12, 'order' => 5, 'txt' => 'Accoundant', 'kor_txt' => '회계' ]);
+        DB::table('codes')->insert([ 'id' => 120006, 'code_category_id' => 12, 'order' => 6, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
+        DB::table('codes')->insert([ 'id' => 120007, 'code_category_id' => 12, 'order' => 7, 'txt' => 'Great Cell Leader', 'kor_txt' => '교구장' ]);
+        DB::table('codes')->insert([ 'id' => 120008, 'code_category_id' => 12, 'order' => 8, 'txt' => 'Cell Leader', 'kor_txt' => '구역장' ]);
+        DB::table('codes')->insert([ 'id' => 120009, 'code_category_id' => 12, 'order' => 9, 'txt' => 'Choir Team Leader', 'kor_txt' => '성가대장' ]);
+        DB::table('codes')->insert([ 'id' => 120010, 'code_category_id' => 12, 'order' => 10, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
+        DB::table('codes')->insert([ 'id' => 120011, 'code_category_id' => 12, 'order' => 11, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
+        DB::table('codes')->insert([ 'id' => 120012, 'code_category_id' => 12, 'order' => 12, 'txt' => 'Member', 'kor_txt' => '팀원' ]);
     }
 }

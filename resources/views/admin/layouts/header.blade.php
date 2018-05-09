@@ -1,7 +1,13 @@
+<?php
+    function menu( $menuStr = '/' ) {
+        return strstr( request()->path(), $menuStr );
+    }
+?>
+
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
     <div style="min-width:250px; max-width:250px;">
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
         @if ( strpos(url()->current(), 'admin') !== false )
@@ -16,25 +22,28 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="#">Members</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Finance</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Inventories</a></li>
+        <ul id='topMenu' class="navbar-nav mr-auto">
+            <li class="nav-item rounded px-2 {{ menu('users') ? 'active' : '' }}" name="users"><a class="nav-link" href="{{ route('admin.users') }}">{{ __('messages.adm_layout.header_menu_user') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}" name="members"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}" name="finances"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}" name="inventories"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            @guest
+                <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ __('messages.adm_button.signin') }}</a></li>
+            @else
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                    <i class="fa fa-user"></i>&nbsp&nbsp&nbspSteve Kim {{-- User 테이블에서 읽은 사람이름이 들어가는 곳 --}}
+                    <i class="fa fa-fw fa-user mr-1"></i>{{ Auth::user()->name }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp Log Out</a>
-                    {{-- After developed log out form, it should be used --}}
-                    {{-- <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg"></i>&nbsp&nbsp&nbsp{{ __('Log Out') }}
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fa fa-fw fa-sign-out fa-lg mr-1"></i>{{ __('messages.adm_button.logout') }}
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form> --}}
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
             </li>
+            @endguest
         </ul>
     </div>
 </nav>

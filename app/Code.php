@@ -19,7 +19,7 @@ class Code extends Model
 
     // Relationship with code_categories table
     public function code_category() {
-        return $this->belongsTo('App\Code_Category');
+        return $this->belongsTo('App\Code_Category', 'code_category_id', 'id')->select('txt');
     }
 
     // Relationship with system_logs table

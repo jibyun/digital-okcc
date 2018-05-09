@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\User;
 use App\Member;
 use App\Privilege;
+use App\Http\Services\Log\SystemLog;
 
 class UsersController extends Controller {
+    private $TABLE_NAME = "USERS";
+
+    public function __construct() {
+        $this->middleware('auth', ['except' => ['getUsers']]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -32,28 +40,15 @@ class UsersController extends Controller {
         ]);
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
             try {
+                $detail = SystemLog::createLogForUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
                 $user = $userUpdate->fill($input)->save();
-                return response()
-                    ->json([
-                        'message' => 'Successfully created a new account.',
-                        'user' => $user,
-                        'status' => 200
-                    ], 200);
-            } catch (\Exception $exception) {
-                logger()->error($exception);
-                return response()
-                    ->json([
-                        'errors' => $exception,
-                        'message' => 'Failed',
-                    ], 200);
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                return response()->json([ 'user' => $user ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
             }
         }
     }
@@ -76,6 +71,20 @@ class UsersController extends Controller {
                 array_push($arr, $this->reinforceMember($value));
             }
             $result = array("members" => $arr);
+        } else if ($request->table == 'householders') {
+            $memberArray = Member::where('primary', 1)->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->get();
+            $arr = array();
+            foreach ($memberArray as $value) {
+                array_push($arr, $this->reinforceMember($value));
+            }
+            $result = array("members" => $arr);
+        } else if ($request->table == 'family') {
+            $memberArray = Member::where('primary', 0)->orderBy('first_name', 'ASC')->orderBy('last_name', 'ASC')->get();
+            $arr = array();
+            foreach ($memberArray as $value) {
+                array_push($arr, $this->reinforceMember($value));
+            }
+            $result = array("members" => $arr);
         } else { // privilege
             $privilegeArray = Privilege::get();
             $arr = array();
@@ -85,6 +94,12 @@ class UsersController extends Controller {
             $result = array("privileges" => json_decode(json_encode($arr), true));
         }
         
+        return response()->json($result);
+    }
+
+    public function getCurrentUsers() {
+        $user = \Auth::user();
+        $result = array("user" => json_decode(json_encode($user), true));
         return response()->json($result);
     }
 
@@ -116,8 +131,11 @@ class UsersController extends Controller {
             $tmp['label'] = $v['kor_name'];
         } else {
             $tmp['label'] = !trim($v['first_name']) ? trim($v['last_name']) : trim($v['first_name']) . ' ' . trim($v['last_name']);
+            $tmp['label'] .= ' (' . $v['kor_name'] . ')';
         }
-
+        $tmp['kor_name'] = $v->kor_name;
+        $tmp['tel_home'] = $v->tel_home;
+        $tmp['tel_office'] = $v->tel_office;
         return $tmp;
     }
         

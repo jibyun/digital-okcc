@@ -4,27 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Code;
+use App\Http\Services\Log\SystemLog;
 
 class CodesController extends Controller {
-    /* 
-    TODO: After developed login process
-    Create a new controller instance. 
-    
+    private $TABLE_NAME = "CODES";
+
     public function __construct() {
         $this->middleware('auth');
     }
-    */
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function start() {
-        return view('admin.code');
-    }
 
     public function get_codes() {
-        return view('admin.includes.codes.get-codes-for-order');
+        return view('admin.members.includes.codes.get-codes-for-order');
     }
 
     /**
@@ -68,20 +61,15 @@ class CodesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $codes = Code::create($request->all());
-            return response()
-                ->json([
-                    'message' => 'The item was successfully created.',
-                    'codes' => $codes,
-                    'status' => 200
-                ], 200);
+            try {
+                $result = Code::create($request->all());
+                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                return response()->json([ 'codes' => $result ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -112,20 +100,16 @@ class CodesController extends Controller {
         $validator = \Validator::make( $input, $rules, $messages );
 
         if ($validator->fails()) {
-            return response()
-                ->json([
-                    'errors' => $validator->errors()->all(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
         } else {
-            $codes = $codeUpdate->fill($input)->save();
-            return response()
-                ->json([
-                    'message' => 'The item was successfully updated.',
-                    'codes' => $codes,
-                    'status' => 200
-                ], 200);
+            try {
+                $detail = SystemLog::createLogForUpdatedFields($codeUpdate, $input, null); 
+                $codes = $codeUpdate->fill($input)->save();
+                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                return response()->json([ 'categories' => $codes ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
         }
     }
 
@@ -135,18 +119,21 @@ class CodesController extends Controller {
     public function destroy($id) {
         try {
             Code::find($id)->delete();
-            return response()
-                ->json([
-                    'message' => 'The item was successfully deleted.',
-                    'status' => 200
-                ], 200);
-        } catch (\Exception $e) {
-            return response()
-                ->json([
-                    'errors' => $e->getMessage(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
+    }
+
+    public function getCodesByCategoryIds(Request $request) {
+        $result = array();
+        for ($i=0; $i < count($request->category_id); $i++) {
+            $category_id = $request->category_id[$i];
+            $codes = Code::where('code_category_id', $category_id)->orderBy('order', 'ASC')->get();
+            array_push($result, $codes);
+        }
+        $result = array("codes" => json_decode(json_encode($result),true));
+        return response()->json($result);
     }
 }

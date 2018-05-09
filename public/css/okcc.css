@@ -53,9 +53,22 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
 }
+
+.sidebar ul.memberDetail {
+    display: block;
+    padding: .5rem .5rem;
+    color: rgba(255, 255, 255, .75);
+    text-decoration: none;
+}
 .sidebar ul li a:hover, .sidebar ul .active a {
     color: rgba(255, 255, 255, 1.0);
     background: rgba(0, 0, 0, .25);
+}
+
+.sidebar ul.memberDetail:hover, .sidebar ul.memberDetail .active {
+    color: rgba(255, 255, 255, 1.0);
+    background: rgba(0, 0, 0, .25);
+    cursor: pointer;
 }
 .sidebar ul ul a {
     padding-left: 2.5rem;
@@ -169,5 +182,9 @@ h5 { font-size: 1.8em;   font-weight: 500; }
 thead {
     color: #fefefe;
     background-color: #101010;
+}
+
+.hide {
+    display:none;  
 }
 

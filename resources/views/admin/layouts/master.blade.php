@@ -29,7 +29,7 @@
         {{-- for additional styles --}}
         @yield('styles')
     </head>
-    <body>
+    <body style="height: 100%">
 
         @include('admin.layouts.header')
         @include('admin.layouts.side')
@@ -37,13 +37,75 @@
 
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
-        {{-- Basic Scripts --}}
-        <script src="{{ asset('js/admin.js') }}"></script>
+
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+        {{-- jQuery idle timer --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-idletimer/1.0.0/idle-timer.min.js"></script>
+        
         {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        {{-- Basic Scripts --}}
+        <script src="{{ asset('js/admin.js') }}"></script>
+
         {{-- for additional scripts --}}
         @yield('scripts')
+
+        <script>
+            $( function () {
+                var getMenuItem = function ( itemData ) {
+                    var item = $("<li>").append(
+                        $("<a>", {
+                            'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                            'html': '<i class="fa fa-fw ' + itemData.icon + ' mr-1"></i>' + itemData.text,
+                            'data-toggle': (itemData.sub_menu) ? 'collapse' : '',
+                        })
+                    );
+
+                    if ( itemData.sub_menu ) {
+                        var subList = $("<ul>").attr('id', itemData.text).attr('aria-expanded', false).addClass('list-unstyled collapse');
+                        itemData.isOpened ? subList.addClass('show') : '';
+                        $.each( itemData.sub_menu, function ( index, submenu ) {
+                            subList.append( getMenuItem( submenu ) );
+                        });
+                        item.append(subList);
+                    } else {
+                        if (itemData.route) {
+                            urlRoute = itemData.route.replace(/^https?:\/\//,'');
+                            urlPage = location.href.replace(/^https?:\/\//,'');
+                            if (urlRoute == urlPage) {
+                                item.addClass('active');
+                            }
+                        }
+                    }
+
+                    return item;
+                };
+                // Session timeout
+                $.idleTimer( '{{ config('session.lifetime') }}' * 60 * 1000 );
+                $( document ).bind( "idle.idleTimer", function(event, elem, obj){
+                    window.location.href = '{{ url('/login') }}';
+                });  
+
+                $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+
+                $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" + '?name=' + $('ul#topMenu').find('li.active').attr('name') })
+                .done ( function(data, textStatus, jqXHR) { 
+                    var $menu = $("#sidemenu");
+                    $.each( data.menu, function ( index, menu ) {
+                        $menu.append(
+                            getMenuItem( menu )
+                        );
+                    });
+                    // toggle sidebar when button clicked
+                    $('.sidebar-toggle').on('click', function () {
+                        $('.sidebar').toggleClass('toggled');
+                    });
+                }) 
+                .fail ( function(jqXHR, textStatus, errorThrown) { 
+                    errorMessage( jqXHR );
+                });
+            });
+        </script>
     </body>
 </html>

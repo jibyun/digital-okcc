@@ -4,10 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Code;
 use App\Department_Tree;
+use App\Http\Services\Log\SystemLog;
 
 class DepartmentTreesController extends Controller {
+    private $TABLE_NAME = "DEPARTMENT_TREES";
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -32,13 +41,13 @@ class DepartmentTreesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $result = Department_Tree::create($request->all());
-        return response()
-            ->json([
-                'message' => 'The item was successfully created.',
-                'result' => $result,
-                'status' => 200
-            ], 200);
+        try {
+            $result = Department_Tree::create($request->all());
+            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+            return response()->json([ 'result' => $result ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+        }
     }
 
     /**
@@ -49,18 +58,10 @@ class DepartmentTreesController extends Controller {
     public function destroy($id) {
         try {
             Department_Tree::find($id)->delete();
-            return response()
-                ->json([
-                    'message' => 'The item was successfully deleted.',
-                    'status' => 200
-                ], 200);
-        } catch (\Exception $e) {
-            return response()
-                ->json([
-                    'errors' => $e->getMessage(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
     }
  

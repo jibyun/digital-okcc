@@ -5,3 +5,5 @@ tests/**
 .vscode/**
 vendor/**
 store/**
+public/uploads/**
+vcode.code-workspace

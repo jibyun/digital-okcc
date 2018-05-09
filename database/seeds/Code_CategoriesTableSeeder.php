@@ -16,7 +16,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Member Status',
             'kor_txt' => '교인상태',
             'memo' => 'A code category for identifying the status of OKCC members.',
-            'fieldName' => 'MEMBER_STATUS',
+            'fieldName' => 'status_id',
             'order' => 1
         ]);
         // Duty: 교회직분 - 담임목사, 부목사, 목사, 전도사, 교육목사, 교육전도사, 시무장로, 은퇴장로, 권사, 은퇴권사, 집사, 협동장로, 협동권사, 위원
@@ -24,7 +24,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Duty',
             'kor_txt' => '직무',
             'memo' => 'A code category for identifying the duty of OKCC members.',
-            'fieldName' => 'DUTY',
+            'fieldName' => 'duty_id',
             'order' => 2
         ]);
         // Family Relations: 본인, 처, 자녀, 부모, 손주 
@@ -48,7 +48,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Department',
             'kor_txt' => '부서',
             'memo' => 'A code category for identifying the department of OKCC.',
-            'fieldName' => 'DEPARTMENT',
+            'fieldName' => 'department_id',
             'order' => 5
         ]);
         // City code
@@ -80,7 +80,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'KyoGu',
             'kor_txt' => '교구',
             'memo' => 'A code category for identifying Kyogu.',
-            'fieldName' => 'KYOGU',
+            'fieldName' => 'department_id',
             'order' => 9
         ]);
         // 구역
@@ -88,7 +88,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'GuYeok',
             'kor_txt' => '구역',
             'memo' => 'A code category for identifying GuYeok.',
-            'fieldName' => 'GUYEOK',
+            'fieldName' => 'department_id',
             'order' => 10
         ]);
         // LOG
@@ -97,6 +97,14 @@ class Code_CategoriesTableSeeder extends Seeder
             'kor_txt' => '로그',
             'memo' => 'A code category for using at system log view.',
             'fieldName' => 'LOG',
+            'order' => 11
+        ]);
+        // Position
+        DB::table('code_categories')->insert([ 
+            'txt' => 'Position',
+            'kor_txt' => '직책',
+            'memo' => 'A code category for using Position.',
+            'fieldName' => 'position_id',
             'order' => 11
         ]);
     }

@@ -150,6 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -208,12 +209,55 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
-    /**
-     * System Admin email address
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | System Admin email address
+    |--------------------------------------------------------------------------
+    |
+    | This is the system admin email address.
+    | It will be used sending email
+    |
+    */
     'SystemAdmin' => env('SYSTEM_ADMIN_EMAIL', 'it.help@okcc.ca'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Member List Landing page item list
+    |--------------------------------------------------------------------------
+    |
+    | This is the array of code.  It will be displayed in the memberList landing page
+    | The array is parent-child structure.
+    |
+    */
+    'MemberList_Bookmark' => '[{"title":"2","children":["20001","20002", "20003", "20004", "20005"]}, 
+                              {"title":"5","children":["50001","50002", "50003", "50004", 
+                              "50005", "50006", "50007", "50008", "50009", "50010"]}]',
+                                  
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration used in Admin
+    |--------------------------------------------------------------------------
+    */
+    'admin' => [
+        'cellCategoryId'            => '10', // CELL category id
+        'deptCategoryId'            => '5', // DEPARTMENT category id
+        'cellManagerPositionId'     => '120008', // cell manager position id
+        'cellMemberPositionId'      => '120012', // cell member position id
+        'deptManagerPositionId'     => '120003', // DEPARTMENT manager position id
+        'deptMemberPositionId'      => '120012', // DEPARTMENT member position id
+        'logLogIn'                  => '110001', // INSERT log id
+        'logLogOut'                 => '110002', // INSERT log id
+        'logInsert'                 => '110003', // INSERT log id
+        'logUpdate'                 => '110004', // INSERT log id
+        'logDelete'                 => '110005', // INSERT log id
+        'deletedMember'             => '19999', // Deleted Member
+        'memberStatus'              => '10001', // Member Status is 'Member'
+        'laymanStatus'              => '29999', // Duty is 'Layman'
+        'unbaptizedStatus'          => '49999', // Level is 'Unbaptized'
+    ],
+    
 ];

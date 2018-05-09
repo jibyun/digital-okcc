@@ -4,10 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Exception;
+
 use App\Role;
 use App\Privilege_Role_Map;
+use App\Http\Services\Log\SystemLog;
 
 class Privilege_Role_MapsController extends Controller {
+    private $TABLE_NAME = "PRIVILEGE_ROLE_MAPS";
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -30,13 +39,13 @@ class Privilege_Role_MapsController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $result = Privilege_Role_Map::create($request->all());
-        return response()
-            ->json([
-                'message' => 'The item was successfully created.',
-                'result' => $result,
-                'status' => 200
-            ], 200);
+        try {
+            $result = Privilege_Role_Map::create($request->all());
+            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+            return response()->json([ 'result' => $result ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+        }
     }
 
     /**
@@ -45,18 +54,10 @@ class Privilege_Role_MapsController extends Controller {
     public function destroy($id) {
         try {
             Privilege_Role_Map::find($id)->delete();
-            return response()
-                ->json([
-                    'message' => 'The item was successfully deleted.',
-                    'status' => 200
-                ], 200);
-        } catch (\Exception $e) {
-            return response()
-                ->json([
-                    'errors' => $e->getMessage(),
-                    'message' => 'Failed',
-                    'status' => 422
-                ], 200);
+            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
         }
     }
 
