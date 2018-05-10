@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Rest\MemberList;
 
 use App\Http\Controllers\Rest\BaseController;
+use App\Http\Services\MemberList\MemberHistoryService;
 use Illuminate\Http\Request;
 
 
 class MemberHistoryController extends BaseController
 {
+    private $memberHistoryService;
+
+    public function __construct() {
+        $this->memberHistoryService = new MemberHistoryService();
+    }
+
     /**
      * Display a listing of the member history.
      *
@@ -37,7 +44,7 @@ class MemberHistoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $result->members = $this->memberHistoryService->createHistory($request);
     }
 
     /**

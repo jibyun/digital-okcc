@@ -32,9 +32,9 @@ class MemberHistoryService
     /**
      * Create a new History
      */
-    public function createHistory($memberId) {
-        $memberHistory = Member_History::where('member_id', $memberId)->get();
-        return $memberHistory;
+    public function createHistory($request) {
+        LOG::debug($request);
+        Member_History::create($request->all());
     }
 
     /**

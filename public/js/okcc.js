@@ -60,7 +60,7 @@ function restApiCall(url, method, param, successFunc, failureFunc){
         type: method,
         // At this moment, we set "json" as default
         datatype: "json",
-        param: param,
+        data: param,
         success: successFunc,
         fail: failureFunc
     });

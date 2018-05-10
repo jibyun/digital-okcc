@@ -1,6 +1,8 @@
 var memberUrl='okcc/member/getMember';
 var codesURL = 'okcc/member/getCategory';
 var memberEditUrl='okcc/member/edit';
+// Member History URL
+var memberHistoryUrl = 'okcc/memberList/memberHistory';
 var saveIndex; // Row index of the table
 var saveId; // Primary key of the table
 var current_member;
@@ -8,6 +10,8 @@ var current_member;
 $( function() {
     // Create member history button click event handler
     //$('#btnCreateHistory').on('click', createHistoryBtnClickHandler);
+    // Save member history button click event handler
+    $('#btnMemberHistorySave').on('click', saveHistoryBtnClickHandler);
 
     $( "#tabs" ).tabs();
 
@@ -40,6 +44,9 @@ $( function() {
     $('#dob').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#baptism_at').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#register_at').datetimepicker({ format: 'YYYY-MM-DD' });
+
+    $('#history_started_at').datetimepicker({ format: 'YYYY-MM-DD' });
+    $('#history_finished_at').datetimepicker({ format: 'YYYY-MM-DD' });
 
 });
   
@@ -251,5 +258,33 @@ function fillData(parentId,rec){
 
 }
 
+/**
+ * Save Member History button handler.
+ * It will handle both create/update
+ * 
+ */
+function saveHistoryBtnClickHandler(e) {
+    e.preventDefault();
+    // TODO:validation check
 
+    var method = 'POST';
+    // Check Create or Update
+    var history_id = $('#history_id').val();
+    if (history_id.trim().length != 0) {
+        method = "PUT";
+    }
+
+    var paramData = {
+        //member_id: $('#history_memberId').val(),
+        member_id: 18,
+        started_at: $('#history_started_at').val(),
+        finished_at: $('#history_finished_at').val(),
+        title: $('#history_title').val(),
+        memo: $('#history_memo').val(),
+        updated_by: 1
+    };
+
+    restApiCall(memberHistoryUrl, method, paramData, null, null);
+
+}
 
