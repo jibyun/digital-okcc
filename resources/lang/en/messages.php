@@ -107,6 +107,7 @@ return [
         'header_menu_member'    => 'Members',
         'header_menu_finance'   => 'Finances',
         'header_menu_inventory' => 'Inventories',
+        'header_menu_test'      => 'Tests',
         'side_users'            => 'Users',
         'side_pri_role'         => 'Privilege & Role',
     ],

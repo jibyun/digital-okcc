@@ -29,6 +29,7 @@ Route::get('admin/users', 'Admin\AdminPagesController@users')->name('admin.users
 Route::get('admin/members', 'Admin\AdminPagesController@members')->name('admin.members'); // Members landing page
 Route::get('admin/finances', 'Admin\AdminPagesController@finances')->name('admin.finances'); // Finances landing page
 Route::get('admin/inventories', 'Admin\AdminPagesController@inventories')->name('admin.inventories'); // Inventories landing page
+Route::get('admin/tests', 'Admin\AdminPagesController@tests')->name('admin.tests'); // Inventories landing page
 Route::get('admin/getMenu', 'Admin\AdminPagesController@getMenu')->name('admin.getmenu'); 
 
 /*
@@ -81,6 +82,9 @@ Route::get('admin/members/getMembersByDepartmentId', 'Admin\MemDeptMapsControlle
 Route::get('admin/members/getMembersNotAssignedCell', 'Admin\MemDeptMapsController@getMembersNotAssignedCell')->name('admin.member-dept-trees.getmembers-notassigned');
 Route::get('admin/members/getMembersNotAssignedDept', 'Admin\MemDeptMapsController@getMembersNotAssignedDept')->name('admin.member-dept-trees.getmembers-notbelongin_dept');
 Route::resource('admin/members/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
+// Tests
+Route::get('admin/tests/toolbarTest', 'Admin\AdminPagesController@toolbarTest')->name('admin.tests.toolbar'); 
+
 // Image Upload
 Route::post('admin/members/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
 // Cell, Department Organizer

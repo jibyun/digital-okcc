@@ -27,6 +27,7 @@
             <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}" name="members"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
             <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}" name="finances"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
             <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}" name="inventories"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
+            <li class="nav-item rounded px-2 {{ menu('tests') ? 'active' : '' }}" name="tests"><a class="nav-link" href="{{ route('admin.tests') }}">{{ __('messages.adm_layout.header_menu_test') }}</a></li>
         </ul>
         <ul class="navbar-nav ml-auto">
             @guest

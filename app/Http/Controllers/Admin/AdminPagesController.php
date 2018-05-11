@@ -19,6 +19,7 @@ class AdminPagesController extends Controller {
     public function members() { return view('admin.members'); }
     public function finances() { return view('admin.finances'); }
     public function inventories() { return view('admin.inventories'); }
+    public function tests() { return view('admin.tests'); }
 
     public function categoryStart() { return view('admin.members.category'); }
     public function codeStart() { return view('admin.members.code'); }
@@ -33,6 +34,8 @@ class AdminPagesController extends Controller {
     public function logView() { return view('admin.users.logview'); }
     public function cellOrginizer() { return view('admin.members.cell'); }
     public function departmentOrginizer() { return view('admin.members.department'); }
+
+    public function toolbarTest() { return view('admin.tests.toolbar'); }
 
     public function photoCropPost(Request $request) {
         $data = $request->image;
@@ -53,6 +56,7 @@ class AdminPagesController extends Controller {
             case "members":     $menu = $this->getMembersMenu();        break;
             case "finances":    $menu = $this->getFinancesMenu();       break;
             case "inventories": $menu = $this->getInventoriesMenu();    break;
+            case "tests":       $menu = $this->getTestsMenu();          break;
             default:            break;
         }
         $result = array( "menu" => json_decode( json_encode($menu), true ) );
@@ -186,6 +190,7 @@ class AdminPagesController extends Controller {
             'text' => trans('messages.adm_layout.header_menu_finance'),
             'route' => null,
             'isOpened' => false,
+            'sub_menu' => null,
         ]);
     }
 
@@ -195,7 +200,25 @@ class AdminPagesController extends Controller {
             'text' => trans('messages.adm_layout.header_menu_inventory'),
             'route' => null,
             'isOpened' => false,
+            'sub_menu' => null,
         ]);
     }
 
+    private function getTestsMenu() {
+        return array([
+            'icon' => 'fa-crosshairs',
+            'text' => trans('messages.adm_layout.header_menu_test'),
+            'route' => null,
+            'isOpened' => true,
+            'sub_menu' => array(
+                [
+                    'icon' => 'fa-angle-right',
+                    'text' =>  'Toolbar Test',
+                    'route' => route('admin.tests.toolbar'),
+                    'isOpened' => false,
+                    'sub_menu' => null,
+                ],
+            ),
+        ]);
+    }
 }
