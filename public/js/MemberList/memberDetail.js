@@ -9,7 +9,7 @@ var current_member;
 
 $( function() {
     // Create member history button click event handler
-    //$('#btnCreateHistory').on('click', createHistoryBtnClickHandler);
+    $('#btnCreateHistory').on('click', createHistoryBtnClickHandler);
     // Save member history button click event handler
     $('#btnMemberHistorySave').on('click', saveHistoryBtnClickHandler);
 
@@ -284,7 +284,15 @@ function saveHistoryBtnClickHandler(e) {
         updated_by: 1
     };
 
-    restApiCall(memberHistoryUrl, method, paramData, null, null);
+    restApiCall(memberHistoryUrl, method, paramData, memberHistorySuccessHandler, null);
+}
 
+function memberHistorySuccessHandler(response) {
+    $('#memberHistoryDialog').modal('hide');
+    toastr.success( response.data );
+    // form reset
+}
+
+function createHistoryBtnClickHandler(e) {
 }
 

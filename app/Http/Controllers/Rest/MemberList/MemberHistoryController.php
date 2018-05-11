@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rest\MemberList;
 use App\Http\Controllers\Rest\BaseController;
 use App\Http\Services\MemberList\MemberHistoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class MemberHistoryController extends BaseController
@@ -44,7 +45,16 @@ class MemberHistoryController extends BaseController
      */
     public function store(Request $request)
     {
-        $result->members = $this->memberHistoryService->createHistory($request);
+        //$result = (object)array();
+        //$result->members = $this->memberHistoryService->createHistory($request);
+        // Check validation
+        $result = $this->memberHistoryService->createHistory($request);
+        if ($result == 0) {
+            //LOG::debug("This is message from : " . $result->members);
+            return $this->sendResponse("SUCCESS", "Member history created", 200);
+        } else {
+            return $this->sendError("ERROR", "Error creating member history", 500);
+        }
     }
 
     /**

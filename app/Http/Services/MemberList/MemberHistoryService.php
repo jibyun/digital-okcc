@@ -34,7 +34,13 @@ class MemberHistoryService
      */
     public function createHistory($request) {
         LOG::debug($request);
-        Member_History::create($request->all());
+        try {
+            Member_History::create($request->all());
+            return 0;
+        } catch (\Exception $e) {
+            LOG::error($e->getMessage());
+            return -1;
+        }
     }
 
     /**

@@ -45,6 +45,12 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
+// This is toastr options.  The positionClass doesn't work.
+toastr.options.progressBar = false;
+toastr.options.timeOut = 3000; // How long the toast will display without user interaction
+toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
+
+
 /**
  * Call Restful API
  * @param {*} url  url 
@@ -53,7 +59,10 @@ function topFunction() {
  * @param {*} successFunc success function
  * @param {*} failureFunc failure function
  */
-function restApiCall(url, method, param, successFunc, failureFunc){
+function restApiCall(url, method, param, successFunc, failureFunc) {
+    if (failureFunc == null) {
+        failureFunc = restCallFailureHandler;
+    }
     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
     $.ajax({
         url: url,
@@ -62,6 +71,28 @@ function restApiCall(url, method, param, successFunc, failureFunc){
         datatype: "json",
         data: param,
         success: successFunc,
-        fail: failureFunc
+        error: failureFunc
     });
+}
+
+/**
+ * 
+ * @param {*} response 
+ * @param {*} status 
+ * @param {*} err 
+ */
+function restCallFailureHandler(response, status, err) {
+    // TOOD: Message handling.
+    switch (response.status) {
+        case 404:
+            toastr.error( response.responseJSON.data, 'Not Found' );
+            break;
+        case 403:
+            break;
+        case 400:
+            break;
+        default:
+            toastr.error( response.responseJSON.data, 'Internal Error' );
+            break;
+    }
 }
