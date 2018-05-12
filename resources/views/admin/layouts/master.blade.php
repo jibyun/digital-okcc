@@ -46,19 +46,96 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         {{-- for additional scripts --}}
         @yield('scripts')
+
         <script>
             // Session timeout
             $.idleTimer( '{{ config('session.lifetime') }}' * 60 * 1000 );
             $( document ).bind( "idle.idleTimer", function(event, elem, obj){
                 window.location.href = '{{ url('/login') }}';
-            });  
+            }); 
+
             // Get roles for current user
             @auth
-                var rols = "{{ Auth::user()->roles() }}";
-                var USER_ROLES = JSON.parse(rols.replace(/&quot;/g, '"'));
+                var roles = "{{ Auth::user()->roles() }}";
+                var USER_ROLES = JSON.parse(roles.replace(/&quot;/g, '"'));
             @else
                 var USER_ROLES = '';
             @endauth
+
+            // Check if URL includes menu string
+            function menu( $menuStr = '/' ) {
+                return window.location.pathname.includes( $menuStr );
+            }
+
+            // Callback: create side menu
+            var getSideMenuItem = function ( itemData ) {
+                var item = $("<li>").append(
+                    $("<a>", {
+                        'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                        'html': '<i class="fa fa-fw ' + itemData.icon + ' mr-1"></i>' + itemData.text,
+                        'data-toggle': (itemData.sub_menu) ? 'collapse' : '',
+                    })
+                );
+                if ( itemData.sub_menu ) {
+                    var subList = $("<ul>").attr('id', itemData.text).attr('aria-expanded', false).addClass('list-unstyled collapse');
+                    itemData.isOpened ? subList.addClass('show') : '';
+                    $.each( itemData.sub_menu, function ( index, submenu ) {
+                        subList.append( getSideMenuItem( submenu ) );
+                    });
+                    item.append(subList);
+                } else {
+                    if (itemData.route) {
+                        urlRoute = itemData.route.replace(/^https?:\/\//,'');
+                        urlPage = location.href.replace(/^https?:\/\//,'');
+                        if (urlRoute == urlPage) {
+                            item.addClass('active');
+                        }
+                    }
+                    if(!USER_ROLES.includes(itemData.roles)) {
+                        item.hide();
+                    }
+                }
+                return item;
+            };
+
+            // Callback: create top menu
+            var getTopMenuItem = function ( key, itemData ) {
+                if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes(itemData.roles) === true) {
+                    const item = $("<li class='nav-item rounded px-2'>").append(
+                        $("<a>", {
+                            'class': 'nav-link',
+                            'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                            'html': itemData.text,
+                        })
+                    );
+                    item.attr('name', key);
+                    if ( menu(key) ) { 
+                        item.addClass( 'active' ); 
+                        // Create Side menu
+                        const $sidemenu = $("#sidemenu");
+                        $sidemenu.append( getSideMenuItem( itemData ) ); // create TOP menu of header
+                    }
+                    return item;
+                } else {
+                    return;
+                }
+            };
+
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" })
+            .done ( function(data, textStatus, jqXHR) { 
+                const $top = $("#topMenu");
+                $.each( data.menu, function ( index, top ) {
+                    $top.append( getTopMenuItem( top.key, top.data[0] ) ); // create TOP menu of header
+                });
+                // toggle sidebar when button clicked
+                $('.sidebar-toggle').on('click', function () {
+                    $('.sidebar').toggleClass('toggled');
+                });
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            });
         </script>
     </body>
 </html>
