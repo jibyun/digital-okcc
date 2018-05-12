@@ -31,11 +31,11 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 20009, 'code_category_id' => 2, 'order' => 9, 'txt' => 'Active Kwonsa', 'kor_txt' => '시무권사' ]);
         DB::table('codes')->insert([ 'id' => 20010, 'code_category_id' => 2, 'order' => 10, 'txt' => 'Retired Kwonsa', 'kor_txt' => '은퇴권사' ]);
         DB::table('codes')->insert([ 'id' => 20011, 'code_category_id' => 2, 'order' => 11, 'txt' => 'Cooperative Kwonsa', 'kor_txt' => '협동권사' ]);
-        DB::table('codes')->insert([ 'id' => 20012, 'code_category_id' => 2, 'order' => 12, 'txt' => 'Deacon & Deaconess', 'kor_txt' => '집사' ]);
-        DB::table('codes')->insert([ 'id' => 20013, 'code_category_id' => 2, 'order' => 13, 'txt' => 'No Officer', 'kor_txt' => '직분없음' ]);
+        DB::table('codes')->insert([ 'id' => 20012, 'code_category_id' => 2, 'order' => 12, 'txt' => 'Deacon', 'kor_txt' => '집사' ]);
+        DB::table('codes')->insert([ 'id' => 20013, 'code_category_id' => 2, 'order' => 13, 'txt' => 'None', 'kor_txt' => '직분없음' ]);
 
         // Family Relations
-        DB::table('codes')->insert([ 'id' => 30001, 'code_category_id' => 3, 'order' => 1,  'txt' => 'Householder', 'kor_txt' => '본인' ]);
+        DB::table('codes')->insert([ 'id' => 30001, 'code_category_id' => 3, 'order' => 1,  'txt' => 'Self', 'kor_txt' => '본인' ]);
         DB::table('codes')->insert([ 'id' => 30002, 'code_category_id' => 3, 'order' => 2,  'txt' => 'Spouse', 'kor_txt' => '배우자' ]);
         DB::table('codes')->insert([ 'id' => 30003, 'code_category_id' => 3, 'order' => 3,  'txt' => 'Son', 'kor_txt' => '아들' ]);
         DB::table('codes')->insert([ 'id' => 30004, 'code_category_id' => 3, 'order' => 4,  'txt' => 'Daughter', 'kor_txt' => '딸' ]);
