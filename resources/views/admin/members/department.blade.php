@@ -10,14 +10,6 @@
         .pagination-info, .pagination-detail {
             display: none
         }
-        .btn-circle {
-            width: 50px;
-            height: 50px;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.33;
-            border-radius: 25px;
-        }
     </style>
 @endsection
 

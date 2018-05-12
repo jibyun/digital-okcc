@@ -284,4 +284,20 @@ return [
         'manager_input'         => 'Team Manager',
         'nomanager_input'       => 'Team Member',
     ],
+
+    'adm_message' => [
+        'success_title'         => 'SUCCESS!',
+        'fail_title'            => 'FAILED!',
+        'warn_title'            => 'WARNING!',
+        'request'               => 'Request Status: ',
+        'exception'             => 'Exception Status: ',
+        'status_text'           => ' Status Text: ',
+        'save_error'            => 'An unknown error occurred while saving.',
+        'save_success'          => 'The item was successfully saved.',
+        'arrange_error'         => 'An unknown error occurred while re-arranging display order.',
+        'arrange_success'       => 'Display order was successfully re-arranged.',
+        'nomore_add'            => 'There are no more data to add.',
+        'nomore_delete'         => 'There are no more data to delete.',
+        'select_member'         => 'Select a Member first!',
+    ],
 ];

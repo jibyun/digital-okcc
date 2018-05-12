@@ -243,10 +243,11 @@ return [
     |--------------------------------------------------------------------------
     */
     'admin' => [
-        'cellCategoryId'            => '10', // CELL category id
+        'cellCategoryId'            => '9', // 구역 category id
+        'cellStartId'               => '90101', // 구역 start id. cf. 교구 id: 90001 - 90100
+        'cellManagerPositionId'     => '110010', // cell manager position id
+        'cellMemberPositionId'      => '110011', // cell member position id
         'deptCategoryId'            => '5', // DEPARTMENT category id
-        'cellManagerPositionId'     => '120007', // cell manager position id
-        'cellMemberPositionId'      => '120008', // cell member position id
         'deptManagerPositionId'     => '120001', // DEPARTMENT manager position id
         'deptSecretaryPositionId'   => '120002', // DEPARTMENT Secretary position id
         'deptTreasurerPositionId'   => '120003', // DEPARTMENT Treasurer position id

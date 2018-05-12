@@ -32,7 +32,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Family Relations',
             'kor_txt' => '가족관계',
             'memo' => 'A code category for identifying the relationship with the head of household.',
-            'fieldName' => 'FAMILY_RELATION',
+            'fieldName' => 'family_id',
             'order' => 3
         ]);
         // Baptism Status: 세례, 유아세례, 입교, 영세
@@ -40,7 +40,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Baptism Status',
             'kor_txt' => '신급',
             'memo' => 'A code category for identifying the baptism status of OKCC members.',
-            'fieldName' => 'BAPTISM_STATUS',
+            'fieldName' => 'baptism_id',
             'order' => 4
         ]);
         // Department: 당회, 권사회, 집사회, 교육부, 성가대, 단기선교회, 남선교회, 제1여선교회, 제2여선교회 등
@@ -56,7 +56,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'City',
             'kor_txt' => '시',
             'memo' => 'A code category for identifying Cities of Canada.',
-            'fieldName' => 'CITY',
+            'fieldName' => 'city_id',
             'order' => 6
         ]);
         // Province code
@@ -64,7 +64,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Province',
             'kor_txt' => '주',
             'memo' => 'A code category for identifying Provinces of Canada.',
-            'fieldName' => 'PROVINCE',
+            'fieldName' => 'province_id',
             'order' => 7
         ]);
         // Country code
@@ -72,12 +72,12 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Country',
             'kor_txt' => '국가',
             'memo' => 'A code category for identifying Country.',
-            'fieldName' => 'COUNTRY',
+            'fieldName' => 'country_id',
             'order' => 8
         ]);
         // 교구
         DB::table('code_categories')->insert([ 
-            'txt' => 'KyoGu',
+            'txt' => 'Gyogoo',
             'kor_txt' => '교구',
             'memo' => 'A code category for identifying Kyogu.',
             'fieldName' => 'department_id',
@@ -88,7 +88,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Log',
             'kor_txt' => '로그',
             'memo' => 'A code category for using at system log view.',
-            'fieldName' => 'LOG',
+            'fieldName' => 'log_id',
             'order' => 10
         ]);
         // Position

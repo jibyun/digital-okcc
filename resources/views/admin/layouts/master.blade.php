@@ -38,6 +38,9 @@
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/admin.js') }}" defer></script>
+        {{-- Using Laravel localization with JavaScript and VueJS https://medium.com/@serhii.matrunchyk/using-laravel-localization-with-javascript-and-vuejs-23064d0c210e
+             I just need to pull this route in our HTML to make this object globally visible --}}
+        <script src="/js/lang.js"></script>
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
         {{-- jQuery idle timer --}}
