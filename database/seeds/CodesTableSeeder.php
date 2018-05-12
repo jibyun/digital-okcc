@@ -88,20 +88,17 @@ class CodesTableSeeder extends Seeder
         //----- 집사회 친교위원회 부서 (Ref. 2018 예산서)
         DB::table('codes')->insert([ 'id' => 50025, 'code_category_id' => 5, 'order' => 25, 'txt' => 'Fellowship', 'kor_txt' => '친교부' ]);
         DB::table('codes')->insert([ 'id' => 50026, 'code_category_id' => 5, 'order' => 26, 'txt' => 'New Members', 'kor_txt' => '새교우부' ]);
-        // 교구와 구역 코드를 위한 최상위 분류 코드
-        // DB::table('codes')->insert([ 'id' => 50027, 'code_category_id' => 5, 'order' => 27, 'txt' => 'Gyogoo', 'kor_txt' => '교구' ]);
-        // DB::table('codes')->insert([ 'id' => 50028, 'code_category_id' => 5, 'order' => 28, 'txt' => 'Gooyeok', 'kor_txt' => '구역' ]);
         // 선교회(분류): 남선교회, 젊은부부선교회, 제1여선교회, 제2여선교회
-        DB::table('codes')->insert([ 'id' => 50029, 'code_category_id' => 5, 'order' => 29, 'txt' => 'Mission Group', 'kor_txt' => '선교회' ]);
-        DB::table('codes')->insert([ 'id' => 50030, 'code_category_id' => 5, 'order' => 30, 'txt' => "Men's Mission Group", 'kor_txt' => '남선교회' ]);
-        DB::table('codes')->insert([ 'id' => 50031, 'code_category_id' => 5, 'order' => 31, 'txt' => "Young Family Group", 'kor_txt' => '젊은부부선교회' ]);
-        DB::table('codes')->insert([ 'id' => 50032, 'code_category_id' => 5, 'order' => 32, 'txt' => "First Women's Mission Group", 'kor_txt' => '제1여선교회' ]);
-        DB::table('codes')->insert([ 'id' => 50033, 'code_category_id' => 5, 'order' => 33, 'txt' => "Second Women's Mission Group", 'kor_txt' => '제2여선교회' ]);
+        DB::table('codes')->insert([ 'id' => 50027, 'code_category_id' => 5, 'order' => 27, 'txt' => 'Mission Group', 'kor_txt' => '선교회' ]);
+        DB::table('codes')->insert([ 'id' => 50028, 'code_category_id' => 5, 'order' => 28, 'txt' => "Men's Mission Group", 'kor_txt' => '남선교회' ]);
+        DB::table('codes')->insert([ 'id' => 50029, 'code_category_id' => 5, 'order' => 29, 'txt' => "Young Family Group", 'kor_txt' => '젊은부부선교회' ]);
+        DB::table('codes')->insert([ 'id' => 50030, 'code_category_id' => 5, 'order' => 30, 'txt' => "First Women's Mission Group", 'kor_txt' => '제1여선교회' ]);
+        DB::table('codes')->insert([ 'id' => 50031, 'code_category_id' => 5, 'order' => 31, 'txt' => "Second Women's Mission Group", 'kor_txt' => '제2여선교회' ]);
         // 특별위원회: Parent 코드를 갖지 않고 자유롭게 확장하여 쓸 수 있도록 구성
-        DB::table('codes')->insert([ 'id' => 50034, 'code_category_id' => 5, 'order' => 34, 'txt' => 'Church Building Committee', 'kor_txt' => '이전위원회' ]);
-        DB::table('codes')->insert([ 'id' => 50035, 'code_category_id' => 5, 'order' => 35, 'txt' => 'Associate Pastor Searching Committee', 'kor_txt' => '부목사청빙위원회' ]);
-        DB::table('codes')->insert([ 'id' => 50036, 'code_category_id' => 5, 'order' => 36, 'txt' => 'Church Constitute Committee', 'kor_txt' => '헌장위원회' ]);
-        DB::table('codes')->insert([ 'id' => 50037, 'code_category_id' => 5, 'order' => 37, 'txt' => 'Task Force for Refugee', 'kor_txt' => '난민 TF' ]);
+        DB::table('codes')->insert([ 'id' => 50032, 'code_category_id' => 5, 'order' => 32, 'txt' => 'Church Building Committee', 'kor_txt' => '이전위원회' ]);
+        DB::table('codes')->insert([ 'id' => 50033, 'code_category_id' => 5, 'order' => 33, 'txt' => 'Associate Pastor Searching Committee', 'kor_txt' => '부목사청빙위원회' ]);
+        DB::table('codes')->insert([ 'id' => 50034, 'code_category_id' => 5, 'order' => 34, 'txt' => 'Church Constitute Committee', 'kor_txt' => '헌장위원회' ]);
+        DB::table('codes')->insert([ 'id' => 50035, 'code_category_id' => 5, 'order' => 35, 'txt' => 'Task Force for Refugee', 'kor_txt' => '난민 TF' ]);
 
         // City 
         DB::table('codes')->insert([ 'id' => 60001, 'code_category_id' => 6, 'order' => 1,   'txt' => 'Airdrie', 'kor_txt' => 'AB' ]);
@@ -335,64 +332,63 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 90004, 'code_category_id' => 9, 'order' => 4, 'txt' => '4 Gyogoo', 'kor_txt' => '4교구' ]);
         DB::table('codes')->insert([ 'id' => 90005, 'code_category_id' => 9, 'order' => 5, 'txt' => '5 Gyogoo', 'kor_txt' => '5교구' ]);
         DB::table('codes')->insert([ 'id' => 90006, 'code_category_id' => 9, 'order' => 6, 'txt' => '6 Gyogoo', 'kor_txt' => '6교구' ]);
-
         // 구역
-        DB::table('codes')->insert([ 'id' => 100001, 'code_category_id' => 10, 'order' => 1,  'txt' => '1 Gooyeok', 'kor_txt' => '1구역' ]);
-        DB::table('codes')->insert([ 'id' => 100002, 'code_category_id' => 10, 'order' => 2,  'txt' => '2 Gooyeok', 'kor_txt' => '2구역' ]);
-        DB::table('codes')->insert([ 'id' => 100003, 'code_category_id' => 10, 'order' => 3,  'txt' => '3 Gooyeok', 'kor_txt' => '3구역' ]);
-        DB::table('codes')->insert([ 'id' => 100004, 'code_category_id' => 10, 'order' => 4,  'txt' => '4 Gooyeok', 'kor_txt' => '4구역' ]);
-        DB::table('codes')->insert([ 'id' => 100005, 'code_category_id' => 10, 'order' => 5,  'txt' => '5 Gooyeok', 'kor_txt' => '5구역' ]);
-        DB::table('codes')->insert([ 'id' => 100006, 'code_category_id' => 10, 'order' => 6,  'txt' => '6 Gooyeok', 'kor_txt' => '6구역' ]);
-        DB::table('codes')->insert([ 'id' => 100007, 'code_category_id' => 10, 'order' => 7,  'txt' => '7 Gooyeok', 'kor_txt' => '7구역' ]);
-        DB::table('codes')->insert([ 'id' => 100008, 'code_category_id' => 10, 'order' => 8,  'txt' => '8 Gooyeok', 'kor_txt' => '8구역' ]);
-        DB::table('codes')->insert([ 'id' => 100009, 'code_category_id' => 10, 'order' => 9,  'txt' => '9 Gooyeok', 'kor_txt' => '9구역' ]);
-        DB::table('codes')->insert([ 'id' => 100010, 'code_category_id' => 10, 'order' => 10, 'txt' => '10 Gooyeok', 'kor_txt' => '10구역' ]);
-        DB::table('codes')->insert([ 'id' => 100011, 'code_category_id' => 10, 'order' => 11, 'txt' => '11 Gooyeok', 'kor_txt' => '11구역' ]);
-        DB::table('codes')->insert([ 'id' => 100012, 'code_category_id' => 10, 'order' => 12, 'txt' => '12 Gooyeok', 'kor_txt' => '12구역' ]);
-        DB::table('codes')->insert([ 'id' => 100013, 'code_category_id' => 10, 'order' => 13, 'txt' => '13 Gooyeok', 'kor_txt' => '13구역' ]);
-        DB::table('codes')->insert([ 'id' => 100014, 'code_category_id' => 10, 'order' => 14, 'txt' => '14 Gooyeok', 'kor_txt' => '14구역' ]);
-        DB::table('codes')->insert([ 'id' => 100015, 'code_category_id' => 10, 'order' => 15, 'txt' => '15 Gooyeok', 'kor_txt' => '15구역' ]);
-        DB::table('codes')->insert([ 'id' => 100016, 'code_category_id' => 10, 'order' => 16, 'txt' => '16 Gooyeok', 'kor_txt' => '16구역' ]);
-        DB::table('codes')->insert([ 'id' => 100017, 'code_category_id' => 10, 'order' => 17, 'txt' => '17 Gooyeok', 'kor_txt' => '17구역' ]);
-        DB::table('codes')->insert([ 'id' => 100018, 'code_category_id' => 10, 'order' => 18, 'txt' => '18 Gooyeok', 'kor_txt' => '18구역' ]);
-        DB::table('codes')->insert([ 'id' => 100019, 'code_category_id' => 10, 'order' => 19, 'txt' => '19 Gooyeok', 'kor_txt' => '19구역' ]);
-        DB::table('codes')->insert([ 'id' => 100020, 'code_category_id' => 10, 'order' => 20, 'txt' => '20 Gooyeok', 'kor_txt' => '20구역' ]);
-        DB::table('codes')->insert([ 'id' => 100021, 'code_category_id' => 10, 'order' => 21, 'txt' => '21 Gooyeok', 'kor_txt' => '21구역' ]);
-        DB::table('codes')->insert([ 'id' => 100022, 'code_category_id' => 10, 'order' => 22, 'txt' => '22 Gooyeok', 'kor_txt' => '22구역' ]);
-        DB::table('codes')->insert([ 'id' => 100023, 'code_category_id' => 10, 'order' => 23, 'txt' => '23 Gooyeok', 'kor_txt' => '23구역' ]);
-        DB::table('codes')->insert([ 'id' => 100024, 'code_category_id' => 10, 'order' => 24, 'txt' => '24 Gooyeok', 'kor_txt' => '24구역' ]);
-        DB::table('codes')->insert([ 'id' => 100025, 'code_category_id' => 10, 'order' => 25, 'txt' => '25 Gooyeok', 'kor_txt' => '25구역' ]);
+        DB::table('codes')->insert([ 'id' => 90101, 'code_category_id' => 9, 'order' => 7,  'txt' => '1 Gooyeok', 'kor_txt' => '1구역' ]);
+        DB::table('codes')->insert([ 'id' => 90102, 'code_category_id' => 9, 'order' => 8,  'txt' => '2 Gooyeok', 'kor_txt' => '2구역' ]);
+        DB::table('codes')->insert([ 'id' => 90103, 'code_category_id' => 9, 'order' => 9,  'txt' => '3 Gooyeok', 'kor_txt' => '3구역' ]);
+        DB::table('codes')->insert([ 'id' => 90104, 'code_category_id' => 9, 'order' => 10,  'txt' => '4 Gooyeok', 'kor_txt' => '4구역' ]);
+        DB::table('codes')->insert([ 'id' => 90105, 'code_category_id' => 9, 'order' => 11,  'txt' => '5 Gooyeok', 'kor_txt' => '5구역' ]);
+        DB::table('codes')->insert([ 'id' => 90106, 'code_category_id' => 9, 'order' => 12,  'txt' => '6 Gooyeok', 'kor_txt' => '6구역' ]);
+        DB::table('codes')->insert([ 'id' => 90107, 'code_category_id' => 9, 'order' => 13,  'txt' => '7 Gooyeok', 'kor_txt' => '7구역' ]);
+        DB::table('codes')->insert([ 'id' => 90108, 'code_category_id' => 9, 'order' => 14,  'txt' => '8 Gooyeok', 'kor_txt' => '8구역' ]);
+        DB::table('codes')->insert([ 'id' => 90109, 'code_category_id' => 9, 'order' => 15,  'txt' => '9 Gooyeok', 'kor_txt' => '9구역' ]);
+        DB::table('codes')->insert([ 'id' => 90110, 'code_category_id' => 9, 'order' => 16, 'txt' => '10 Gooyeok', 'kor_txt' => '10구역' ]);
+        DB::table('codes')->insert([ 'id' => 90111, 'code_category_id' => 9, 'order' => 17, 'txt' => '11 Gooyeok', 'kor_txt' => '11구역' ]);
+        DB::table('codes')->insert([ 'id' => 90112, 'code_category_id' => 9, 'order' => 18, 'txt' => '12 Gooyeok', 'kor_txt' => '12구역' ]);
+        DB::table('codes')->insert([ 'id' => 90113, 'code_category_id' => 9, 'order' => 19, 'txt' => '13 Gooyeok', 'kor_txt' => '13구역' ]);
+        DB::table('codes')->insert([ 'id' => 90114, 'code_category_id' => 9, 'order' => 20, 'txt' => '14 Gooyeok', 'kor_txt' => '14구역' ]);
+        DB::table('codes')->insert([ 'id' => 90115, 'code_category_id' => 9, 'order' => 21, 'txt' => '15 Gooyeok', 'kor_txt' => '15구역' ]);
+        DB::table('codes')->insert([ 'id' => 90116, 'code_category_id' => 9, 'order' => 22, 'txt' => '16 Gooyeok', 'kor_txt' => '16구역' ]);
+        DB::table('codes')->insert([ 'id' => 90117, 'code_category_id' => 9, 'order' => 23, 'txt' => '17 Gooyeok', 'kor_txt' => '17구역' ]);
+        DB::table('codes')->insert([ 'id' => 90118, 'code_category_id' => 9, 'order' => 24, 'txt' => '18 Gooyeok', 'kor_txt' => '18구역' ]);
+        DB::table('codes')->insert([ 'id' => 90119, 'code_category_id' => 9, 'order' => 25, 'txt' => '19 Gooyeok', 'kor_txt' => '19구역' ]);
+        DB::table('codes')->insert([ 'id' => 90120, 'code_category_id' => 9, 'order' => 26, 'txt' => '20 Gooyeok', 'kor_txt' => '20구역' ]);
+        DB::table('codes')->insert([ 'id' => 90121, 'code_category_id' => 9, 'order' => 27, 'txt' => '21 Gooyeok', 'kor_txt' => '21구역' ]);
+        DB::table('codes')->insert([ 'id' => 90122, 'code_category_id' => 9, 'order' => 28, 'txt' => '22 Gooyeok', 'kor_txt' => '22구역' ]);
+        DB::table('codes')->insert([ 'id' => 90123, 'code_category_id' => 9, 'order' => 29, 'txt' => '23 Gooyeok', 'kor_txt' => '23구역' ]);
+        DB::table('codes')->insert([ 'id' => 90124, 'code_category_id' => 9, 'order' => 30, 'txt' => '24 Gooyeok', 'kor_txt' => '24구역' ]);
+        DB::table('codes')->insert([ 'id' => 90125, 'code_category_id' => 9, 'order' => 31, 'txt' => '25 Gooyeok', 'kor_txt' => '25구역' ]);
 
         // LOG
-        DB::table('codes')->insert([ 'id' => 110001, 'code_category_id' => 11, 'order' => 1, 'txt' => 'LOGIN', 'kor_txt' => '로그인' ]);
-        DB::table('codes')->insert([ 'id' => 110002, 'code_category_id' => 11, 'order' => 2, 'txt' => 'LOGOUT', 'kor_txt' => '로그아웃' ]);
-        DB::table('codes')->insert([ 'id' => 110003, 'code_category_id' => 11, 'order' => 3, 'txt' => 'INSERT', 'kor_txt' => '추가' ]);
-        DB::table('codes')->insert([ 'id' => 110004, 'code_category_id' => 11, 'order' => 4, 'txt' => 'UPDATE', 'kor_txt' => '수정' ]);
-        DB::table('codes')->insert([ 'id' => 110005, 'code_category_id' => 11, 'order' => 5, 'txt' => 'DELETE', 'kor_txt' => '삭제' ]);
+        DB::table('codes')->insert([ 'id' => 100001, 'code_category_id' => 10, 'order' => 1, 'txt' => 'LOGIN', 'kor_txt' => '로그인' ]);
+        DB::table('codes')->insert([ 'id' => 100002, 'code_category_id' => 10, 'order' => 2, 'txt' => 'LOGOUT', 'kor_txt' => '로그아웃' ]);
+        DB::table('codes')->insert([ 'id' => 100003, 'code_category_id' => 10, 'order' => 3, 'txt' => 'INSERT', 'kor_txt' => '추가' ]);
+        DB::table('codes')->insert([ 'id' => 100004, 'code_category_id' => 10, 'order' => 4, 'txt' => 'UPDATE', 'kor_txt' => '수정' ]);
+        DB::table('codes')->insert([ 'id' => 100005, 'code_category_id' => 10, 'order' => 5, 'txt' => 'DELETE', 'kor_txt' => '삭제' ]);
 
         // POSITION
         //--- 부서의 직책: 회장, 총무, 회계, 위원장, 부서장, 부서집사, 위원(집사는 아니지만 부서에서 봉사하는 성도를 칭함)
-        DB::table('codes')->insert([ 'id' => 120001, 'code_category_id' => 12, 'order' =>  1, 'txt' => 'Chairperson', 'kor_txt' => '회장' ]);
-        DB::table('codes')->insert([ 'id' => 120002, 'code_category_id' => 12, 'order' =>  2, 'txt' => 'Secretary', 'kor_txt' => '총무' ]);
-        DB::table('codes')->insert([ 'id' => 120003, 'code_category_id' => 12, 'order' =>  3, 'txt' => 'Treasurer', 'kor_txt' => '회계' ]);
-        DB::table('codes')->insert([ 'id' => 120004, 'code_category_id' => 12, 'order' =>  4, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
-        DB::table('codes')->insert([ 'id' => 120005, 'code_category_id' => 12, 'order' =>  5, 'txt' => 'Team Leader', 'kor_txt' => '부서장' ]);
-        DB::table('codes')->insert([ 'id' => 120006, 'code_category_id' => 12, 'order' =>  6, 'txt' => 'Team Member', 'kor_txt' => '부서집사' ]);
-        DB::table('codes')->insert([ 'id' => 120007, 'code_category_id' => 12, 'order' =>  7, 'txt' => 'Team Assistant', 'kor_txt' => '위원' ]);
+        DB::table('codes')->insert([ 'id' => 110001, 'code_category_id' => 11, 'order' =>  1, 'txt' => 'Chairperson', 'kor_txt' => '회장' ]);
+        DB::table('codes')->insert([ 'id' => 110002, 'code_category_id' => 11, 'order' =>  2, 'txt' => 'Secretary', 'kor_txt' => '총무' ]);
+        DB::table('codes')->insert([ 'id' => 110003, 'code_category_id' => 11, 'order' =>  3, 'txt' => 'Treasurer', 'kor_txt' => '회계' ]);
+        DB::table('codes')->insert([ 'id' => 110004, 'code_category_id' => 11, 'order' =>  4, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
+        DB::table('codes')->insert([ 'id' => 110005, 'code_category_id' => 11, 'order' =>  5, 'txt' => 'Team Leader', 'kor_txt' => '부서장' ]);
+        DB::table('codes')->insert([ 'id' => 110006, 'code_category_id' => 11, 'order' =>  6, 'txt' => 'Team Member', 'kor_txt' => '부서집사' ]);
+        DB::table('codes')->insert([ 'id' => 110007, 'code_category_id' => 11, 'order' =>  7, 'txt' => 'Team Assistant', 'kor_txt' => '위원' ]);
         //--- 교구, 구역 편성에 관련한 직책
-        DB::table('codes')->insert([ 'id' => 120008, 'code_category_id' => 12, 'order' =>  8, 'txt' => 'Gyogoo Leader', 'kor_txt' => '교구장' ]);
-        DB::table('codes')->insert([ 'id' => 120009, 'code_category_id' => 12, 'order' =>  9, 'txt' => 'Gyogoo Kwonsa', 'kor_txt' => '교구권사' ]);
-        DB::table('codes')->insert([ 'id' => 120010, 'code_category_id' => 12, 'order' => 10, 'txt' => 'Gooyeok Leader', 'kor_txt' => '구역장' ]);
-        DB::table('codes')->insert([ 'id' => 120011, 'code_category_id' => 12, 'order' => 11, 'txt' => 'Gooyeok Member', 'kor_txt' => '구역원' ]);
-        // 실제로 이하는 사용할 가능성이 매우 적어 보이는 직책임 (거의 0%)........
+        DB::table('codes')->insert([ 'id' => 110008, 'code_category_id' => 11, 'order' =>  8, 'txt' => 'Gyogoo Leader', 'kor_txt' => '교구장' ]);
+        DB::table('codes')->insert([ 'id' => 110009, 'code_category_id' => 11, 'order' =>  9, 'txt' => 'Gyogoo Kwonsa', 'kor_txt' => '교구권사' ]);
+        DB::table('codes')->insert([ 'id' => 110010, 'code_category_id' => 11, 'order' => 10, 'txt' => 'Gooyeok Leader', 'kor_txt' => '구역장' ]);
+        DB::table('codes')->insert([ 'id' => 110011, 'code_category_id' => 11, 'order' => 11, 'txt' => 'Gooyeok Member', 'kor_txt' => '구역원' ]);
+        // 실제로 이하는 사용할 가능성이 매우적어 보이는 직책임 (거의 0%)...
         //--- 성가대
-        DB::table('codes')->insert([ 'id' => 120012, 'code_category_id' => 12, 'order' => 12, 'txt' => 'Choir Leader', 'kor_txt' => '성가대장' ]);
-        DB::table('codes')->insert([ 'id' => 120013, 'code_category_id' => 12, 'order' => 13, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
-        DB::table('codes')->insert([ 'id' => 120014, 'code_category_id' => 12, 'order' => 14, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
-        DB::table('codes')->insert([ 'id' => 120015, 'code_category_id' => 12, 'order' => 15, 'txt' => 'Choir Member', 'kor_txt' => '성가대원' ]);
-        //--- 기타 봉사관련 직책: 특별위원회, 교육부서 등...
-        DB::table('codes')->insert([ 'id' => 120016, 'code_category_id' => 12, 'order' => 16, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
-        DB::table('codes')->insert([ 'id' => 120017, 'code_category_id' => 12, 'order' => 17, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
-        DB::table('codes')->insert([ 'id' => 120018, 'code_category_id' => 12, 'order' => 18, 'txt' => 'Committee Member', 'kor_txt' => '위원' ]);
+        DB::table('codes')->insert([ 'id' => 110012, 'code_category_id' => 11, 'order' => 12, 'txt' => 'Choir Leader', 'kor_txt' => '성가대장' ]);
+        DB::table('codes')->insert([ 'id' => 110013, 'code_category_id' => 11, 'order' => 13, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
+        DB::table('codes')->insert([ 'id' => 110014, 'code_category_id' => 11, 'order' => 14, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
+        DB::table('codes')->insert([ 'id' => 110015, 'code_category_id' => 11, 'order' => 15, 'txt' => 'Choir Member', 'kor_txt' => '성가대원' ]);
+        //--- 기타 봉사관련 직책: 특별위원회,교육부서 등...
+        DB::table('codes')->insert([ 'id' => 110016, 'code_category_id' => 11, 'order' => 16, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
+        DB::table('codes')->insert([ 'id' => 110017, 'code_category_id' => 11, 'order' => 17, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
+        DB::table('codes')->insert([ 'id' => 110018, 'code_category_id' => 11, 'order' => 18, 'txt' => 'Committee Member', 'kor_txt' => '위원' ]);
     }
 }

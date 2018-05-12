@@ -41,35 +41,35 @@ class DepartmentTreesTableSeeder extends Seeder
         DB::table('department_trees')->insert([ 'parent_id' => 50008, 'child_id' => 50026 ]);
 
         // 1 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 100001 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 100002 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 100003 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 100004 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 90101 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 90102 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 90103 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90001, 'child_id' => 90104 ]);
         // 2 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 100005 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 100006 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 100007 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 100008 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 90105 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 90106 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 90107 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90002, 'child_id' => 90108 ]);
         // 3 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 100009 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 100010 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 100011 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 100012 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 90109 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 90110 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 90111 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90003, 'child_id' => 90112 ]);
         // 4 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 100013 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 100014 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 100015 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 100016 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 100017 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 90113 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 90114 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 90115 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 90116 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90004, 'child_id' => 90117 ]);
         // 5 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 100018 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 100019 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 100020 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 100021 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 90118 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 90119 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 90120 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90005, 'child_id' => 90121 ]);
         // 6 교구
-        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 100022 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 100023 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 100024 ]);
-        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 100025 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 90122 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 90123 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 90124 ]);
+        DB::table('department_trees')->insert([ 'parent_id' => 90006, 'child_id' => 90125 ]);
     }
 }

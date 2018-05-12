@@ -83,21 +83,13 @@ class Code_CategoriesTableSeeder extends Seeder
             'fieldName' => 'department_id',
             'order' => 9
         ]);
-        // 구역
-        DB::table('code_categories')->insert([ 
-            'txt' => 'GuYeok',
-            'kor_txt' => '구역',
-            'memo' => 'A code category for identifying GuYeok.',
-            'fieldName' => 'department_id',
-            'order' => 10
-        ]);
         // LOG
         DB::table('code_categories')->insert([ 
             'txt' => 'Log',
             'kor_txt' => '로그',
             'memo' => 'A code category for using at system log view.',
             'fieldName' => 'LOG',
-            'order' => 11
+            'order' => 10
         ]);
         // Position
         DB::table('code_categories')->insert([ 
