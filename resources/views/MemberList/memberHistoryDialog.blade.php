@@ -56,7 +56,7 @@
                     {{-- Note --}}
                     <div class="form-group">
                         <label>{{ __('messages.memberdetail.history_memo') }}</label>
-                        <textarea id = "history_memo" rows="6" class="form-control" placeholder="{{ __('messages.memberdetail.history_memo') }}"></textarea>
+                        <textarea id="history_memo" rows="6" class="form-control" placeholder="{{ __('messages.memberdetail.history_memo') }}"></textarea>
                     </div>
 
                     {{-- Buttons --}}

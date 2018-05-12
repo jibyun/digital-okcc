@@ -164,8 +164,8 @@ Route::get('okcc/memberList/export', 'Rest\MemberList\ExportController@export')-
  * URL: /okcc/memberList/memberHistory: 
  * 
  */
-Route::get('okcc/memberList/memberHistory/{memberid}', 'Rest\MemberList\MemberHistoryController@index')->middleware('auth');
-Route::resource('okcc/memberList/memberHistory', 'Rest\MemberList\MemberHistoryController')->middleware('auth');
+Route::get('okcc/memberList/memberHistory/{memberid}', 'Rest\MemberList\MemberHistoryController@list')->middleware('auth');
+Route::resource('okcc/memberList/memberHistory', 'Rest\MemberList\MemberHistoryController')->middleware('auth')->only(['store', 'update', 'destroy']);
 
 /**
  * Method: GET

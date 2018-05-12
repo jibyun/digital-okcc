@@ -16,6 +16,7 @@ return [
     'common' => [
         'save' => 'Save',
         'cancel' => 'Cancel',
+        'confirmation' => 'Confirmation'
     ],
 
     // Message for registration
@@ -83,8 +84,8 @@ return [
         'menu_history' => 'History Information',
         'menu_visit' => 'Visit Information',
         // Member History
-        'history_createtitle' => 'Create Member History',
-        'history_updatetitle' => 'Update Member History',
+        'history_createtitle' => 'Create History',
+        'history_updatetitle' => 'Update History',
         'history_add' => 'Add',
         'history_delete' => 'Delete',
         'history_edit' => 'Edit',

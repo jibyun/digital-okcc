@@ -15,15 +15,15 @@ $(document).ready(function () {
     }
 
     // Hide/Show the Finance and Inventory menu
-    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes("FINANCE_ACCESS_ROLE") === true) {
+    if(hasRole("FINANCE_ACCESS_ROLE") === true) {
         $('#menu_finance').show();
     }
-    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes("INVENTORY_ACCESS_ROLE") === true) {
+    if(hasRole("INVENTORY_ACCESS_ROLE") === true) {
         $('#menu_inventory').show();
     }
 
     // Display the Admin page
-    if (USER_ROLES.includes("ADMIN_ACCESS_ROLE") === true) {
+    if (hasRole("ADMIN_ACCESS_ROLE") === true) {
         $('#userDropdownMenu').append($('<a href="admin" class="dropdown-item">' + 
                                         '<i class="fa fa-cog fa-lg mr-2"></i>' + i18n.messages.top_menu.admin + '</a>'));
     }
@@ -50,6 +50,13 @@ toastr.options.progressBar = false;
 toastr.options.timeOut = 3000; // How long the toast will display without user interaction
 toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
 
+function hasRole(roleName) {
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes(roleName) === true) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 /**
  * Call Restful API
@@ -95,4 +102,12 @@ function restCallFailureHandler(response, status, err) {
             toastr.error( response.responseJSON.data, 'Internal Error' );
             break;
     }
+}
+
+function showConfirmMessage(title, message, buttonTitle, handler) {
+    $('#confirmDialog_Title').text(title);
+    $('#confirmDialog_Message').text(message);
+    $('#confirmDialog_btn').text(buttonTitle);
+    $('#confirmDialog_btn').on('click', handler);
+    $('#confirmDialog').modal('show');
 }

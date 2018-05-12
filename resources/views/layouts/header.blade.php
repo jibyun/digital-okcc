@@ -49,3 +49,4 @@
     </div>
     @endauth 
 </nav>
+@include ('MemberList.confirmDialog')

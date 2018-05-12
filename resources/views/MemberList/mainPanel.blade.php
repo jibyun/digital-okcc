@@ -27,8 +27,4 @@
     <div id="divMemberSubDetailPanel" >
         @include('MemberList.memberSubPanel')
     </div>
-    <div>
-        @include('MemberList.memberHistory')
-    </div>
-   
 </div>

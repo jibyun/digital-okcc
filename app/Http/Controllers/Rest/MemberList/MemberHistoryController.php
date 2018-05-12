@@ -24,7 +24,10 @@ class MemberHistoryController extends BaseController
      */
     public function list($memberId)
     {
-        //
+        $result = (object)array();
+        $result->history = $this->memberHistoryService->getHistoryByMemberId($memberId);
+        return $this->sendResponse(json_encode($result),
+                                    "retrieved member history successfully.");
     }
 
     /**
@@ -88,7 +91,13 @@ class MemberHistoryController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $result = $this->memberHistoryService->updateHistory($request, $id);
+        if ($result == 0) {
+            //LOG::debug("This is message from : " . $result->members);
+            return $this->sendResponse("SUCCESS", "Member history updated", 200);
+        } else {
+            return $this->sendError("ERROR", "Error updating member history", 500);
+        }
     }
 
     /**
@@ -99,6 +108,11 @@ class MemberHistoryController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        $result = $this->memberHistoryService->deleteHistory($id);
+        if ($result >= 0) {
+            return $this->sendResponse("SUCCESS", "Member history removed", 200);
+        } else {
+            return $this->sendError("ERROR", "Error removing member history", 500);
+        }
     }
 }

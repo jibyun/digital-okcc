@@ -46,17 +46,30 @@ class MemberHistoryService
     /**
      * Update existing history
      */
-    public function updateHistory($id) {
-        $memberHistory = Member_History::where('member_id', $memberId)->get();
-        return $memberHistory;
+    public function updateHistory($request, $id) {
+        $existing = Member_History::findOrFail($id);
+
+        try {
+            $existing->fill($request->all())->save();
+            return 0;
+        } catch (\Exception $e) {
+            LOG::error($e->getMessage());
+            return -1;
+        }
     }
 
     /**
      * Delete existing history
      */
     public function deleteHistory($id) {
-        $result = Member_History::where('id', $id)->delete();
-        return $result;
+        LOG::debug($id);
+        try {
+            $result = Member_History::where('id', $id)->delete();
+            return $result;
+        } catch (\Exception $e) {
+            LOG::error($e->getMessage());
+            return -1;
+        }
     }
 
     /**
