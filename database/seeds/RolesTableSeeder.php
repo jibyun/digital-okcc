@@ -5,13 +5,18 @@ use Illuminate\Database\Seeder;
 class RolesTableSeeder extends Seeder {
 
     public function run() {
-        DB::table('roles')->insert([ 'txt' => 'SUPER_ADMIN_ROLE', 'memo' => "<p>All features are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'MEMBER_ADMIN_ROLE', 'memo' => "<p>All features of Members menu and limited features of Admin menu are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'MEMBER_SIMBANG_ROLE', 'memo' => "<p>All pastrol invitation features of Members menu are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'MEMBER_SEARCH_ALL_ROLE', 'memo' => "<p>All searching features of Members menu are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'MEMBER_SEARCH_BELONGTO_ROLE', 'memo' => "<p>Only members of the group to which you belong can be searched.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'FINANCE_ADMIN_ROLE', 'memo' => "<p>All features of Finance menu and limited features of Admin menu are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'INVENT_ADMIN_ROLE', 'memo' => "<p>All features of Inventories menu and limited features of Admin menu are allowed.</p>" ]);
-        DB::table('roles')->insert([ 'txt' => 'NONE', 'memo' => "<p>No access is allowed.</p>" ]);
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_ACCESS_ROLE', 'memo' => "Members 메뉴를 보여준다." ]);
+        DB::table('roles')->insert([ 'txt' => 'FINANCE_ACCESS_ROLE', 'memo' => "Finances 메뉴를 보여준다." ]);
+        DB::table('roles')->insert([ 'txt' => 'INVENTORY_ACCESS_ROLE', 'memo' => "Inventory 메뉴를 보여준다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_ACCESS_ROLE', 'memo' => "OKCC Cloud Office for Admin으로 접근할 수 있는 버튼을 보여준다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_MEMBER_ROLE', 'memo' => "Admin Member 메뉴로의 접근을 허용한다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_USER_ROLE', 'memo' => "Admin User 메뉴로의 접근을 허용한다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_FINANCE_ROLE', 'memo' => "Admin Finance 메뉴로의 접근을 허용한다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_INVENTORY_ROLE', 'memo' => "Admin Inventory 메뉴로의 접근을 허용한다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_TEST_ROLE', 'memo' => "Admin Test 메뉴로의 접근을 허용한다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_HOME_ROLE', 'memo' => "Admin에서 OKCC Cloud Office로 접근할 수 있는 버튼을 보여준다." ]);
+        DB::table('roles')->insert([ 'txt' => 'ADMIN_SUPER_ROLE', 'memo' => "Super Admin 메뉴로의 접근을 허용한다." ]);
+
+        DB::table('roles')->insert([ 'txt' => 'MEMBER_SIMBANG_ROLE', 'memo' => "Members 메뉴에서 심방 메뉴를 보여준다." ]);
     }
 }

@@ -7,27 +7,27 @@ class PrivilegesTableSeeder extends Seeder {
     public function run() {
         DB::table('privileges')->insert([ 
             'txt' => 'SYSTEM_ADMIN', 
-            'memo' => "<p>The privilege has the authority of the super administrator.</p>"
+            'memo' => "The privilege has the authority of the super administrator."
         ]);
         DB::table('privileges')->insert([ 
             'txt' => 'SENIOR_PASTOR', 
-            'memo' => "<p>The privilege has all authorities except user's management menu.</p>"
+            'memo' => "담임목사: Member와 Member Admin의 대부분 메뉴에 접근 가능함."
         ]);
         DB::table('privileges')->insert([ 
             'txt' => 'ASSOCIATE_PASTOR', 
-            'memo' => "<p>The privilege has authorities of search_all in Members menu and as pastrol invitaton.</p>"
+            'memo' => "부목사: Member의 전체 검색 기능과 심방 메뉴에 접근 가능함."
         ]);
         DB::table('privileges')->insert([ 
             'txt' => 'PASTOR', 
-            'memo' => "<p>The privilege has authorities of search_all in Members.</p>"
+            'memo' => "담당목사: Member의 전체 검색 기능에 접근 가능함"
         ]);
         DB::table('privileges')->insert([ 
             'txt' => 'CLERK', 
-            'memo' => "<p>The privilege has same authorities with senior pastor.</p>"
+            'memo' => "사무원: Member와 Member Admin의 대부분 메뉴에 접근 가능함 (담임목사 Priviege와 동일함)"
         ]);
         DB::table('privileges')->insert([ 
             'txt' => 'BOD', 
-            'memo' => "<p>The privilege has authorities of search_all in Members.</p>"
+            'memo' => "집사회: Member의 전체 검색 기능에 접근 가능함 (담당목사 Privilege와 동일함)"
         ]);
     }
 }
