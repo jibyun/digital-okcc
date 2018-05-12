@@ -376,19 +376,19 @@ class CodesTableSeeder extends Seeder
         DB::table('codes')->insert([ 'id' => 110006, 'code_category_id' => 11, 'order' =>  6, 'txt' => 'Team Member', 'kor_txt' => '부서집사' ]);
         DB::table('codes')->insert([ 'id' => 110007, 'code_category_id' => 11, 'order' =>  7, 'txt' => 'Team Assistant', 'kor_txt' => '위원' ]);
         //--- 교구, 구역 편성에 관련한 직책
-        DB::table('codes')->insert([ 'id' => 110008, 'code_category_id' => 11, 'order' =>  8, 'txt' => 'Gyogoo Leader', 'kor_txt' => '교구장' ]);
-        DB::table('codes')->insert([ 'id' => 110009, 'code_category_id' => 11, 'order' =>  9, 'txt' => 'Gyogoo Kwonsa', 'kor_txt' => '교구권사' ]);
-        DB::table('codes')->insert([ 'id' => 110010, 'code_category_id' => 11, 'order' => 10, 'txt' => 'Gooyeok Leader', 'kor_txt' => '구역장' ]);
-        DB::table('codes')->insert([ 'id' => 110011, 'code_category_id' => 11, 'order' => 11, 'txt' => 'Gooyeok Member', 'kor_txt' => '구역원' ]);
+        DB::table('codes')->insert([ 'id' => 110101, 'code_category_id' => 11, 'order' =>  8, 'txt' => 'Gyogoo Leader', 'kor_txt' => '교구장' ]);
+        DB::table('codes')->insert([ 'id' => 110102, 'code_category_id' => 11, 'order' =>  9, 'txt' => 'Gyogoo Kwonsa', 'kor_txt' => '교구권사' ]);
+        DB::table('codes')->insert([ 'id' => 110103, 'code_category_id' => 11, 'order' => 10, 'txt' => 'Gooyeok Leader', 'kor_txt' => '구역장' ]);
+        DB::table('codes')->insert([ 'id' => 110104, 'code_category_id' => 11, 'order' => 11, 'txt' => 'Gooyeok Member', 'kor_txt' => '구역원' ]);
         // 실제로 이하는 사용할 가능성이 매우적어 보이는 직책임 (거의 0%)...
         //--- 성가대
-        DB::table('codes')->insert([ 'id' => 110012, 'code_category_id' => 11, 'order' => 12, 'txt' => 'Choir Leader', 'kor_txt' => '성가대장' ]);
-        DB::table('codes')->insert([ 'id' => 110013, 'code_category_id' => 11, 'order' => 13, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
-        DB::table('codes')->insert([ 'id' => 110014, 'code_category_id' => 11, 'order' => 14, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
-        DB::table('codes')->insert([ 'id' => 110015, 'code_category_id' => 11, 'order' => 15, 'txt' => 'Choir Member', 'kor_txt' => '성가대원' ]);
+        DB::table('codes')->insert([ 'id' => 110201, 'code_category_id' => 11, 'order' => 12, 'txt' => 'Choir Leader', 'kor_txt' => '성가대장' ]);
+        DB::table('codes')->insert([ 'id' => 110202, 'code_category_id' => 11, 'order' => 13, 'txt' => 'Conductor', 'kor_txt' => '지휘자' ]);
+        DB::table('codes')->insert([ 'id' => 110203, 'code_category_id' => 11, 'order' => 14, 'txt' => 'Accompanist', 'kor_txt' => '반주자' ]);
+        DB::table('codes')->insert([ 'id' => 110204, 'code_category_id' => 11, 'order' => 15, 'txt' => 'Choir Member', 'kor_txt' => '성가대원' ]);
         //--- 기타 봉사관련 직책: 특별위원회,교육부서 등...
-        DB::table('codes')->insert([ 'id' => 110016, 'code_category_id' => 11, 'order' => 16, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
-        DB::table('codes')->insert([ 'id' => 110017, 'code_category_id' => 11, 'order' => 17, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
-        DB::table('codes')->insert([ 'id' => 110018, 'code_category_id' => 11, 'order' => 18, 'txt' => 'Committee Member', 'kor_txt' => '위원' ]);
+        DB::table('codes')->insert([ 'id' => 110301, 'code_category_id' => 11, 'order' => 16, 'txt' => 'Teacher', 'kor_txt' => '교사' ]);
+        DB::table('codes')->insert([ 'id' => 110302, 'code_category_id' => 11, 'order' => 17, 'txt' => 'Committee Leader', 'kor_txt' => '위원장' ]);
+        DB::table('codes')->insert([ 'id' => 110303, 'code_category_id' => 11, 'order' => 18, 'txt' => 'Committee Member', 'kor_txt' => '위원' ]);
     }
 }

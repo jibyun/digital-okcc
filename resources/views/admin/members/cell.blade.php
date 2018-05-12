@@ -50,7 +50,7 @@
                 <button id="toRightMember" type="button" class="toRight btn btn-warning mt-5 form-control" title="To the Right">{{ __('messages.adm_table.member_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
             </div>
             <div class="row">
-                <button id="toRightManager" type="button" class="toRight btn btn-warning mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
+                <button id="toRightManager" type="button" class="toRight btn btn-success mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
             </div>
             <div class="row">
                 <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>{{ __('messages.adm_table.leave_btn') }}</button>
