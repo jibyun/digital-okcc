@@ -10,13 +10,8 @@
         .pagination-info, .pagination-detail {
             display: none
         }
-        .btn-circle {
-            width: 50px;
-            height: 50px;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.33;
-            border-radius: 25px;
+        .dropdown-toggle::after {
+            display:none
         }
     </style>
 @endsection
@@ -45,23 +40,33 @@
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true" class='p-1'></th>
-                        <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                        <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
-                        <th data-field="last_name" data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
-                        <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                        <th data-field="id" data-visible="false" data-searchable="false">@lang('messages.adm_table.id')</th>
+                        <th data-field="first_name" data-sortable="true">@lang('messages.adm_table.first_name')</th>
+                        <th data-field="last_name" data-sortable="true">@lang('messages.adm_table.last_name')</th>
+                        <th data-field="kor_name" data-sortable="true">@lang('messages.adm_table.kor_name')</th>
                     </tr>
                 </thead>
             </table>
         </div>
         <div class="col-sm-2 py-5 px-4" style="height: 400px;">
-            <div class="row">
-                <button id="toRightMember" type="button" class="toRight btn btn-warning mt-5 form-control" title="To the Right">{{ __('messages.adm_table.member_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
+            <div class="row dropdown">
+                <button type="button" class="btn btn-warning mt-5 form-control dropdown-toggle" title="To the Right" id="toRightMemberDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.member_btn')<i class="fa fa-arrow-right ml-2"></i></button>
+                <div id="toRightMember" class="dropdown-menu" aria-labelledby="toRightMemberDropdown">
+                    <a class="toRight dropdown-item" href="#">Action</a>
+                    <a class="toRight dropdown-item" href="#">Another action</a>
+                    <a class="toRight dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+            <div class="row dropdown">
+                <button type="button" class="btn btn-success mt-2 form-control dropdown-toggle" title="To the Right" id="toRightManagerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.manager_btn')<i class="fa fa-arrow-right ml-2"></i></button>
+                <div id="toRightManager" class="dropdown-menu" aria-labelledby="toRightManagerDropdown">
+                    <a class="toRight dropdown-item" href="#">Action</a>
+                    <a class="toRight dropdown-item" href="#">Another action</a>
+                    <a class="toRight dropdown-item" href="#">Something else here</a>
+                </div>
             </div>
             <div class="row">
-                <button id="toRightManager" type="button" class="toRight btn btn-warning mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
-            </div>
-            <div class="row">
-                <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>{{ __('messages.adm_table.leave_btn') }}</button>
+                <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>@lang('messages.adm_table.leave_btn')</button>
             </div>
         </div>
         <div class="col-sm-5">
@@ -71,7 +76,7 @@
                     </select>
                 </div>
                 <div class='form-inline col-sm-6 justify-content-end'>
-                    <label class="form-control" style="background-color:#039023; color: #ffffff;">{{ __('messages.adm_table.assigned_label') }}</label>
+                    <label class="form-control" style="background-color:#039023; color: #ffffff;">@lang('messages.adm_table.assigned_label')</label>
                 </div>
             </div>
             <table id="rightTable" class="table table-striped table-hover table-responsive-md table-bordered" 
@@ -83,10 +88,10 @@
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true" class='p-1'></th>
-                        <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                        <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
-                        <th data-field="last_name" data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
-                        <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                        <th data-field="id" data-visible="false" data-searchable="false">@lang('messages.adm_table.id')</th>
+                        <th data-field="first_name" data-sortable="true">@lang('messages.adm_table.first_name')</th>
+                        <th data-field="last_name" data-sortable="true">@lang('messages.adm_table.last_name')</th>
+                        <th data-field="kor_name" data-sortable="true">@lang('messages.adm_table.kor_name')</th>
                         <th data-field="xid" data-visible="false" data-searchable="false"></th>
                         <th data-field="manager" data-visible="false" data-searchable="false"></th>
                     </tr>
@@ -101,10 +106,11 @@
 
 @section('scripts')
     <script type="text/javascript">
-        const DEPT_CATEGORY = '{{ config('app.admin.deptCategoryId') }}';
+        const DEPT_CATEGORY_ID = '{{ config('app.admin.deptCategoryId') }}';
+        const POSITION_CATEGORY_ID = '{{ config('app.admin.positionCategoryId') }}';
         const NOT_ASSIGN = 999999;
-        const MANAGER_POSITION = '{{ config('app.admin.deptManagerPositionId') }}'; 
-        const DEFAULT_POSITION = '{{ config('app.admin.deptMemberPositionId') }}';
+        const MANAGER_POSITION_IDs = '{{ config('app.admin.deptManagerPositionId') }}'; 
+        const DEFAULT_POSITION_IDs = '{{ config('app.admin.deptMemberPositionId') }}';
         const CODE_URL = "{!! route('admin.code.getCodesByCategoryIds') !!}";
         const $leftTable = $('#leftTable');
         const $rightTable = $('#rightTable');
@@ -155,7 +161,7 @@
         }
 
         function fillRightCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY })
+            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY_ID })
             .done ( function(data, textStatus, jqXHR) { 
                 var html = '';
                 $('#rightCombo').empty();

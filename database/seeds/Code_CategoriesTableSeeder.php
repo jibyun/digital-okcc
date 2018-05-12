@@ -13,15 +13,15 @@ class Code_CategoriesTableSeeder extends Seeder
     {
         // Member Status: 회원, 비정기출석, 장기결석, 해외거주, 이명, 사망, 전도대상자
         DB::table('code_categories')->insert([ 
-            'txt' => 'Member Status',
-            'kor_txt' => '교인상태',
+            'txt' => 'Church Members',
+            'kor_txt' => '교인구분',
             'memo' => 'A code category for identifying the status of OKCC members.',
             'fieldName' => 'status_id',
             'order' => 1
         ]);
         // Duty: 교회직분 - 담임목사, 부목사, 목사, 전도사, 교육목사, 교육전도사, 시무장로, 은퇴장로, 권사, 은퇴권사, 집사, 협동장로, 협동권사, 위원
         DB::table('code_categories')->insert([ 
-            'txt' => 'Duty',
+            'txt' => 'Officers',
             'kor_txt' => '직무',
             'memo' => 'A code category for identifying the duty of OKCC members.',
             'fieldName' => 'duty_id',
@@ -29,18 +29,18 @@ class Code_CategoriesTableSeeder extends Seeder
         ]);
         // Family Relations: 본인, 처, 자녀, 부모, 손주 
         DB::table('code_categories')->insert([ 
-            'txt' => 'Family Relations',
-            'kor_txt' => '가족관계',
+            'txt' => 'Relation of Householder',
+            'kor_txt' => '세대주관계',
             'memo' => 'A code category for identifying the relationship with the head of household.',
-            'fieldName' => 'FAMILY_RELATION',
+            'fieldName' => 'family_id',
             'order' => 3
         ]);
         // Baptism Status: 세례, 유아세례, 입교, 영세
         DB::table('code_categories')->insert([ 
-            'txt' => 'Baptism Status',
+            'txt' => 'Baptism',
             'kor_txt' => '신급',
             'memo' => 'A code category for identifying the baptism status of OKCC members.',
-            'fieldName' => 'BAPTISM_STATUS',
+            'fieldName' => 'baptism_id',
             'order' => 4
         ]);
         // Department: 당회, 권사회, 집사회, 교육부, 성가대, 단기선교회, 남선교회, 제1여선교회, 제2여선교회 등
@@ -56,7 +56,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'City',
             'kor_txt' => '시',
             'memo' => 'A code category for identifying Cities of Canada.',
-            'fieldName' => 'CITY',
+            'fieldName' => 'city_id',
             'order' => 6
         ]);
         // Province code
@@ -64,7 +64,7 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Province',
             'kor_txt' => '주',
             'memo' => 'A code category for identifying Provinces of Canada.',
-            'fieldName' => 'PROVINCE',
+            'fieldName' => 'province_id',
             'order' => 7
         ]);
         // Country code
@@ -72,32 +72,24 @@ class Code_CategoriesTableSeeder extends Seeder
             'txt' => 'Country',
             'kor_txt' => '국가',
             'memo' => 'A code category for identifying Country.',
-            'fieldName' => 'COUNTRY',
+            'fieldName' => 'country_id',
             'order' => 8
         ]);
         // 교구
         DB::table('code_categories')->insert([ 
-            'txt' => 'KyoGu',
+            'txt' => 'Gyogoo',
             'kor_txt' => '교구',
             'memo' => 'A code category for identifying Kyogu.',
             'fieldName' => 'department_id',
             'order' => 9
-        ]);
-        // 구역
-        DB::table('code_categories')->insert([ 
-            'txt' => 'GuYeok',
-            'kor_txt' => '구역',
-            'memo' => 'A code category for identifying GuYeok.',
-            'fieldName' => 'department_id',
-            'order' => 10
         ]);
         // LOG
         DB::table('code_categories')->insert([ 
             'txt' => 'Log',
             'kor_txt' => '로그',
             'memo' => 'A code category for using at system log view.',
-            'fieldName' => 'LOG',
-            'order' => 11
+            'fieldName' => 'log_id',
+            'order' => 10
         ]);
         // Position
         DB::table('code_categories')->insert([ 

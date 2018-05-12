@@ -48,7 +48,7 @@ Route::get('admin/members/getCodesByCategoryIds', 'Admin\CodesController@getCode
 Route::resource('admin/members/codes', 'Admin\CodesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Members CRUD
 Route::get('admin/members/memberStart', 'Admin\AdminPagesController@memberStart')->name('admin.members.start');
-Route::resource('admin/members/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit', 'destroy' ], 'as' => 'admin' ] );
+Route::resource('admin/members/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Privileges CRUD
 Route::get('admin/users/privilegeStart', 'Admin\AdminPagesController@privilegeStart')->name('admin.privileges.start');
 Route::resource('admin/users/privileges', 'Admin\PrivilegesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );

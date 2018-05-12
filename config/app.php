@@ -243,21 +243,23 @@ return [
     |--------------------------------------------------------------------------
     */
     'admin' => [
-        'cellCategoryId'            => '10', // CELL category id
-        'deptCategoryId'            => '5', // DEPARTMENT category id
-        'cellManagerPositionId'     => '120008', // cell manager position id
-        'cellMemberPositionId'      => '120012', // cell member position id
-        'deptManagerPositionId'     => '120003', // DEPARTMENT manager position id
-        'deptMemberPositionId'      => '120012', // DEPARTMENT member position id
-        'logLogIn'                  => '110001', // INSERT log id
-        'logLogOut'                 => '110002', // INSERT log id
-        'logInsert'                 => '110003', // INSERT log id
-        'logUpdate'                 => '110004', // INSERT log id
-        'logDelete'                 => '110005', // INSERT log id
-        'deletedMember'             => '19999', // Deleted Member
+        'deptCategoryId'            => '5', // Department category id
+        'cellCategoryId'            => '9', // 구역 category id
+        'positionCategoryId'        => '11', // Position category id
+        'cellStartId'               => '90101', // 구역 start id. cf. 교구 id: 90001 - 90100
+        'cellManagerPositionId'     => '110103', // cell manager position id
+        'cellMemberPositionId'      => '110104', // cell member position id
+        'deptManagerPositionId'     => '110001, 110004, 110005', // DEPARTMENT manager position id (회장, 위원장, 부서장)
+        'deptMemberPositionId'      => '110002, 110003, 110006, 110007', // DEPARTMENT member position id (총무, 회계, 부서집사, 위원)
+        'logLogIn'                  => '100001', // INSERT log id
+        'logLogOut'                 => '100002', // INSERT log id
+        'logInsert'                 => '100003', // INSERT log id
+        'logUpdate'                 => '100004', // INSERT log id
+        'logDelete'                 => '100005', // INSERT log id
+        //'deletedMember'             => '19999', // Deleted Member
         'memberStatus'              => '10001', // Member Status is 'Member'
-        'laymanStatus'              => '29999', // Duty is 'Layman'
-        'unbaptizedStatus'          => '49999', // Level is 'Unbaptized'
+        'laymanStatus'              => '20013', // Duty is 'No Officer'
+        'unbaptizedStatus'          => '40005', // Level is 'Unbaptized'
     ],
     
 ];

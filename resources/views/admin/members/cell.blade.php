@@ -10,14 +10,6 @@
         .pagination-info, .pagination-detail {
             display: none
         }
-        .btn-circle {
-            width: 50px;
-            height: 50px;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.33;
-            border-radius: 25px;
-        }
     </style>
 @endsection
 
@@ -58,7 +50,7 @@
                 <button id="toRightMember" type="button" class="toRight btn btn-warning mt-5 form-control" title="To the Right">{{ __('messages.adm_table.member_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
             </div>
             <div class="row">
-                <button id="toRightManager" type="button" class="toRight btn btn-warning mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
+                <button id="toRightManager" type="button" class="toRight btn btn-success mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
             </div>
             <div class="row">
                 <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>{{ __('messages.adm_table.leave_btn') }}</button>
@@ -101,7 +93,8 @@
 
 @section('scripts')
     <script type="text/javascript">
-        const CELL_CATEGORY = '{{ config('app.admin.cellCategoryId') }}';
+        const CELL_CATEGORY_ID = '{{ config('app.admin.cellCategoryId') }}';
+        const CELL_START_ID = '{{ config('app.admin.cellStartId') }}';
         const NOT_ASSIGN = 999999;
         const MANAGER_POSITION = '{{ config('app.admin.cellManagerPositionId') }}'; 
         const DEFAULT_POSITION = '{{ config('app.admin.cellMemberPositionId') }}';
@@ -155,17 +148,21 @@
         }
 
         function fillRightCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + CELL_CATEGORY })
+            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + CELL_CATEGORY_ID })
             .done ( function(data, textStatus, jqXHR) { 
                 var html = '';
                 $('#rightCombo').empty();
+                var startSw = 0;
                 $.each( data['codes'][0], function( index, code ) {
-                    var selectStr = "";
-                    if ( index === 0 ) {
-                        selectStr = 'selected';
-                        saveDepartmentId = code.id;
+                    if ( code.id >= CELL_START_ID ) {
+                        var selectStr = "";
+                        if ( startSw === 0 ) {
+                            selectStr = 'selected';
+                            saveDepartmentId = code.id;
+                            startSw++;
+                        }
+                        html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
                     }
-                    html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
                 });
                 $('#rightCombo').prepend(html);
                 $('#rightCombo').on('change', function() {
