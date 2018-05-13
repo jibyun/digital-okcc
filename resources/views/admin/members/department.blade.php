@@ -52,17 +52,13 @@
             <div class="row dropdown">
                 <button type="button" class="btn btn-warning mt-5 form-control dropdown-toggle" title="To the Right" id="toRightMemberDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.member_btn')<i class="fa fa-arrow-right ml-2"></i></button>
                 <div id="toRightMember" class="dropdown-menu" aria-labelledby="toRightMemberDropdown">
-                    <a class="toRight dropdown-item" href="#">Action</a>
-                    <a class="toRight dropdown-item" href="#">Another action</a>
-                    <a class="toRight dropdown-item" href="#">Something else here</a>
+
                 </div>
             </div>
             <div class="row dropdown">
                 <button type="button" class="btn btn-success mt-2 form-control dropdown-toggle" title="To the Right" id="toRightManagerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.manager_btn')<i class="fa fa-arrow-right ml-2"></i></button>
                 <div id="toRightManager" class="dropdown-menu" aria-labelledby="toRightManagerDropdown">
-                    <a class="toRight dropdown-item" href="#">Action</a>
-                    <a class="toRight dropdown-item" href="#">Another action</a>
-                    <a class="toRight dropdown-item" href="#">Something else here</a>
+
                 </div>
             </div>
             <div class="row">
@@ -72,7 +68,7 @@
         <div class="col-sm-5">
             <div id="rightToolbar" class="row py-2">
                 <div class='form-inline col-sm-6'>
-                    <select id='rightCombo' class="form-group form-control" style="width: 180px">
+                    <select id='rightCombo' class="form-group form-control" style="width: 250px">
                     </select>
                 </div>
                 <div class='form-inline col-sm-6 justify-content-end'>
@@ -134,62 +130,22 @@
             $(window).height() - $('h4').outerHeight(true); // table height
         }
 
-        function initTable() {
-            $leftTable.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' }]
-            });
-            $rightTable.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' },{}]
-            });
-            $(window).resize(function () {
-                $leftTable.bootstrapTable('resetView', { height: getHeight() });
-                $rightTable.bootstrapTable('resetView', { height: getHeight() });
-            });
-        }
+        // Initialize bootstrap table
+        $leftTable.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' }]
+        });
+        $rightTable.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' },{}]
+        });
+        $(window).resize(function () {
+            $leftTable.bootstrapTable('resetView', { height: getHeight() });
+            $rightTable.bootstrapTable('resetView', { height: getHeight() });
+        });
 
-        function getUser() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.users.get-current-users') !!}" })
-            .done ( function(data, textStatus, jqXHR) { 
-                userName = data['user']['name'];
-                userId = data['user']['id'];
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }
-
-        function fillRightCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY_ID })
-            .done ( function(data, textStatus, jqXHR) { 
-                var html = '';
-                $('#rightCombo').empty();
-                $.each( data['codes'][0], function( index, code ) {
-                    var selectStr = "";
-                    if ( index === 0 ) {
-                        selectStr = 'selected';
-                        saveDepartmentId = code.id;
-                    }
-                    html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
-                });
-                $('#rightCombo').prepend(html);
-                $('#rightCombo').on('change', function() {
-                    reloadList( this.value );
-                    saveDepartmentId = this.value;
-                    reloadList( NOT_ASSIGN, saveDepartmentId );
-                })
-                // Load initial data
-                reloadList( NOT_ASSIGN, $('#rightCombo').find('option:selected').val() );
-                reloadList( $('#rightCombo').find('option:selected').val() );
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }
- 
         // Reload data from server and refresh table
-        function reloadList( $department_id, $sub_department_id ) {
+        var reloadList = function ( $department_id, $sub_department_id ) {
             var $url, $table;
             if ( $department_id === NOT_ASSIGN ) {
                 $url = "{!! route('admin.member-dept-trees.getmembers-notbelongin_dept') !!}" + "?department_id=" + $sub_department_id;
@@ -207,12 +163,73 @@
             });
         } 
 
-        initTable();
-        getUser();
-        fillRightCombo();
+        var initLoadData = function() {
+            var deferreds = [];
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.users.get-current-users') !!}" })
+                .done ( function(data, textStatus, jqXHR) { 
+                    userName = data['user']['name'];
+                    userId = data['user']['id'];
+                })
+            );
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + POSITION_CATEGORY_ID })
+                .done ( function(data, textStatus, jqXHR) { 
+                    $('#toRightManager').empty();   
+                    $('#toRightMember').empty();
+                    $.each( data['codes'][0], function( index, code ) {
+                        const codeString = '' + code.id;
+                        if ( MANAGER_POSITION_IDs.includes(codeString) || DEFAULT_POSITION_IDs.includes(codeString) ) {
+                            const selector = MANAGER_POSITION_IDs.includes(codeString) ? $('#toRightManager') : $('#toRightMember');
+                            selector.append(
+                                $("<a>", {
+                                    'class': 'toRight dropdown-item',
+                                    'href': '#',
+                                    'html': code.txt + ' (' + code.kor_txt + ')',
+                                    'code': code.id,
+                                    'manager': (MANAGER_POSITION_IDs.includes(codeString) ? 1 : 0),
+                                })
+                            );
+                        } 
+                    });   
+                    $('.toRight').on( "click", function() { 
+                        toRightClick( $(this).attr('code'), $(this).attr('manager') );
+                    });              
+                })
+            );
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY_ID })
+                .done ( function(data, textStatus, jqXHR) { 
+                    var html = '';
+                    $('#rightCombo').empty();
+                    $.each( data['codes'][0], function( index, code ) {
+                        var selectStr = "";
+                        if ( index === 0 ) {
+                            selectStr = 'selected';
+                            saveDepartmentId = code.id;
+                        }
+                        html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
+                    });
+                    $('#rightCombo').prepend(html);
+                    $('#rightCombo').on('change', function() {
+                        reloadList( this.value );
+                        saveDepartmentId = this.value;
+                        reloadList( NOT_ASSIGN, saveDepartmentId );
+                    })
+                    // Load initial data
+                    reloadList( NOT_ASSIGN, $('#rightCombo').find('option:selected').val() );
+                    reloadList( $('#rightCombo').find('option:selected').val() );
+                })
+            );
+            $.when.apply( $, deferreds ).then( function() {
+            }).fail( function(jqXHR, textStatus, errorThrown) {
+                errorMessage( jqXHR );
+            });
+        }
 
-        $('.toRight').click( function(e) {
-            const position_id = ( e.target.id === 'toRightMember' ? DEFAULT_POSITION : MANAGER_POSITION );
+        initLoadData();
+
+        function toRightClick( position_id, manager ) {
             const selection = $leftTable.bootstrapTable('getSelections');
             if (selection.length > 0) { // if selected items are more than one?
                 var deferreds = [];
@@ -222,7 +239,7 @@
                         member_id: item.id,
                         department_id: saveDepartmentId, 
                         position_id: position_id, 
-                        manager: ( position_id === MANAGER_POSITION ? 1 : 0 ),
+                        manager: manager,
                         enabled: 1,
                         updated_by: userId,
                         updated_by_name: userName
@@ -252,7 +269,7 @@
                     errorMessage( jqXHR );
                 });
             }
-        });
+        }
 
         $('.toLeft').click( function() {
             const selection = $rightTable.bootstrapTable('getSelections');
