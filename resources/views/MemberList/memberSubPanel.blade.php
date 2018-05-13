@@ -15,6 +15,9 @@
   </div>
 
   <div id="tabs-visit">
+    @include ('MemberList.memberVisitDialog')
+    @include ('MemberList.memberVisitToolbar')
+    <table id="visit_table"></table>
   </div>
   <div id="tabs-work">
     <ul>

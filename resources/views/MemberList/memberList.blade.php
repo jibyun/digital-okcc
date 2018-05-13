@@ -34,6 +34,7 @@
 <script src="{{ asset('js/MemberList/memberList.js') }}"></script>
 <script src="{{ asset('js/MemberList/memberDetail.js') }}"></script>
 <script src="{{ asset('js/MemberList/memberHistory.js') }}"></script>
+<script src="{{ asset('js/MemberList/memberVisit.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
 
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
