@@ -90,7 +90,7 @@ function fillFamily(familys){
     }
    
 }
-
+/*
 function fillVisit(visits){
     $('#tabs-visit').children().remove();
     if(visits.length>0)
@@ -127,7 +127,7 @@ function fillVisit(visits){
             style: "display:inline-block;width:100%"
         }));
     }
-}
+}*/
 
 function fillWork(works){
     $('#tabs-4').children().remove();

@@ -1,0 +1,191 @@
+// Member Visit URL
+var memberVisitUrl = 'okcc/memberList/memberVisit';
+
+$( function() {
+    // Create member Visit button click event handler
+    $('#btnCreateVisit').on('click', createVisitBtnClickHandler);
+    // Save member Visit button click event handler
+    $('#btnMemberVisitSave').on('click', saveVisitBtnClickHandler);
+    // Visit table cell click handler
+    $('#visit_table').on('click-cell.bs.table', visitTableCellClickHandler);
+    // Visit table cell click handler
+    $('#visit_table').on('click-row.bs.table', visitTableRowClickHandler);
+    
+    $('#visit_started_at').datetimepicker({ format: 'YYYY-MM-DD' });
+    $('#visit_finished_at').datetimepicker({ format: 'YYYY-MM-DD' });
+
+});
+  
+function fillVisit(visits){
+    var table = $('#visit_table');
+    var tableColumn = [{
+        field: 'visited_at',
+        width: '15%',
+        title: i18n.messages.memberdetail.visit_visited_at
+    }, {
+        field: 'title',
+        title: i18n.messages.memberdetail.visit_title,
+        formatter: "titleFormatter"
+    }];
+    
+    // TODO: need to change to true
+    if (hasRole("MEMBER_VISIT_EDIT_ROLE") === false) {
+        tableColumn.push({
+            field: 'edit',
+            width: '5%',
+            searchable: false,
+            formatter: "editFormatter"
+         });
+         tableColumn.push({
+            field: 'delete',
+            width: '5%',
+            searchable: false,
+            formatter: "deleteFormatter"
+         });
+    }
+
+    table.bootstrapTable({
+        columns: tableColumn,
+        pagination: false,
+        search: true,
+        searchOnEnterKey: true,
+        toolbar: '#member_visit_toolbar',
+        detailView: true,
+        detailFormatter: "detailViewFormatter"
+    });
+
+    table.bootstrapTable('load', visits);
+}
+
+// Set the column for edit button 
+/**
+ * Member Visit Edit column formatter
+ * @param {*} value 
+ * @param {*} row 
+ * @param {*} index 
+ */
+function editFormatter(value, row, index) {
+    var html = [];
+    html.push('<a href="#">' + i18n.messages.memberdetail.visit_edit + '</a>');
+    return html.join('');
+}
+
+// Set the column for delete button 
+/**
+ * Member Visit Edit column formatter
+ * @param {*} value 
+ * @param {*} row 
+ * @param {*} index 
+ */
+function deleteFormatter(value, row, index) {
+    var html = [];
+    html.push('<a href="#">' + i18n.messages.memberdetail.visit_delete + '</a>');
+    return html.join('');
+}
+
+function titleFormatter(value, row, index) {
+    //return i18n.messages.memberdetail.visit_delete;
+    var html = [];
+    html.push('<a href="#">' + value + '</a>');
+    return html.join('');
+}
+
+function detailViewFormatter(index, rec) {
+    var html = [];
+    html.push(rec.memo);
+    return html.join('');
+}
+
+/**
+ * Visit table cell click handler
+ */
+function visitTableCellClickHandler(field, column, row, rec) {
+    if (column === 'edit') {
+        $('#visit_id').val(rec.id);
+        $('#visit_memberId').val(currentMemberId);
+        $('#visit_title').val(rec.title);
+        $('#visit_started_at').val(rec.started_at);
+        $('#visit_paster').val(rec.paster_visitation);
+        $('#visit_memo').val(rec.memo);
+        $('#memberVisitDialog').modal('show');
+    } else if (column === 'delete') {
+        $('#visit_id').val(rec.id);
+        showConfirmMessage("Delete Member Visit", "Do you want to delete the item?", "Delete", visitDeleteHandler)
+    }
+}
+
+function visitTableRowClickHandler(e, row, $tr, field) {
+    var table = $('#visit_table');
+    if (field === 'title') {
+        if ($tr.next().is('tr.detail-view')) {
+            table.bootstrapTable('collapseRow', $tr.data('index'));
+        } else {
+            table.bootstrapTable('expandRow', $tr.data('index'));
+        }
+    }
+}
+
+/**
+ * Save Member Visit button handler.
+ * It will handle both create/update
+ * 
+ */
+function saveVisitBtnClickHandler(e) {
+    var visitUrl = memberVisitUrl;
+    e.preventDefault();
+    // TODO:validation check
+
+    var paramData = {
+        member_id: currentMemberId,
+        started_at: $('#visit_started_at').val(),
+        paster_visitation: $('#visit_paster').val(),
+        title: $('#visit_title').val(),
+        memo: $('#visit_memo').val(),
+        // TODO update real user id
+        updated_by: 1
+    };
+
+    var method = 'POST';
+    // Check Create or Update
+    var visit_id = $('#visit_id').val();
+    if (visit_id.trim().length != 0) {
+        method = "PUT";
+        paramData.id = visit_id;
+        visitUrl = memberVisitUrl + '/' + visit_id;
+    }
+
+    restApiCall(visitUrl, method, paramData, memberVisitSuccessHandler, null);
+}
+
+function memberVisitSuccessHandler(response) {
+    $('#memberVisitDialog').modal('hide');
+    toastr.success( response.data );
+    resetVisitForm();
+    reloadMemberVisit();
+}
+
+function visitDeleteHandler() {
+    var visit_id = $('#visit_id').val();
+    restApiCall(memberVisitUrl + '/' + visit_id, "DELETE", null, memberVisitSuccessHandler, null);
+}
+
+function reloadMemberVisit() {
+    restApiCall(memberVisitUrl + '/' + currentMemberId, "GET", null, retrieveMemberVisitSuccessHandler, null);
+}
+
+function retrieveMemberVisitSuccessHandler(response) {
+    var tableData = JSON.parse(response.data);
+    var table = $('#visit_table');
+    table.bootstrapTable('load', tableData.visit);
+}
+
+function createVisitBtnClickHandler(e) {
+    resetVisitForm();
+}
+
+function resetVisitForm() {
+    $('#frmVisit')[0].reset();
+    $('#visit_id').val('');
+    $('#visit_memberId').val('');
+}
+

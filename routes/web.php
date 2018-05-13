@@ -172,6 +172,14 @@ Route::get('okcc/memberList/memberHistory/{memberid}', 'Rest\MemberList\MemberHi
 Route::resource('okcc/memberList/memberHistory', 'Rest\MemberList\MemberHistoryController')->middleware('auth')->only(['store', 'update', 'destroy']);
 
 /**
+ * Method: GET/POST/PUT/DELETE
+ * URL: /okcc/memberList/memberVisit: 
+ * 
+ */
+Route::get('okcc/memberList/memberVisit/{memberid}', 'Rest\MemberList\MemberVisitController@list')->middleware('auth');
+Route::resource('okcc/memberList/memberVisit', 'Rest\MemberList\MemberVisitController')->middleware('auth')->only(['store', 'update', 'destroy']);
+
+/**
  * Method: GET
  * URL: /okcc/util/adduser/{id}/{password}: Add new user
  * This temporary restful api, and it will be removed later

@@ -16,7 +16,8 @@ return [
     'common' => [
         'save' => 'Save',
         'cancel' => 'Cancel',
-        'confirmation' => 'Confirmation'
+        'confirmation' => 'Confirmation',
+        'dateformat' => 'YYYY-MM-DD',
     ],
 
     // Message for registration
@@ -94,6 +95,16 @@ return [
         'history_enddate' => 'End Date',
         'history_memo' => 'Details',
         'history_dateformat' => 'YYYY-MM-DD',
+        // Member Visit
+        'visit_createtitle' => 'Create Visitation',
+        'visit_updatetitle' => 'Update Visitation',
+        'visit_add' => 'Add',
+        'visit_delete' => 'Delete',
+        'visit_edit' => 'Edit',
+        'visit_title' => 'Title',
+        'visit_visited_at' => 'Date of Visitation',
+        'visit_pastor' => 'Pastor of Visitation',
+        'visit_memo' => 'Note of Visitation',
     ],
 
     // Top Menu
