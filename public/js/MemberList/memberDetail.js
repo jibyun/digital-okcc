@@ -2,13 +2,10 @@ var memberUrl='okcc/member/getMember';
 var codesURL = 'okcc/member/getCategory';
 var memberEditUrl='okcc/member/edit';
 var saveIndex; // Row index of the table
-var saveId; // Primary key of the table
+var currentMemberId; // Current member Id
 var current_member;
 
-$.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
-
 $( function() {
-
     $( "#tabs" ).tabs();
 
     // select box data setting
@@ -19,8 +16,8 @@ $( function() {
     //Get member info by bt_table clicked
     $('#bt_table').on('click-cell.bs.table', function (field, column, row, rec) {
 
-        saveId = Number(rec.id);
-        var url=memberUrl+"/"+saveId;
+        currentMemberId = Number(rec.id);
+        var url=memberUrl+"/"+currentMemberId;
 
       
         restApiCall(url, "GET", null, memberGetSuccess, null);
@@ -40,7 +37,6 @@ $( function() {
     $('#dob').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#baptism_at').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#register_at').datetimepicker({ format: 'YYYY-MM-DD' });
-
 });
   
 
@@ -61,14 +57,14 @@ function memberGetSuccess(response) {
 function fillFamily(familys){
 
    
-    $('#tabs-1').children().remove();
+    $('#tabs-family').children().remove();
     if(familys!=null && familys.length>0)
     {
         for(var i= 0; i < familys.length; i++) {
             var item = familys[i];
             var parentid = 'family_' + i;
           
-            $('#tabs-1').append($('<ul/>', {
+            $('#tabs-family').append($('<ul/>', {
                 class: "list-unstyled",
                 id: parentid
             }));
@@ -86,7 +82,7 @@ function fillFamily(familys){
         }
     }
     else{
-        $('#tabs-1').append($('<ul/>', {
+        $('#tabs-family').append($('<ul/>', {
         })).append($('<li/>', {
             text: 'There is no data.',
             style: "display:inline-block;width:100%"
@@ -95,49 +91,15 @@ function fillFamily(familys){
    
 }
 
-function fillHistory(historys){
-    $('#tabs-2').children().remove();
-    if(historys.length>0)
-    {
-        for(var i= 0; i < historys.length; i++) {
-            var item = historys[i];
-            var parentid = 'history_' + i;
-          
-            $('#tabs-2').append($('<ul/>', {
-                class: "list-unstyled",
-                id: parentid
-            }));
-            $('#'+parentid).append($('<li/>', {
-                text: item.started_at,
-                style: "display:inline-block;width:20%",
-                id: 'histroy_start_' + i
-            })).append($('<li/>', {
-                text: item.title,
-                style: "display:inline-block;width:40%",
-                id: 'history_title_' + i
-            }));
-        }
-    }
-    else{
-        $('#tabs-2').append($('<ul/>', {
-        })).append($('<li/>', {
-            text: 'There is no data.',
-            style: "display:inline-block;width:100%"
-        }));
-    }
-    
-    
-}
-
 function fillVisit(visits){
-    $('#tabs-3').children().remove();
+    $('#tabs-visit').children().remove();
     if(visits.length>0)
     {
         for(var i= 0; i < visits.length; i++) {
             var item = visits[i];
             var parentid = 'visit_' + i;
         
-            $('#tabs-3').append($('<ul/>', {
+            $('#tabs-visit').append($('<ul/>', {
                 class: "list-unstyled",
                 id: parentid
             }));
@@ -159,7 +121,7 @@ function fillVisit(visits){
         }
     }
     else{
-        $('#tabs-3').append($('<ul/>', {
+        $('#tabs-visit').append($('<ul/>', {
         })).append($('<li/>', {
             text: 'There is no data.',
             style: "display:inline-block;width:100%"
@@ -250,6 +212,3 @@ function fillData(parentId,rec){
     }
 
 }
-
-
-

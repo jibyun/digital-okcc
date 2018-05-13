@@ -118,7 +118,6 @@ function settingsSuccess(response) {
     var memberStatusListData = settingsData.memberStatus;
     for (var i = 0; i < bookmarkData.length; i++) {
         var element = bookmarkData[i];
-        console.log(element);
         $('#LandingContent').append($('<div/>', {
             text: element.text,
             class: "card-header p-2",

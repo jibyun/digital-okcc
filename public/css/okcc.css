@@ -188,3 +188,19 @@ thead {
     display:none;  
 }
 
+/**
+* Get rid of bootstrap table detail view plus icon
+*/
+body {
+    margin: 10px;
+}
+  
+#history_table thead > tr > th.detail,
+#history_table tbody > tr:not(.detail-view) > td:first-of-type {
+    display: none;
+}
+  
+#history_table thead > tr > th:nth-child(2),
+#history_table tbody > tr:not(.detail-view) > td:nth-child(2) {
+    border-left: none!important;
+}
