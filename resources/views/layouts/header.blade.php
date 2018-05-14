@@ -35,6 +35,9 @@
                 </a>
                 <!-- Dropdown menu for logout -->
                 <div id="userDropdownMenu" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="changePassword"
+                        <i class="fa fa-key fa-lg mr-2"></i>{{__('messages.auth.changepassword')}}
+                    </a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">

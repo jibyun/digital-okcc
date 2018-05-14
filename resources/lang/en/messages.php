@@ -20,6 +20,11 @@ return [
         'dateformat' => 'YYYY-MM-DD',
     ],
 
+    // Message for Auth
+    'auth' => [
+        'changepassword' => 'Change Password',
+    ],
+
     // Message for registration
     'registration' => [
 

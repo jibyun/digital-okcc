@@ -14,6 +14,9 @@ Auth::routes();
 // Pre-Registration Routes...
 Route::get('preregister', 'Auth\PreRegisterController@showRegistrationForm')->name('preregister');
 Route::post('preregister', 'Auth\PreRegisterController@sendMail')->name('preregister');
+// Change password Route
+Route::get('/changePassword', 'Auth\ChangePasswordController@showChangePasswordForm')->name('changePasswordForm');
+Route::post('/changePassword','Auth\ChangePasswordController@changePassword')->name('changePassword');
 
 Route::get('/', 'MainController@index')->middleware('auth');
 // memberList Landing page
