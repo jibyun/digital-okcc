@@ -26,10 +26,10 @@ class MemberService
        // $memberinfo=(object)array();
         $member = Member::with(['codeByCityId','codeByProvinceId','codeByCountryId','codeByDutyId','codeByLevelId','codeByStatusId'
         ,'visits.user','member_histories','member_department_maps.codeByPositionId'])->find($id);
-        //Log::debug($member);
+        
         $familys=$this->getFamilys($id);
         $member->familys=$familys;
-        
+        Log::debug($member);
         return $member;
     }
 
@@ -53,7 +53,7 @@ class MemberService
         if(!$member->primary)
         {
             if($member->primaryMembers->count()==0)
-            return null;
+            return array();
 
            $primaryId=$member->primaryMembers[0]->id;
         }
