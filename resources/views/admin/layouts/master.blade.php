@@ -74,7 +74,7 @@
             var getSideMenuItem = function ( itemData ) {
                 var item = $("<li>").append(
                     $("<a>", {
-                        'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                        'href': itemData.sub_menu ? ('#' + itemData.text) : (itemData.route ? itemData.route : '#' + itemData.text),
                         'html': '<i class="fa fa-fw ' + itemData.icon + ' mr-1"></i>' + itemData.text,
                         'data-toggle': (itemData.sub_menu) ? 'collapse' : '',
                     })
