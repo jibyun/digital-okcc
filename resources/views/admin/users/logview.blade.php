@@ -50,10 +50,10 @@
                 <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
                 <th data-field="created_at" data-width="150px" data-sortable="true">{{ __('messages.adm_table.created_at') }}</th>
                 <th data-field="code_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.code_id') }}</th>
-                <th data-field="code_name" data-width="100px" data-sortable="true" data-visible="true">{{ __('messages.adm_table.code_name') }}</th>
+                <th data-field="code_name" data-width="100px" data-sortable="true">{{ __('messages.adm_table.code_name') }}</th>
                 <th data-field="user_id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.user_id') }}</th>
-                <th data-field="user_name" data-width="150px" data-sortable="true" data-visible="true">{{ __('messages.adm_table.user_name') }}</th>
-                <th data-field="memo" data-visible="true">{{ __('messages.adm_table.memo') }}</th>
+                <th data-field="user_name" data-width="150px" data-sortable="true">{{ __('messages.adm_table.user_name') }}</th>
+                <th data-field="memo">{{ __('messages.adm_table.memo') }}</th>
             </tr>
         </thead>
     </table>
@@ -64,6 +64,7 @@
 @section('scripts')
 
     <script type="text/javascript">
+        const LOG_CATEGORY_ID = '{{ config('app.admin.logCategoryId') }}';
         const $table = $('#table');
         const baseURL = "{!! route('admin.log.get') !!}";
 
@@ -90,6 +91,26 @@
             $table.bootstrapTable('resetView', { height: getHeight() });
         });
 
+        // Dynamic Search Control for ONLY Visible Column
+        $table.on('column-switch.bs.table', function (e, field, checked) {
+            var columns = $table.bootstrapTable('getVisibleColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = true;
+            });
+            columns = $table.bootstrapTable('getHiddenColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = false;
+            });
+            if (checked === true) {
+                $table.bootstrapTable('hideColumn', field);
+                $table.bootstrapTable('showColumn', field);
+            } else {
+                $table.bootstrapTable('showColumn', field);
+                $table.bootstrapTable('hideColumn', field);
+            }
+        });
+        // End of Dynamic Search Control
+
         function fillCombo($element, codeData, kind) {
             $element.empty();
             var html = '<option value="">ALL ' + kind.toUpperCase() + '</option>';
@@ -106,7 +127,7 @@
             });
         }
 
-        $.ajax({ dataType: 'json', url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=11',
+        $.ajax({ dataType: 'json', url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=' + LOG_CATEGORY_ID,
             success: function(data) { 
                 fillCombo( $('#log'), data['codes'][0], "log" );
             }, 

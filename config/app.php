@@ -245,6 +245,7 @@ return [
     'admin' => [
         'deptCategoryId'            => '5', // Department category id
         'cellCategoryId'            => '9', // 구역 category id
+        'logCategoryId'             => '10', // Log category id
         'positionCategoryId'        => '11', // Position category id
         'cellStartId'               => '90101', // 구역 start id. cf. 교구 id: 90001 - 90100
         'cellManagerPositionId'     => '110103', // cell manager position id
