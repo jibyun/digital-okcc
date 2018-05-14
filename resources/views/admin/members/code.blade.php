@@ -7,7 +7,7 @@
     
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='categoriesCombo' class="form-group form-control mr-2" style="width: 150px">
+            <select id='categoriesCombo' class="form-group form-control mr-2" style="width: 300px">
             </select>
             <button class="form-group form-control btn btn-info mr-2" type="button" title="Create" id='create-button'>
                 <i class="fa fa-user mr-1" aria-hidden="true"></i>{{ __('messages.adm_button.create') }}
@@ -136,7 +136,7 @@
             var $combo = $("#categoriesCombo");
             for (var i=0; i < categories.length; i++) {
                 html += '<option value="' + categories[i]['id'] + '" ' + (i===0 ? 'selected' : '') + '>' + 
-                    categories[i]['txt'] + '</option>';
+                    categories[i]['txt'] + ' (' + categories[i]['kor_txt'] + ')</option>';
             }
             $combo.append(html);    
             

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
+use Config;
 
 use App\User;
 use App\Member;
@@ -45,7 +46,7 @@ class UsersController extends Controller {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($userUpdate, $input, ['member_name', 'privilege_name']);
                 $user = $userUpdate->fill($input)->save();
-                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(Config::get('app.admin.logUpdate'), $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()->json([ 'user' => $user ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);

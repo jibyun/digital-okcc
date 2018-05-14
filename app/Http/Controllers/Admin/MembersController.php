@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Exception;
+use Config;
 
 use App\Member;
 use App\Http\Services\Log\SystemLog;
@@ -37,7 +38,7 @@ class MembersController extends Controller {
         } else {
             try {
                 $result = Member::create($input);
-                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                SystemLog::write(Config::get('app.admin.logInsert'), $this->TABLE_NAME . ' [ID] ' . $result->id);
                 return response()->json([ 'codes' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -57,7 +58,7 @@ class MembersController extends Controller {
                 $detail = SystemLog::createLogForUpdatedFields($memberUpdate, $input, 
                     ['city_name', 'province_name', 'country_name', 'status_name', 'level_name', 'duty_name']); 
                 $result = $memberUpdate->fill($input)->save();
-                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(Config::get('app.admin.logUpdate'), $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()->json([ 'user' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -71,7 +72,7 @@ class MembersController extends Controller {
     public function destroy($id) {
         try {
             Member::find($id)->delete();
-            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write(Config::get('app.admin.logDelete'), $this->TABLE_NAME . ' [ID] ' . $id);
             return response()->json([ 'message' => 'DELETED!' ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);

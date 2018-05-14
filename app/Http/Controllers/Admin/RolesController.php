@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
+use Config;
 
 use App\Role;
 use App\Privilege_Role_Map;
@@ -51,7 +52,7 @@ class RolesController extends Controller {
         } else {
             try {
                 $result = Role::create($request->all());
-                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                SystemLog::write(Config::get('app.admin.logInsert'), $this->TABLE_NAME . ' [ID] ' . $result->id);
                 return response()->json([ 'roles' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -86,7 +87,7 @@ class RolesController extends Controller {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($roleUpdate, $input, null); 
                 $roles = $roleUpdate->fill($input)->save();
-                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(Config::get('app.admin.logUpdate'), $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()->json([ 'roles' => $roles ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -100,7 +101,7 @@ class RolesController extends Controller {
     public function destroy($id) {
         try {
             Role::find($id)->delete();
-            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write(Config::get('app.admin.logDelete'), $this->TABLE_NAME . ' [ID] ' . $id);
             return response()->json([ 'message' => 'DELETED!' ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);

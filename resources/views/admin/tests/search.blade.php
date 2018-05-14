@@ -26,7 +26,7 @@
 
 @section('content')
 <div class='container p-4'>
-    <h4>{{ __('messages.adm_title.title', ['title' => 'Search']) }}</h4>
+    <h4>{{ __('messages.adm_title.title', ['title' => 'Dynamic Search']) }}</h4>
     <div id="toolbar">
         <div class="btn-group" role="group" aria-label="Basic example">
             <button type="button" class="btn btn-secondary">Left</button>
