@@ -66,6 +66,19 @@ class MembersController extends Controller {
     }
 
     /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id) {
+        try {
+            Member::find($id)->delete();
+            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            return response()->json([ 'message' => 'DELETED!' ], 200);
+        } catch (Exception $e) {
+            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+        }
+    }
+
+    /**
      * Return reinforced table after adding elements and the name converted by code
      */
     private function reinforceTable($value) {

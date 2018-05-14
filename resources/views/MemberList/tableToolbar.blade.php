@@ -8,7 +8,8 @@
         <i class="fa fa-fw fa-envelope mr-1" aria-hidden="true"></i>{{ __('messages.memberlist.toolbar_email') }}
     </button>
     {{-- Excel Export button--}}
-    <button id="btnSaveAsExcel" class="btn mr-2" type="button" data-toggle="modal" data-target="#exportDialog">
+    <button id="btnSaveAsExcel" class="btn mr-2" type="button" data-toggle="modal" 
+        data-target="#exportDialog" data-backdrop="static">
         <i class="fa fa-fw fa-download mr-1" aria-hidden="true"></i>{{ __('messages.memberlist.toolbar_saveexcel') }}
     </button>
 </div>

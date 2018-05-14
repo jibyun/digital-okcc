@@ -1,9 +1,3 @@
-<?php
-    function menu( $menuStr = '/' ) {
-        return strstr( request()->path(), $menuStr );
-    }
-?>
-
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
@@ -23,14 +17,11 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul id='topMenu' class="navbar-nav mr-auto">
-            <li class="nav-item rounded px-2 {{ menu('users') ? 'active' : '' }}" name="users"><a class="nav-link" href="{{ route('admin.users') }}">{{ __('messages.adm_layout.header_menu_user') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('members') ? 'active' : '' }}" name="members"><a class="nav-link" href="{{ route('admin.members') }}">{{ __('messages.adm_layout.header_menu_member') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('finances') ? 'active' : '' }}" name="finances"><a class="nav-link" href="{{ route('admin.finances') }}">{{ __('messages.adm_layout.header_menu_finance') }}</a></li>
-            <li class="nav-item rounded px-2 {{ menu('inventories') ? 'active' : '' }}" name="inventories"><a class="nav-link" href="{{ route('admin.inventories') }}">{{ __('messages.adm_layout.header_menu_inventory') }}</a></li>
+
         </ul>
         <ul class="navbar-nav ml-auto">
             @guest
-                <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ __('messages.adm_button.signin') }}</a></li>
+                <li><a class="btn btn-outline-light btn-sm" href="{{ route('login') }}" role="button">{{ trans('messages.adm_button.signin') }}</a></li>
             @else
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
@@ -38,8 +29,9 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fa fa-fw fa-sign-out fa-lg mr-1"></i>{{ __('messages.adm_button.logout') }}
+                        <i class="fa fa-fw fa-sign-out fa-lg mr-1"></i>{{ trans('messages.adm_button.logout') }}
                     </a>
+                    <a href="/" class="dropdown-item"><i class="fa fa-fw fa-cog fa-lg mr-1"></i>{{ trans('messages.adm_layout.goback_home') }}</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
             </li>

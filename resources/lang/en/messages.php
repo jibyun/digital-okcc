@@ -12,6 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    // Message for General(Common)
+    'common' => [
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'confirmation' => 'Confirmation',
+        'dateformat' => 'YYYY-MM-DD',
+    ],
 
     // Message for registration
     'registration' => [
@@ -77,6 +84,27 @@ return [
         'menu_basicinfo' => 'Basic Information',
         'menu_history' => 'History Information',
         'menu_visit' => 'Visit Information',
+        // Member History
+        'history_createtitle' => 'Create History',
+        'history_updatetitle' => 'Update History',
+        'history_add' => 'Add',
+        'history_delete' => 'Delete',
+        'history_edit' => 'Edit',
+        'history_title' => 'Title',
+        'history_startdate' => 'Start Date',
+        'history_enddate' => 'End Date',
+        'history_memo' => 'Details',
+        'history_dateformat' => 'YYYY-MM-DD',
+        // Member Visit
+        'visit_createtitle' => 'Create Visitation',
+        'visit_updatetitle' => 'Update Visitation',
+        'visit_add' => 'Add',
+        'visit_delete' => 'Delete',
+        'visit_edit' => 'Edit',
+        'visit_title' => 'Title',
+        'visit_visited_at' => 'Date of Visitation',
+        'visit_pastor' => 'Pastor of Visitation',
+        'visit_memo' => 'Note of Visitation',
     ],
 
     // Top Menu
@@ -107,8 +135,20 @@ return [
         'header_menu_member'    => 'Members',
         'header_menu_finance'   => 'Finances',
         'header_menu_inventory' => 'Inventories',
+        'header_menu_test'      => 'Tests',
+        'message_user'          => 'The LORD is the everlasting God, the Creator of the ends of the earth. He will not grow tired or weary, and his understanding no one can fathom. He gives strength to the weary and increases the power of the weak. Even youths grow tired and weary, and young men stumble and fall; but those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.',
+        'message_member'        => 'Unless the Lord builds the house, the builders labor in vain. Unless the Lord watches over the city, the guards stand watch in vain. In vain you rise early and stay up late, toiling for food to eat—for he grants sleep to[a] those he loves.',
+        'message_finance'       => 'Do not store up for yourselves treasures on earth, where moths and vermin destroy, and where thieves break in and steal. 20 But store up for yourselves treasures in heaven, where moths and vermin do not destroy, and where thieves do not break in and steal. 21 For where your treasure is, there your heart will be also.',
+        'message_inventory'     => 'You show that you are a letter from Christ, the result of our ministry, written not with ink but with the Spirit of the living God, not on tablets of stone but on tablets of human hearts. Such confidence we have through Christ before God. Not that we are competent in ourselves to claim anything for ourselves, but our competence comes from God.',
+        'message_test'          => 'For through the law I died to the law so that I might live for God. I have been crucified with Christ and I no longer live, but Christ lives in me. The life I now live in the body, I live by faith in the Son of God, who loved me and gave himself for me. 21 I do not set aside the grace of God, for if righteousness could be gained through the law, Christ died for nothing!',
+        'passage_user'          => 'Isaiah 40:28-31',
+        'passage_member'        => 'Psalm 127:1-2',
+        'passage_finance'       => 'Matthew 6:19-21',
+        'passage_inventory'     => '2 Corinthians 3:3-5',
+        'passage_test'          => 'Galatians 2 19-20',
         'side_users'            => 'Users',
         'side_pri_role'         => 'Privilege & Role',
+        'goback_home'           => 'Go Back Home',
     ],
 
     // using Admin System log 
@@ -271,5 +311,21 @@ return [
         'disable_input'         => 'Disable',
         'manager_input'         => 'Team Manager',
         'nomanager_input'       => 'Team Member',
+    ],
+
+    'adm_message' => [
+        'success_title'         => 'SUCCESS!',
+        'fail_title'            => 'FAILED!',
+        'warn_title'            => 'WARNING!',
+        'request'               => 'Request Status: ',
+        'exception'             => 'Exception Status: ',
+        'status_text'           => ' Status Text: ',
+        'save_error'            => 'An unknown error occurred while saving.',
+        'save_success'          => 'The item was successfully saved.',
+        'arrange_error'         => 'An unknown error occurred while re-arranging display order.',
+        'arrange_success'       => 'Display order was successfully re-arranged.',
+        'nomore_add'            => 'There are no more data to add.',
+        'nomore_delete'         => 'There are no more data to delete.',
+        'select_member'         => 'Select a Member first!',
     ],
 ];

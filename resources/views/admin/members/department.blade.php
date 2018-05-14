@@ -10,13 +10,8 @@
         .pagination-info, .pagination-detail {
             display: none
         }
-        .btn-circle {
-            width: 50px;
-            height: 50px;
-            padding: 10px 16px;
-            font-size: 18px;
-            line-height: 1.33;
-            border-radius: 25px;
+        .dropdown-toggle::after {
+            display:none
         }
     </style>
 @endsection
@@ -45,33 +40,39 @@
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true" class='p-1'></th>
-                        <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                        <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
-                        <th data-field="last_name" data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
-                        <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                        <th data-field="id" data-visible="false" data-searchable="false">@lang('messages.adm_table.id')</th>
+                        <th data-field="first_name" data-sortable="true">@lang('messages.adm_table.first_name')</th>
+                        <th data-field="last_name" data-sortable="true">@lang('messages.adm_table.last_name')</th>
+                        <th data-field="kor_name" data-sortable="true">@lang('messages.adm_table.kor_name')</th>
                     </tr>
                 </thead>
             </table>
         </div>
         <div class="col-sm-2 py-5 px-4" style="height: 400px;">
-            <div class="row">
-                <button id="toRightMember" type="button" class="toRight btn btn-warning mt-5 form-control" title="To the Right">{{ __('messages.adm_table.member_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
+            <div class="row dropdown">
+                <button type="button" class="btn btn-warning mt-5 form-control dropdown-toggle" title="To the Right" id="toRightMemberDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.member_btn')<i class="fa fa-arrow-right ml-2"></i></button>
+                <div id="toRightMember" class="dropdown-menu" aria-labelledby="toRightMemberDropdown">
+
+                </div>
+            </div>
+            <div class="row dropdown">
+                <button type="button" class="btn btn-success mt-2 form-control dropdown-toggle" title="To the Right" id="toRightManagerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@lang('messages.adm_table.manager_btn')<i class="fa fa-arrow-right ml-2"></i></button>
+                <div id="toRightManager" class="dropdown-menu" aria-labelledby="toRightManagerDropdown">
+
+                </div>
             </div>
             <div class="row">
-                <button id="toRightManager" type="button" class="toRight btn btn-warning mt-2 form-control" title="To the Right">{{ __('messages.adm_table.manager_btn') }}<i class="fa fa-arrow-right ml-2"></i></button>
-            </div>
-            <div class="row">
-                <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>{{ __('messages.adm_table.leave_btn') }}</button>
+                <button type="button" class="toLeft btn btn-info mt-5 form-control" title="To the Left"><i class="fa fa-arrow-left mr-2"></i>@lang('messages.adm_table.leave_btn')</button>
             </div>
         </div>
         <div class="col-sm-5">
             <div id="rightToolbar" class="row py-2">
                 <div class='form-inline col-sm-6'>
-                    <select id='rightCombo' class="form-group form-control" style="width: 180px">
+                    <select id='rightCombo' class="form-group form-control" style="width: 250px">
                     </select>
                 </div>
                 <div class='form-inline col-sm-6 justify-content-end'>
-                    <label class="form-control" style="background-color:#039023; color: #ffffff;">{{ __('messages.adm_table.assigned_label') }}</label>
+                    <label class="form-control" style="background-color:#039023; color: #ffffff;">@lang('messages.adm_table.assigned_label')</label>
                 </div>
             </div>
             <table id="rightTable" class="table table-striped table-hover table-responsive-md table-bordered" 
@@ -83,10 +84,10 @@
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true" class='p-1'></th>
-                        <th data-field="id" data-visible="false" data-searchable="false">{{ __('messages.adm_table.id') }}</th>
-                        <th data-field="first_name" data-sortable="true">{{ __('messages.adm_table.first_name') }}</th>
-                        <th data-field="last_name" data-sortable="true">{{ __('messages.adm_table.last_name') }}</th>
-                        <th data-field="kor_name" data-sortable="true">{{ __('messages.adm_table.kor_name') }}</th>
+                        <th data-field="id" data-visible="false" data-searchable="false">@lang('messages.adm_table.id')</th>
+                        <th data-field="first_name" data-sortable="true">@lang('messages.adm_table.first_name')</th>
+                        <th data-field="last_name" data-sortable="true">@lang('messages.adm_table.last_name')</th>
+                        <th data-field="kor_name" data-sortable="true">@lang('messages.adm_table.kor_name')</th>
                         <th data-field="xid" data-visible="false" data-searchable="false"></th>
                         <th data-field="manager" data-visible="false" data-searchable="false"></th>
                     </tr>
@@ -101,10 +102,11 @@
 
 @section('scripts')
     <script type="text/javascript">
-        const DEPT_CATEGORY = '{{ config('app.admin.deptCategoryId') }}';
+        const DEPT_CATEGORY_ID = '{{ config('app.admin.deptCategoryId') }}';
+        const POSITION_CATEGORY_ID = '{{ config('app.admin.positionCategoryId') }}';
         const NOT_ASSIGN = 999999;
-        const MANAGER_POSITION = '{{ config('app.admin.deptManagerPositionId') }}'; 
-        const DEFAULT_POSITION = '{{ config('app.admin.deptMemberPositionId') }}';
+        const MANAGER_POSITION_IDs = '{{ config('app.admin.deptManagerPositionId') }}'; 
+        const DEFAULT_POSITION_IDs = '{{ config('app.admin.deptMemberPositionId') }}';
         const CODE_URL = "{!! route('admin.code.getCodesByCategoryIds') !!}";
         const $leftTable = $('#leftTable');
         const $rightTable = $('#rightTable');
@@ -128,62 +130,22 @@
             $(window).height() - $('h4').outerHeight(true); // table height
         }
 
-        function initTable() {
-            $leftTable.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' }]
-            });
-            $rightTable.bootstrapTable({
-                height: getHeight(),
-                columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' },{}]
-            });
-            $(window).resize(function () {
-                $leftTable.bootstrapTable('resetView', { height: getHeight() });
-                $rightTable.bootstrapTable('resetView', { height: getHeight() });
-            });
-        }
+        // Initialize bootstrap table
+        $leftTable.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' }]
+        });
+        $rightTable.bootstrapTable({
+            height: getHeight(),
+            columns: [ {},{},{ align: 'left' },{ align: 'left' },{ align: 'center' },{}]
+        });
+        $(window).resize(function () {
+            $leftTable.bootstrapTable('resetView', { height: getHeight() });
+            $rightTable.bootstrapTable('resetView', { height: getHeight() });
+        });
 
-        function getUser() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.users.get-current-users') !!}" })
-            .done ( function(data, textStatus, jqXHR) { 
-                userName = data['user']['name'];
-                userId = data['user']['id'];
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }
-
-        function fillRightCombo() {
-            $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY })
-            .done ( function(data, textStatus, jqXHR) { 
-                var html = '';
-                $('#rightCombo').empty();
-                $.each( data['codes'][0], function( index, code ) {
-                    var selectStr = "";
-                    if ( index === 0 ) {
-                        selectStr = 'selected';
-                        saveDepartmentId = code.id;
-                    }
-                    html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
-                });
-                $('#rightCombo').prepend(html);
-                $('#rightCombo').on('change', function() {
-                    reloadList( this.value );
-                    saveDepartmentId = this.value;
-                    reloadList( NOT_ASSIGN, saveDepartmentId );
-                })
-                // Load initial data
-                reloadList( NOT_ASSIGN, $('#rightCombo').find('option:selected').val() );
-                reloadList( $('#rightCombo').find('option:selected').val() );
-            }) 
-            .fail ( function(jqXHR, textStatus, errorThrown) { 
-                errorMessage( jqXHR );
-            });
-        }
- 
         // Reload data from server and refresh table
-        function reloadList( $department_id, $sub_department_id ) {
+        var reloadList = function ( $department_id, $sub_department_id ) {
             var $url, $table;
             if ( $department_id === NOT_ASSIGN ) {
                 $url = "{!! route('admin.member-dept-trees.getmembers-notbelongin_dept') !!}" + "?department_id=" + $sub_department_id;
@@ -201,12 +163,73 @@
             });
         } 
 
-        initTable();
-        getUser();
-        fillRightCombo();
+        var initLoadData = function() {
+            var deferreds = [];
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.users.get-current-users') !!}" })
+                .done ( function(data, textStatus, jqXHR) { 
+                    userName = data['user']['name'];
+                    userId = data['user']['id'];
+                })
+            );
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + POSITION_CATEGORY_ID })
+                .done ( function(data, textStatus, jqXHR) { 
+                    $('#toRightManager').empty();   
+                    $('#toRightMember').empty();
+                    $.each( data['codes'][0], function( index, code ) {
+                        const codeString = '' + code.id;
+                        if ( MANAGER_POSITION_IDs.includes(codeString) || DEFAULT_POSITION_IDs.includes(codeString) ) {
+                            const selector = MANAGER_POSITION_IDs.includes(codeString) ? $('#toRightManager') : $('#toRightMember');
+                            selector.append(
+                                $("<a>", {
+                                    'class': 'toRight dropdown-item',
+                                    'href': '#',
+                                    'html': code.txt + ' (' + code.kor_txt + ')',
+                                    'code': code.id,
+                                    'manager': (MANAGER_POSITION_IDs.includes(codeString) ? 1 : 0),
+                                })
+                            );
+                        } 
+                    });   
+                    $('.toRight').on( "click", function() { 
+                        toRightClick( $(this).attr('code'), $(this).attr('manager') );
+                    });              
+                })
+            );
+            deferreds.push (
+                $.ajax({ dataType: 'json', timeout: 3000, url: CODE_URL + '?category_id[]=' + DEPT_CATEGORY_ID })
+                .done ( function(data, textStatus, jqXHR) { 
+                    var html = '';
+                    $('#rightCombo').empty();
+                    $.each( data['codes'][0], function( index, code ) {
+                        var selectStr = "";
+                        if ( index === 0 ) {
+                            selectStr = 'selected';
+                            saveDepartmentId = code.id;
+                        }
+                        html += '<option value=' + code.id + ' ' + selectStr + '>' + code.txt + ' (' + code.kor_txt + ')</option>';
+                    });
+                    $('#rightCombo').prepend(html);
+                    $('#rightCombo').on('change', function() {
+                        reloadList( this.value );
+                        saveDepartmentId = this.value;
+                        reloadList( NOT_ASSIGN, saveDepartmentId );
+                    })
+                    // Load initial data
+                    reloadList( NOT_ASSIGN, $('#rightCombo').find('option:selected').val() );
+                    reloadList( $('#rightCombo').find('option:selected').val() );
+                })
+            );
+            $.when.apply( $, deferreds ).then( function() {
+            }).fail( function(jqXHR, textStatus, errorThrown) {
+                errorMessage( jqXHR );
+            });
+        }
 
-        $('.toRight').click( function(e) {
-            const position_id = ( e.target.id === 'toRightMember' ? DEFAULT_POSITION : MANAGER_POSITION );
+        initLoadData();
+
+        function toRightClick( position_id, manager ) {
             const selection = $leftTable.bootstrapTable('getSelections');
             if (selection.length > 0) { // if selected items are more than one?
                 var deferreds = [];
@@ -216,7 +239,7 @@
                         member_id: item.id,
                         department_id: saveDepartmentId, 
                         position_id: position_id, 
-                        manager: ( position_id === MANAGER_POSITION ? 1 : 0 ),
+                        manager: manager,
                         enabled: 1,
                         updated_by: userId,
                         updated_by_name: userName
@@ -246,7 +269,7 @@
                     errorMessage( jqXHR );
                 });
             }
-        });
+        }
 
         $('.toLeft').click( function() {
             const selection = $rightTable.bootstrapTable('getSelections');

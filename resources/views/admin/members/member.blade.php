@@ -98,6 +98,7 @@
         const MEMBER_STATUS = '{{ config('app.admin.memberStatus') }}'; 
         const LAYMAN_STATUS = '{{ config('app.admin.laymanStatus') }}'; 
         const UNBAPTIZED_STATUS = '{{ config('app.admin.unbaptizedStatus') }}'; 
+        const PHOTO_BASE64 = '{{ asset('images/photo.png') }}';
         const $table = $('#table');
         const $editPanel = $('#editPanel');
         const codesURL = "{!! route('admin.codes.index') !!}";
@@ -166,6 +167,25 @@
         // whenever being changed window's size, table's size should be also changed
         $(window).resize(function () {
             $table.bootstrapTable('resetView', { height: getHeight() });
+        });
+
+        $table.on('column-switch.bs.table', function (e, field, checked) {
+            var columns = $table.bootstrapTable('getVisibleColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = true;
+            });
+            columns = $table.bootstrapTable('getHiddenColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = false;
+            });
+            //------------------ ADJUST BY BUG
+            if (checked === true) {
+                $table.bootstrapTable('hideColumn', field);
+                $table.bootstrapTable('showColumn', field);
+            } else {
+                $table.bootstrapTable('showColumn', field);
+                $table.bootstrapTable('hideColumn', field);
+            }
         });
 
         function fillCombo($element, codeData, kind) {
@@ -282,16 +302,25 @@
 
         // delete record but I will just add 'DELETED' to email address 
         $(".crud-delete").click( function() {
-            $editPanel.find("input[name='first_name']").val($editPanel.find("input[name='first_name']").val() + "__DELETED__");
-            $editPanel.find('#selectStatusCombo').val( DELETED_MEMBER );
-            var postData = fillPostData();
-            doPutOrPost('PUT', postData);
-            $(".modal").modal('hide'); 
-            $('#contentTitle').text("");
+            $.ajax({ dataType: 'json', timeout: 3000, method:'delete', url: membesURL + '/' + saveId })
+            .done ( function(data) {
+                if (data.code == 'exception') {
+                    exceptionMessage( data.status, data.errors );
+                } else {
+                    deleteSuccessMessage();
+                    $table.bootstrapTable('remove', {field: 'id', values: [saveId]});
+                    $(".modal").modal('hide'); // hide model form
+                    $('#contentTitle').text("");
+                    reloadList();
+                }
+            })
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                errorMessage( jqXHR );
+            });
         });
 
         function fillEditPanel( rec ) {
-            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            $editPanel.find("img[name='photo']").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : PHOTO_BASE64);
             $editPanel.find("#photo_filename").val(rec.photo);
             $editPanel.find("input[name='first_name']").val(rec.first_name);
             $editPanel.find("input[name='middle_name']").val(rec.middle_name);
@@ -336,7 +365,7 @@
         function fillShowPanel(rec) {
             var panel = $("#showPanel");
 
-            panel.find("img").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : "{!! asset('images/photo.png') !!}");
+            panel.find("img").attr('src', (rec.photo) ? photoPath + '/' + rec.photo : PHOTO_BASE64);
             panel.find("span[name='eng_name']").text((!rec.first_name ? '' : rec.first_name) + ' ' + (!rec.middle_name ? '' : rec.middle_name) + ' ' + (!rec.last_name ? '' : rec.last_name));
             panel.find("span[name='kor_name']").text(!rec.kor_name ? '' : rec.kor_name);
             panel.find("span[name='birthdate']").text(' ' + (!rec.dob ? '' : rec.dob));
@@ -385,7 +414,7 @@
         function clearNormalFields() { 
             $editPanel.find('input:text').val(''); 
             $editPanel.find("input[name='email']").val('');
-            $editPanel.find("img[name='photo']").attr('src', "{{ asset('images/photo.png') }}");
+            $editPanel.find("img[name='photo']").attr('src', PHOTO_BASE64);
         }
 
         function clearSpecialFields() {
@@ -437,7 +466,6 @@
             if (column === 'edit' || column === "clone") {
                 openEditPanel(column, rec);
             } else if (column === 'delete') { 
-                fillEditPanel(rec);
                 $("#delete-item").modal('show').draggable({ handle: ".modal-header" });
             } else {
                 openShowPanel(column, rec);

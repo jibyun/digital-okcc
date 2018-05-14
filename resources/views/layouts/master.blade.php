@@ -36,12 +36,14 @@
 
         {{-- Basic Scripts --}}
         <script src="{{ asset('js/app.js') }}"></script>
-        <script src="{{ asset('js/okcc.js') }}"></script>
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
         {{-- jQuery idle timer --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-idletimer/1.0.0/idle-timer.min.js"></script>
+        {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         {{-- for additional scripts --}}
+        <script src="{{ asset('js/okcc.js') }}"></script>
         @yield('scripts')
         <script>
             // Session timeout

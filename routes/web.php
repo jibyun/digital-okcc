@@ -29,6 +29,7 @@ Route::get('admin/users', 'Admin\AdminPagesController@users')->name('admin.users
 Route::get('admin/members', 'Admin\AdminPagesController@members')->name('admin.members'); // Members landing page
 Route::get('admin/finances', 'Admin\AdminPagesController@finances')->name('admin.finances'); // Finances landing page
 Route::get('admin/inventories', 'Admin\AdminPagesController@inventories')->name('admin.inventories'); // Inventories landing page
+Route::get('admin/tests', 'Admin\AdminPagesController@tests')->name('admin.tests'); // Inventories landing page
 Route::get('admin/getMenu', 'Admin\AdminPagesController@getMenu')->name('admin.getmenu'); 
 
 /*
@@ -47,7 +48,7 @@ Route::get('admin/members/getCodesByCategoryIds', 'Admin\CodesController@getCode
 Route::resource('admin/members/codes', 'Admin\CodesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Members CRUD
 Route::get('admin/members/memberStart', 'Admin\AdminPagesController@memberStart')->name('admin.members.start');
-Route::resource('admin/members/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit', 'destroy' ], 'as' => 'admin' ] );
+Route::resource('admin/members/members', 'Admin\MembersController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
 // Privileges CRUD
 Route::get('admin/users/privilegeStart', 'Admin\AdminPagesController@privilegeStart')->name('admin.privileges.start');
 Route::resource('admin/users/privileges', 'Admin\PrivilegesController', [ 'except' => [ 'create', 'show', 'edit' ], 'as' => 'admin' ] );
@@ -81,6 +82,10 @@ Route::get('admin/members/getMembersByDepartmentId', 'Admin\MemDeptMapsControlle
 Route::get('admin/members/getMembersNotAssignedCell', 'Admin\MemDeptMapsController@getMembersNotAssignedCell')->name('admin.member-dept-trees.getmembers-notassigned');
 Route::get('admin/members/getMembersNotAssignedDept', 'Admin\MemDeptMapsController@getMembersNotAssignedDept')->name('admin.member-dept-trees.getmembers-notbelongin_dept');
 Route::resource('admin/members/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
+// Tests
+Route::get('admin/tests/toolbarTest', 'Admin\AdminPagesController@toolbarTest')->name('admin.tests.toolbar'); 
+Route::get('admin/tests/searchTest', 'Admin\AdminPagesController@searchTest')->name('admin.tests.search'); 
+
 // Image Upload
 Route::post('admin/members/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
 // Cell, Department Organizer
@@ -158,6 +163,22 @@ Route::get('okcc/memberList/settings', 'Rest\MemberList\MemberListController@get
  * 
  */
 Route::get('okcc/memberList/export', 'Rest\MemberList\ExportController@export')->middleware('auth')->name('memberlist.export');
+
+/**
+ * Method: GET/POST/PUT/DELETE
+ * URL: /okcc/memberList/memberHistory: 
+ * 
+ */
+Route::get('okcc/memberList/memberHistory/{memberid}', 'Rest\MemberList\MemberHistoryController@list')->middleware('auth');
+Route::resource('okcc/memberList/memberHistory', 'Rest\MemberList\MemberHistoryController')->middleware('auth')->only(['store', 'update', 'destroy']);
+
+/**
+ * Method: GET/POST/PUT/DELETE
+ * URL: /okcc/memberList/memberVisit: 
+ * 
+ */
+Route::get('okcc/memberList/memberVisit/{memberid}', 'Rest\MemberList\MemberVisitController@list')->middleware('auth');
+Route::resource('okcc/memberList/memberVisit', 'Rest\MemberList\MemberVisitController')->middleware('auth')->only(['store', 'update', 'destroy']);
 
 /**
  * Method: GET
