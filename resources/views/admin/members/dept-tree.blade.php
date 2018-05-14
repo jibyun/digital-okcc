@@ -16,7 +16,7 @@
     <h4>{{ __('messages.adm_title.title', ['title' => 'Department Tree']) }}</h4>
     <div id="toolbar">
         <div class='form-inline'>
-            <select id='departmentsCombo' class="form-group form-control mr-2" style="width: 180px;">
+            <select id='departmentsCombo' class="form-group form-control mr-2" style="width: 300px;">
             </select>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" title="Describe" data-content="">
                 <i class="fa fa-question" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
         const $table = $('#mainTable');
         const $addTable = $('#createTable');
         const $combo = $("#departmentsCombo");
-        const DEPARTMENT_CODE = 5 // department id in categories table
+        const DEPARTMENT_CODE = '{{ config('app.admin.deptCategoryId') }}'; // department id in categories table
         const codesUrl = "{!! route('admin.codes.index') !!}";
         const departmentTreesUrl = "{!! route('admin.department-trees.index') !!}";
         const getCodesNotInChild = "{!! route('admin.department-trees.getcodes-notin-child') !!}"
@@ -136,7 +136,7 @@
             var html = '';
             for (var i=0; i < parentList.length; i++) {
                 html += '<option value="' + parentList[i]['id'] + '" ' + (i===0 ? 'selected' : '') + '>' + 
-                        parentList[i]['txt'] + '</option>';
+                        parentList[i]['txt'] + ' (' +  parentList[i]['kor_txt'] + ')</option>';
             }
             $combo.append(html);    
             

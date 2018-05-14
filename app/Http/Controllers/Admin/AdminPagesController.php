@@ -239,7 +239,7 @@ class AdminPagesController extends Controller {
                 ],
                 [
                     'icon' => 'fa-angle-right',
-                    'text' =>  'Searh Test',
+                    'text' =>  'Dynamic Search Test',
                     'route' => route('admin.tests.search'),
                     'isOpened' => false,
                     'roles' => 'ADMIN_SUPER_ROLE',

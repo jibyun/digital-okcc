@@ -243,7 +243,14 @@ return [
     |--------------------------------------------------------------------------
     */
     'admin' => [
+        'statusCategoryId'          => '1', // Member Status category id
+        'officerCategoryId'         => '2', // Officer(Duty) category id
+        'familyCategoryId'          => '3', // Family Relation category id
+        'baptismCategoryId'         => '4', // Baptism Status category id
         'deptCategoryId'            => '5', // Department category id
+        'cityCategoryId'            => '6', // Department category id
+        'privinceCategoryId'        => '7', // Department category id
+        'countryCategoryId'         => '8', // Department category id
         'cellCategoryId'            => '9', // 구역 category id
         'logCategoryId'             => '10', // Log category id
         'positionCategoryId'        => '11', // Position category id

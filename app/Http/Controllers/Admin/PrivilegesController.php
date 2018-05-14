@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
+use Config;
 
 use App\Privilege;
 use App\Http\Services\Log\SystemLog;
@@ -50,7 +51,7 @@ class PrivilegesController extends Controller {
         } else {
             try {
                 $result = Privilege::create($request->all());
-                SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+                SystemLog::write(Config::get('app.admin.logInsert'), $this->TABLE_NAME . ' [ID] ' . $result->id);
                 return response()->json([ 'privileges' => $result ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -85,7 +86,7 @@ class PrivilegesController extends Controller {
             try {
                 $detail = SystemLog::createLogForUpdatedFields($privilegeUpdate, $input, null); 
                 $privileges = $privilegeUpdate->fill($input)->save();
-                SystemLog::write(110004, $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
+                SystemLog::write(Config::get('app.admin.logUpdate'), $this->TABLE_NAME . ' [ID] ' . $id . ' [DETAIL] ' . $detail);
                 return response()->json([ 'privileges' => $privileges ], 200);
             } catch (Exception $e) {
                 return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -99,7 +100,7 @@ class PrivilegesController extends Controller {
     public function destroy($id) {
         try {
             Privilege::find($id)->delete();
-            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write(Config::get('app.admin.logDelete'), $this->TABLE_NAME . ' [ID] ' . $id);
             return response()->json([ 'message' => 'DELETED!' ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);

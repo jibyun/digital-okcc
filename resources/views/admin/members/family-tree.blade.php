@@ -64,7 +64,7 @@
         const $addTable = $('#addTable');
         const $combo = $("#membersCombo");
         const $popover = $("#pop");
-        const RELATION_CODE = 3 // family relation id in categories table
+        const RELATION_CODE = '{{ config('app.admin.familyCategoryId') }}'; // family relation id in categories table
         const memberListURL = "{!! route('admin.users.get-users') !!}";
         const codesUrl = "{!! route('admin.codes.index') !!}";
         const familyTreesUrl = "{!! route('admin.family-trees.index') !!}";
@@ -191,7 +191,7 @@
             relationCombo.empty();
             var html = '<option value=""></option>';
             $.each(relations, function( index, relation ) {
-                html += '<option value="' + relation['id'] + '">' + relation['txt'] + '</option>';
+                html += '<option value="' + relation['id'] + '">' + relation['txt'] + ' (' + relation['kor_txt'] + ')</option>';
             });
             relationCombo.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
