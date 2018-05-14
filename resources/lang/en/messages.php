@@ -12,6 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    // Message for General(Common)
+    'common' => [
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'confirmation' => 'Confirmation',
+        'dateformat' => 'YYYY-MM-DD',
+    ],
 
     // Message for registration
     'registration' => [
@@ -77,6 +84,27 @@ return [
         'menu_basicinfo' => 'Basic Information',
         'menu_history' => 'History Information',
         'menu_visit' => 'Visit Information',
+        // Member History
+        'history_createtitle' => 'Create History',
+        'history_updatetitle' => 'Update History',
+        'history_add' => 'Add',
+        'history_delete' => 'Delete',
+        'history_edit' => 'Edit',
+        'history_title' => 'Title',
+        'history_startdate' => 'Start Date',
+        'history_enddate' => 'End Date',
+        'history_memo' => 'Details',
+        'history_dateformat' => 'YYYY-MM-DD',
+        // Member Visit
+        'visit_createtitle' => 'Create Visitation',
+        'visit_updatetitle' => 'Update Visitation',
+        'visit_add' => 'Add',
+        'visit_delete' => 'Delete',
+        'visit_edit' => 'Edit',
+        'visit_title' => 'Title',
+        'visit_visited_at' => 'Date of Visitation',
+        'visit_pastor' => 'Pastor of Visitation',
+        'visit_memo' => 'Note of Visitation',
     ],
 
     // Top Menu

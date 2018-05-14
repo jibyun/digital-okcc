@@ -13,6 +13,11 @@ class Member_History extends Model
     // If non-incrementing or non-numeric primary key, false
     public $incrementing = true;
     
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'id', 'member_id', 'started_at', 'finished_at', 'title', 'memo', 'updated_by'
+    ];
+
     // Relationship with members table
     public function member() {
         return $this->belongsTo('App\Member');
