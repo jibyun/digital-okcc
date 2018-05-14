@@ -169,6 +169,25 @@
             $table.bootstrapTable('resetView', { height: getHeight() });
         });
 
+        $table.on('column-switch.bs.table', function (e, field, checked) {
+            var columns = $table.bootstrapTable('getVisibleColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = true;
+            });
+            columns = $table.bootstrapTable('getHiddenColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = false;
+            });
+            //------------------ ADJUST BY BUG
+            if (checked === true) {
+                $table.bootstrapTable('hideColumn', field);
+                $table.bootstrapTable('showColumn', field);
+            } else {
+                $table.bootstrapTable('showColumn', field);
+                $table.bootstrapTable('hideColumn', field);
+            }
+        });
+
         function fillCombo($element, codeData, kind) {
             $element.empty();
             var html = '';

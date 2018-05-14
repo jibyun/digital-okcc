@@ -36,6 +36,7 @@ class AdminPagesController extends Controller {
     public function departmentOrginizer() { return view('admin.members.department'); }
 
     public function toolbarTest() { return view('admin.tests.toolbar'); }
+    public function searchTest() { return view('admin.tests.search'); }
 
     public function photoCropPost(Request $request) {
         $data = $request->image;
@@ -232,6 +233,14 @@ class AdminPagesController extends Controller {
                     'icon' => 'fa-angle-right',
                     'text' =>  'Toolbar Test',
                     'route' => route('admin.tests.toolbar'),
+                    'isOpened' => false,
+                    'roles' => 'ADMIN_SUPER_ROLE',
+                    'sub_menu' => null,
+                ],
+                [
+                    'icon' => 'fa-angle-right',
+                    'text' =>  'Searh Test',
+                    'route' => route('admin.tests.search'),
                     'isOpened' => false,
                     'roles' => 'ADMIN_SUPER_ROLE',
                     'sub_menu' => null,
