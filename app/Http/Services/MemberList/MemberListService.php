@@ -360,7 +360,8 @@ class MemberListService
             $menu=$this->makeMenu($cate);//code_category->menu_level1
             $children=array();
             foreach($cate->codes as $code){
-                array_push($children,$this->childMenu($code)); //code->children menu
+                if($code->parents()->get()->count()==0)
+                    array_push($children,$this->childMenu($code)); //code->children menu
             }
             $menu->children=$children;
             array_push($menuList,$menu);

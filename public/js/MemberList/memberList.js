@@ -277,7 +277,7 @@ function memberDetailSelectHandler(obj) {
 function memberDetailBasicSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
-    $('#familyTab').click();
+    $('#basicTab').click();
 }
 
 /**
