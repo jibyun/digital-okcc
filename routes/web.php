@@ -84,6 +84,7 @@ Route::get('admin/members/getMembersNotAssignedDept', 'Admin\MemDeptMapsControll
 Route::resource('admin/members/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
 // Tests
 Route::get('admin/tests/toolbarTest', 'Admin\AdminPagesController@toolbarTest')->name('admin.tests.toolbar'); 
+Route::get('admin/tests/searchTest', 'Admin\AdminPagesController@searchTest')->name('admin.tests.search'); 
 
 // Image Upload
 Route::post('admin/members/photo-crop', 'Admin\AdminPagesController@photoCropPost')->name('admin.photo-crop.post');
