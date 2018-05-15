@@ -35,6 +35,7 @@
         @include('layouts.footer')
 
         {{-- Basic Scripts --}}
+        <script src="js/lang.js"></script>
         <script src="{{ asset('js/app.js') }}"></script>
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>

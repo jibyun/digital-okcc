@@ -20,6 +20,21 @@ return [
         'dateformat' => 'YYYY-MM-DD',
     ],
 
+    // Message for Auth
+    'auth' => [
+        'changepassword' => 'Change Password',
+        'currentpassword' => 'Current Password',
+        'newpassword' => 'New Password',
+        'confirmpassword' => 'Confirm New Password',
+        'firstloginmsg' => 'This is your first login.  Please change your password',
+        'errorpasswordincorrct' => 'Your current password does not matches with the password you provided. Please try again.',
+        'errorpasswordsame' => 'New Password cannot be same as your current password. Please choose a different password.',
+        'changepasswordsuccess' => 'Password changed successfully!',
+
+
+
+    ],
+
     // Message for registration
     'registration' => [
 
