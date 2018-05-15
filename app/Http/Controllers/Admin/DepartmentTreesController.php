@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
+use Config;
 
 use App\Code;
 use App\Department_Tree;
@@ -43,7 +44,7 @@ class DepartmentTreesController extends Controller {
     public function store(Request $request) {
         try {
             $result = Department_Tree::create($request->all());
-            SystemLog::write(110003, $this->TABLE_NAME . ' [ID] ' . $result->id);
+            SystemLog::write(Config::get('app.admin.logInsert'), $this->TABLE_NAME . ' [ID] ' . $result->id);
             return response()->json([ 'result' => $result ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
@@ -58,7 +59,7 @@ class DepartmentTreesController extends Controller {
     public function destroy($id) {
         try {
             Department_Tree::find($id)->delete();
-            SystemLog::write(110005, $this->TABLE_NAME . ' [ID] ' . $id);
+            SystemLog::write(Config::get('app.admin.logDelete'), $this->TABLE_NAME . ' [ID] ' . $id);
             return response()->json([ 'message' => 'DELETED!' ], 200);
         } catch (Exception $e) {
             return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);

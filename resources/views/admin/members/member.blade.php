@@ -94,6 +94,13 @@
 @section('scripts')
 
     <script type="text/javascript">
+        const STATUS_CATEGORY_ID = '{{ config('app.admin.statusCategoryId') }}';
+        const OFFICER_CATEGORY_ID = '{{ config('app.admin.officerCategoryId') }}';
+        const BAPTISM_CATEGORY_ID = '{{ config('app.admin.baptismCategoryId') }}';
+        const CITY_CATEGORY_ID = '{{ config('app.admin.cityCategoryId') }}';
+        const PROVINCE_CATEGORY_ID = '{{ config('app.admin.privinceCategoryId') }}';
+        const COUNTRY_CATEGORY_ID = '{{ config('app.admin.countryCategoryId') }}';
+
         const DELETED_MEMBER = '{{ config('app.admin.deletedMember') }}'; 
         const MEMBER_STATUS = '{{ config('app.admin.memberStatus') }}'; 
         const LAYMAN_STATUS = '{{ config('app.admin.laymanStatus') }}'; 
@@ -169,11 +176,36 @@
             $table.bootstrapTable('resetView', { height: getHeight() });
         });
 
+        $table.on('column-switch.bs.table', function (e, field, checked) {
+            var columns = $table.bootstrapTable('getVisibleColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = true;
+            });
+            columns = $table.bootstrapTable('getHiddenColumns');
+            $.each(columns, function(index, data) {
+                data['searchable'] = false;
+            });
+            //------------------ ADJUST BY BUG
+            if (checked === true) {
+                $table.bootstrapTable('hideColumn', field);
+                $table.bootstrapTable('showColumn', field);
+            } else {
+                $table.bootstrapTable('showColumn', field);
+                $table.bootstrapTable('hideColumn', field);
+            }
+        });
+
         function fillCombo($element, codeData, kind) {
             $element.empty();
             var html = '';
             $.each(codeData, function( index, codes ) {
-                html += '<option value=' + codes['id'] + '>' + ( kind === 'province' ? codes['kor_txt'] + ' (' + codes['txt'] + ')' : codes['txt'] )  + '</option>';
+                if ( kind === 'province' ) {
+                    html += '<option value=' + codes['id'] + '>' + codes['kor_txt'] + ' (' + codes['txt'] + ')' + '</option>';
+                } else if ( kind === 'duty' || kind === 'level' || kind === 'status' ) {
+                    html += '<option value=' + codes['id'] + '>' + codes['txt'] + ' (' + codes['kor_txt'] + ')</option>';    
+                } else {
+                    html += '<option value=' + codes['id'] + '>' + codes['txt'] + '</option>';
+                }
             });
             $element.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
@@ -185,7 +217,9 @@
             });
         }
 
-        $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + '?category_id[]=1&category_id[]=2&category_id[]=4&category_id[]=6&category_id[]=7&category_id[]=8' })
+        $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.code.getCodesByCategoryIds') !!}" + 
+            '?category_id[]=' + STATUS_CATEGORY_ID + '&category_id[]=' + OFFICER_CATEGORY_ID + '&category_id[]=' + BAPTISM_CATEGORY_ID +
+            '&category_id[]=' + CITY_CATEGORY_ID + '&category_id[]=' + PROVINCE_CATEGORY_ID + '&category_id[]=' + COUNTRY_CATEGORY_ID })
         .done ( function(data, textStatus, jqXHR) { 
             fillCombo( $('#selectStatusCombo'), data['codes'][0], "status" );
             fillCombo( $('#selectDutyCombo'), data['codes'][1], "duty" );
@@ -361,11 +395,11 @@
             panel.find("span[name='province']").text(rec.province_name);
             panel.find("span[name='country']").text(rec.country_name);
             panel.find("span[name='postal_code']").text((!rec.postal_code ? '' : rec.postal_code));
-            panel.find("span[name='baptism_at']").text(' Baptism: ' + (!rec.baptism_at ? '' : rec.baptism_at));
-            panel.find("span[name='register_at']").text('Register: ' + (!rec.register_at ? '' : rec.register_at));
-            panel.find("span[name='status']").text(' Member Status: ' + rec.status_name);
-            panel.find("span[name='level']").text(' Baptism Status: ' + rec.level_name);
-            panel.find("span[name='duty']").text(' Duty: ' + rec.duty_name);
+            panel.find("span[name='baptism_at']").text( ' @lang('messages.adm_table.baptism_at'): ' + (!rec.baptism_at ? '' : rec.baptism_at));
+            panel.find("span[name='register_at']").text( '@lang('messages.adm_table.register_at'): ' + (!rec.register_at ? '' : rec.register_at));
+            panel.find("span[name='status']").text( ' @lang('messages.adm_table.status_name'): ' + rec.status_name);
+            panel.find("span[name='level']").text(' @lang('messages.adm_table.level_name'): ' + rec.level_name);
+            panel.find("span[name='duty']").text(' @lang('messages.adm_table.duty_name'): ' + rec.duty_name);
         }
 
         function openEditPanel(reason, rec) {

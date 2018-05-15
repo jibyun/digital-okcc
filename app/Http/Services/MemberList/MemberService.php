@@ -25,11 +25,11 @@ class MemberService
 
        // $memberinfo=(object)array();
         $member = Member::with(['codeByCityId','codeByProvinceId','codeByCountryId','codeByDutyId','codeByLevelId','codeByStatusId'
-        ,'visits.user','member_histories'])->find($id);
-       
+        ,'visits.user','member_histories','member_department_maps.codeByPositionId'])->find($id);
+        
         $familys=$this->getFamilys($id);
         $member->familys=$familys;
-        
+        Log::debug($member);
         return $member;
     }
 
@@ -49,11 +49,11 @@ class MemberService
         $familys=array();
         $member=Member::with(['primaryMembers'])->find($id);
         $primaryId=$id;
-        Log::debug($member);
+      
         if(!$member->primary)
         {
             if($member->primaryMembers->count()==0)
-            return null;
+            return array();
 
            $primaryId=$member->primaryMembers[0]->id;
         }

@@ -11,8 +11,8 @@
     <h4>{{ __('messages.adm_title.title', ['title' => 'Department Enrollment']) }}</h4>
     <div id="toolbar">
         <div class='form-inline py-2'>
-            <div class='mr-2' style="width: 200px;">
-                <select id='membersCombo' class="form-group form-control mr-2" style="width: 200px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
+            <div class='mr-2' style="width: 300px;">
+                <select id='membersCombo' class="form-group form-control mr-2" style="width: 300px;" data-placeholder="{{ __('messages.adm_table.select_member') }}">
                 </select>
             </div>
             <button id="pop" class="form-group form-control btn btn-secondary mr-2" type="button" data-placement="right" data-toggle="popover" data-trigger="focus" data-title="Describe" data-content="">
@@ -62,8 +62,8 @@
         const $table = $('#mainTable');
         const $combo = $("#membersCombo");
         const $popover = $("#pop");
-        const DEPARTMENT_CODE = 5; // department id in categories table
-        const POSITION_CODE = 12; // position id in categories table
+        const DEPARTMENT_CODE = '{{ config('app.admin.deptCategoryId') }}'; // department id in categories table
+        const POSITION_CODE = '{{ config('app.admin.positionCategoryId') }}'; // position id in categories table
         const memberListURL = "{!! route('admin.users.get-users') !!}";
         const codesUrl = "{!! route('admin.codes.index') !!}";
         const memDeptTreesUrl = "{!! route('admin.member-dept-trees.index') !!}";
@@ -227,7 +227,7 @@
             comboBox.empty();
             var html = '<option value=""></option>';
             $.each(lists, function( index, list ) {
-                html += '<option value="' + list['id'] + '">' + list['txt'] + '</option>';
+                html += '<option value="' + list['id'] + '">' + list['txt'] + ' (' + list['kor_txt'] + ')</option>';
             });
             comboBox.prepend(html);
             // The following options are available to pass into Chosen on instantiation.
