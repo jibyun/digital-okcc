@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -35,5 +37,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Process after login.
+     * If it is the first login, show the change password
+     */
+    protected function authenticated() {
+        $user = Auth::user();
+        LOG::debug($user);
+        if ($user -> firstlogin) {
+            return redirect()->route('changePasswordForm')->with("info", __('messages.auth.firstloginmsg'));
+        }
     }
 }

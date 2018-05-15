@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
+            $table->boolean('firstlogin')->default(true)->comment('The flag for the first login');
 
             $table->unsignedInteger('member_id')->nullable()->comment('Foreign Key: ID of Members Table');
             $table->unsignedInteger('privilege_id')->nullable()->comment('Foreign Key: ID of Privileges Table');
