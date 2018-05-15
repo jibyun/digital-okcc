@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     // Display the Admin page
     if (hasRole("ADMIN_ACCESS_ROLE") === true) {
-        $('#userDropdownMenu').append($('<a href="admin" class="dropdown-item">' + 
+        $('#userDropdownMenu').prepend($('<a href="admin" class="dropdown-item">' + 
                                         '<i class="fa fa-cog fa-lg mr-2"></i>' + i18n.messages.top_menu.admin + '</a>'));
     }
 

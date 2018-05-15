@@ -47,7 +47,7 @@ class LoginController extends Controller
         $user = Auth::user();
         LOG::debug($user);
         if ($user -> firstlogin) {
-            return redirect()->route('changePasswordForm');
+            return redirect()->route('changePasswordForm')->with("info", __('messages.auth.firstloginmsg'));
         }
     }
 }

@@ -30,7 +30,6 @@
 @endsection
 
 @section('scripts')
-<script src="js/lang.js"></script>
 <script src="{{ asset('js/MemberList/memberList.js') }}"></script>
 <script src="{{ asset('js/MemberList/memberDetail.js') }}"></script>
 <script src="{{ asset('js/MemberList/memberHistory.js') }}"></script>
