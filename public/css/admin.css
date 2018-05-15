@@ -55,7 +55,10 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     min-width: 250px;
     max-width: 250px;
     min-height: calc(100vh - 96px);
-    transition: all 0.3s;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
     font-size: 1em;
     background-color: #1B5E20;
 }
