@@ -8,7 +8,7 @@
         <div class="col-md-6 p-0">
             <div class="row m-3">
                 <div class="col-sm-4 p-0 text-left">
-                    <img width="150" height="150" class="rounded border boder-secondary" alt="Photo (150*150)" src="/images/photo.png">
+                    <img width="150" height="150" class="rounded border boder-secondary" alt="Photo (150*150)" src="images/photo.png">
                 </div>
                 <div class="col-sm-8 py-2 px-3 rounded bg-white" style="height: 150px; ">
                     <span class="h6-font-size pr-3" name="english_name"></span><span name="kor_name"></span><br>
