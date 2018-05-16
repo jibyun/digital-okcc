@@ -543,8 +543,4 @@
 
     {{-- Croppie is a fast, easy to use image cropping plugin with tons of configuration options! https://foliotek.github.io/Croppie/ --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.js"></script>
-
-    {{-- to implement make display order --}}
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
-
 @endsection
