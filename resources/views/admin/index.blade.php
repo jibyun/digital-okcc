@@ -3,12 +3,20 @@
 @section('content')
 <div style="margin: -15px -45px;">
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron jumbotron-fluid" style="background-color: #2196f3; color: whitesmoke;">
-        <div class="container">
-            <p><span class="h1-font-size">OKCC Cloud Office </span><span class="h4-font-size">for Admin</span></p>
-            <p class="lead text-justify">The LORD is the everlasting God, the Creator of the ends of the earth. He will not grow tired or weary, and his understanding no one can fathom. He gives strength to the weary and increases the power of the weak. Even youths grow tired and weary, and young men stumble and fall; but those who hope in the LORD will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.
-            <p style="color: orange">Isaiah 40:28-31</p>
+    <div class="jumbotron jumbotron-fluid pt-3 pb-2 my-0" style="background-color: #2196f3; color: whitesmoke;">
+        <div class="container text-center">
+            <p><span class="h1-font-size">{{ config('app.name', 'Application Name') }} </span><span class="h4-font-size">for Admin</span></p>
         </div>
     </div>
+    <div class="jumbotron jumbotron-fluid my-0" style="background-color:#002550; color: whitesmoke; min-height: calc(100vh - 236px)">
+    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function () {
+        $('.sidebar').addClass( "toggled" );
+    });
+</script>
 @endsection

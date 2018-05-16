@@ -164,6 +164,8 @@ return [
         'side_users'            => 'Users',
         'side_pri_role'         => 'Privilege & Role',
         'goback_home'           => 'Go Back Home',
+        'copyright2018'         => 'Copyright &copy; 2018 Ottawa Korean Community Church',
+        'contact'               => 'Contact to Admin',
     ],
 
     // using Admin System log 
@@ -204,6 +206,7 @@ return [
         'upload_photo'          => 'Upload Photo',
         'cell_organizer'        => 'Gooyeok Organizer',
         'dept_organizer'        => 'Department Organizer',
+        'contact'               => 'Contact Form',
     ],
 
     // using Admin table & CRUD
@@ -223,6 +226,8 @@ return [
         'first_name'            => 'First Name',
         'middle_name'           => 'Middle Name',
         'last_name'             => 'Last Name',
+        'full_name'             => 'Full Name',
+        'message'               => 'Message',
         'kor_name'              => '성명',
         'dob'                   => 'Birthdate',
         'gender'                => 'Gender',
@@ -322,6 +327,7 @@ return [
         'manager_btn'           => 'As a Manager',
         'member_btn'            => 'As a Member',
         'leave_btn'             => 'Leave',
+        'send_btn'              => 'Send Email',
         'enable_input'          => 'Enable',
         'disable_input'         => 'Disable',
         'manager_input'         => 'Team Manager',
@@ -336,7 +342,9 @@ return [
         'exception'             => 'Exception Status: ',
         'status_text'           => ' Status Text: ',
         'save_error'            => 'An unknown error occurred while saving.',
-        'save_success'          => 'The item was successfully saved.',
+        'save_success'          => 'The item was successfully SAVED.',
+        'send_success'          => 'The email was successfully sended to OKCC IT Administrator.',
+        'delete_success'        => 'The item was successfully DELETED.',
         'arrange_error'         => 'An unknown error occurred while re-arranging display order.',
         'arrange_success'       => 'Display order was successfully re-arranged.',
         'nomore_add'            => 'There are no more data to add.',

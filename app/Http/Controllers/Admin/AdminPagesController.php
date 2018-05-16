@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Validator;
+use Mail;
 
 class AdminPagesController extends Controller {
     public function __construct() {
@@ -48,6 +50,29 @@ class AdminPagesController extends Controller {
         $result = Storage::disk('uploads')->put($image_name, $data);
  
         return response()->json([ 'success'=>'done', 'filename'=>$image_name ]);
+    }
+
+    public function sendContactEmail(Request $request) {
+        $validator = Validator::make( $request->all(), [
+            'full_name'         => 'required',
+            'email'             => 'required|email',
+            'content'           => 'required',
+        ], []);
+        
+        if ($validator->fails()) {
+            return response()->json([ 'code' => 'validation', 'errors' => $validator->errors()->all() ], 200);
+        } else {
+            try {
+                Mail::send( 'admin.contact', [ 'msg' => $request->content ], function($mail) use($request) {
+                    $mail->from( $request->email, $request->full_name );
+                    $mail->to( env('MAIL_FROM_ADDRESS', 'it.help@okcc.ca'), env('MAIL_FROM_NAME', 'OCO Admin') );
+                    $mail->subject( 'Contact Message' );
+                });
+                return response()->json([ 'message' => 'Thank you for your message.' ], 200);
+            } catch (Exception $e) {
+                return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            }
+        }
     }
 
     public function getMenu() {

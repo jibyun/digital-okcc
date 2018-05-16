@@ -85,6 +85,8 @@ Route::get('admin/members/getMembersByDepartmentId', 'Admin\MemDeptMapsControlle
 Route::get('admin/members/getMembersNotAssignedCell', 'Admin\MemDeptMapsController@getMembersNotAssignedCell')->name('admin.member-dept-trees.getmembers-notassigned');
 Route::get('admin/members/getMembersNotAssignedDept', 'Admin\MemDeptMapsController@getMembersNotAssignedDept')->name('admin.member-dept-trees.getmembers-notbelongin_dept');
 Route::resource('admin/members/member-dept-trees', 'Admin\MemDeptMapsController', [ 'except' => [ 'create', 'edit', 'show' ], 'as' => 'admin' ] );
+// Contact Email
+Route::post('admin/sendContactEmail', 'Admin\AdminPagesController@sendContactEmail')->name('admin.send.contactemail'); 
 // Tests
 Route::get('admin/tests/toolbarTest', 'Admin\AdminPagesController@toolbarTest')->name('admin.tests.toolbar'); 
 Route::get('admin/tests/searchTest', 'Admin\AdminPagesController@searchTest')->name('admin.tests.search'); 
