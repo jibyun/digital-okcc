@@ -5,7 +5,8 @@
 @endauth    
     <div class="container-fluid justify-content-end">
         {{-- Reference of Copyright Notice: https://webmasters.stackexchange.com/questions/76905/how-should-copyright-notices-be-formatted-on-websites --}}
-        <a href="#" class=""><i class="fa fa-envelope-o"></i>&nbsp;&nbsp;<span style="font-size: 0.8em; color:orange">Contact to Admin</span></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-        <span style="font-size: 0.8em">Copyright &copy; 2018 Ottawa Korean Community Church</span>
+        <a href="javascript:void(0)" class="contact-email"><i class="fa fa-envelope-o mr-2"></i><span class='mr-2' style="font-size: 0.8em; color:orange">@lang('messages.adm_layout.contact')</span></a>|
+        <span class='ml-2' style="font-size: 0.8em">@lang('messages.adm_layout.copyright2018')</span>
     </div>
 </nav>
+@include('admin.includes.contact')
