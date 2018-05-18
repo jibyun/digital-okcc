@@ -208,3 +208,16 @@ body {
 #visit_table tbody > tr:not(.detail-view) > td:nth-child(2) {
     border-left: none!important;
 }
+
+/**
+* Validation Error
+*/
+.validation_error{
+	display: none;
+	margin-left: 10px;
+}		
+
+.validation_error_show{
+	color: red;
+	margin-left: 10px;
+}

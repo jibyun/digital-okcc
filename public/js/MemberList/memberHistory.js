@@ -10,9 +10,13 @@ $( function() {
     $('#history_table').on('click-cell.bs.table', historyTableCellClickHandler);
     // History table cell click handler
     $('#history_table').on('click-row.bs.table', historyTableRowClickHandler);
+    $('#history_title').on('input', historyValidationInputHandler);
+    $('#history_started_at').on('input', historyValidationInputHandler);
+    $('#history_finished_at').on('input', historyValidationInputHandler);
     
     $('#history_started_at').datetimepicker({ format: 'YYYY-MM-DD' });
     $('#history_finished_at').datetimepicker({ format: 'YYYY-MM-DD' });
+    
 
 });
   
@@ -111,6 +115,8 @@ function historyTableCellClickHandler(field, column, row, rec) {
         $('#history_started_at').val(rec.started_at);
         $('#history_finished_at').val(rec.finished_at);
         $('#history_memo').val(rec.memo);
+        $('#history_dialog_title').text(i18n.messages.memberdetail.history_updatetitle);
+        $('#btnMemberHistorySave').removeAttr('disabled');
         $('#memberHistoryDialog').modal('show');
     } else if (column === 'delete') {
         $('#history_id').val(rec.id);
@@ -137,7 +143,6 @@ function historyTableRowClickHandler(e, row, $tr, field) {
 function saveHistoryBtnClickHandler(e) {
     var historyUrl = memberHistoryUrl;
     e.preventDefault();
-    // TODO:validation check
 
     var paramData = {
         member_id: currentMemberId,
@@ -145,8 +150,7 @@ function saveHistoryBtnClickHandler(e) {
         finished_at: $('#history_finished_at').val(),
         title: $('#history_title').val(),
         memo: $('#history_memo').val(),
-        // TODO update real user id
-        updated_by: 1
+        updated_by: USER_ID
     };
 
     var method = 'POST';
@@ -184,6 +188,7 @@ function retrieveMemberHistorySuccessHandler(response) {
 }
 
 function createHistoryBtnClickHandler(e) {
+    $('#history_dialog_title').text(i18n.messages.memberdetail.history_createtitle);
     resetHistoryForm();
 }
 
@@ -191,5 +196,52 @@ function resetHistoryForm() {
     $('#frmHistory')[0].reset();
     $('#history_id').val('');
     $('#history_memberId').val('');
+    $('#btnMemberHistorySave').prop("disabled", true);
+}
+
+function historyValidationInputHandler () {
+    var error = memberHistoryValidation();
+    if (error == true) {
+        $('#btnMemberHistorySave').prop("disabled", true);
+    } else {
+        $('#btnMemberHistorySave').removeAttr('disabled');
+    }
+}
+
+function memberHistoryValidation() {
+    var error_flag = false;
+    // check title
+    var title = $('#history_title').val();
+    var title_error = $('#history_title_error');
+	if (title.trim()) {
+		title_error.removeClass("validation_error_show").addClass("validation_error");
+    } else {
+        title_error.removeClass("validation_error").addClass("validation_error_show");
+        error_flag = true;
+    }
+
+    // check start date
+    var started_at = $('#history_started_at').val();
+    var started_error = $('#history_startdate_error');
+	if (started_at.trim()) {
+		started_error.removeClass("validation_error_show").addClass("validation_error");
+    } else {
+        started_error.removeClass("validation_error").addClass("validation_error_show");
+        error_flag = true;
+    }
+
+    // check finished date
+    var finished_at = $('#history_finished_at').val();
+    var finished_error = $('#history_finisheddate_error');
+    var date_start = Date.parse(started_at);
+    var date_finished = Date.parse(finished_at);
+	if (!finished_at || date_start <= date_finished) {
+		finished_error.removeClass("validation_error_show").addClass("validation_error");
+    } else {
+        finished_error.removeClass("validation_error").addClass("validation_error_show");
+        error_flag = true;
+    }
+
+    return error_flag;
 }
 

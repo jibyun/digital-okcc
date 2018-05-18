@@ -4,7 +4,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h6 class="modal-title">{{ __('messages.memberdetail.history_createtitle') }}</h6>
+                <h6 id="history_dialog_title" class="modal-title">{{ __('messages.memberdetail.history_createtitle') }}</h6>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -21,7 +21,8 @@
                         </label>
                         <div class="col-sm-10 text-left">
                             <input type="text" class="form-control" id="history_title" name="history_title" 
-                                placeholder="{{ __('messages.memberdetail.history_title') }}" />
+                                placeholder="{{ __('messages.memberdetail.history_title') }}"/>
+                            <span id="history_title_error" class="validation_error">{{ __('messages.common.requiredfield_error') }}</span>
                         </div>
                     </div>
 
@@ -32,10 +33,11 @@
                         </label>
                         <div class="input-group date col-sm-10" data-target-input="nearest">
                             <input type="text" class="form-control datetimepicker-input" id="history_started_at" data-target="#history_started_at" name="history_started_at"
-                                placeholder="{{ __('messages.memberdetail.history_dateformat') }}" />
+                                placeholder="{{ __('messages.memberdetail.history_dateformat') }}"/>
                             <div class="input-group-append" data-target="#history_started_at" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
+                            <span id="history_startdate_error" class="validation_error">{{ __('messages.common.requiredfield_error') }}</span>
                         </div>
                     </div>
                     {{-- End Date --}}
@@ -49,6 +51,7 @@
                             <div class="input-group-append" data-target="#history_finished_at" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
+                            <span id="history_finisheddate_error" class="validation_error">{{ __('messages.common.daterange_error') }}</span>
                         </div>
                     </div>
 
@@ -61,7 +64,7 @@
 
                     {{-- Buttons --}}
                     <div class="form-group text-right">
-                        <button type="submit" id = "btnMemberHistorySave" class="btn">{{ __('messages.common.save') }}</button>
+                        <button type="submit" id = "btnMemberHistorySave" class="btn" disabled>{{ __('messages.common.save') }}</button>
                         <button type="button" class="btn" data-dismiss="modal">{{ __('messages.common.cancel') }}</button>
                     </div>
                 </form>

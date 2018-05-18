@@ -18,6 +18,11 @@ return [
         'cancel' => 'Cancel',
         'confirmation' => 'Confirmation',
         'dateformat' => 'YYYY-MM-DD',
+        'requiredfield_error' => 'This field is required',
+        'daterange_error' => 'End date should not be earlier than start date',
+        'system_log_create' => 'Table: [%s], Id:[%s]',
+        'system_log_update' => 'Table: [%s], Id:[%s], changes[%s]',
+        'system_log_delete' => 'Table: [%s], Id:[%s]',
     ],
 
     // Message for Auth
@@ -88,7 +93,12 @@ return [
         'savetoexcel' => 'Save to Excel',
         'filename' => 'File name',
         'save' => 'Save',
-        'cancel' => 'Cancel'
+        'cancel' => 'Cancel',
+        'history_title_valdation_error' => 'The title field can not be blank',
+        'history_startdate_valdation_error' => 'The Start date field can not be blank',
+        'history_finishdate_valdation_error' => 'The End date should be after the start date',
+        'visit_title_valdation_error' => 'The title field can not be blank',
+        'visit_startdate_valdation_error' => 'The Start date field can not be blank',
         
         
 

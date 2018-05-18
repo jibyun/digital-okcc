@@ -4,7 +4,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h6 class="modal-title">{{ __('messages.memberdetail.visit_createtitle') }}</h6>
+                <h6 id="visit_dialog_title" class="modal-title">{{ __('messages.memberdetail.visit_createtitle') }}</h6>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -22,6 +22,7 @@
                         <div class="col-sm-10 text-left">
                             <input type="text" class="form-control" id="visit_title" name="visit_title" 
                                 placeholder="{{ __('messages.memberdetail.visit_title') }}" />
+                            <span id="visit_title_error" class="validation_error">{{ __('messages.common.requiredfield_error') }}</span>
                         </div>
                     </div>
 
@@ -36,6 +37,7 @@
                             <div class="input-group-append" data-target="#visit_visited_at" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
+                            <span id="visit_visited_error" class="validation_error">{{ __('messages.common.requiredfield_error') }}</span>
                         </div>
                     </div>
                     {{-- Paster of Visitation --}}
@@ -58,7 +60,7 @@
 
                     {{-- Buttons --}}
                     <div class="form-group text-right">
-                        <button type="submit" id = "btnMemberVisitSave" class="btn">{{ __('messages.common.save') }}</button>
+                        <button type="submit" id = "btnMemberVisitSave" class="btn" disabled>{{ __('messages.common.save') }}</button>
                         <button type="button" class="btn" data-dismiss="modal">{{ __('messages.common.cancel') }}</button>
                     </div>
                 </form>

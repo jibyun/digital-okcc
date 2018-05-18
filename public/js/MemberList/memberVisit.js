@@ -10,9 +10,10 @@ $( function() {
     $('#visit_table').on('click-cell.bs.table', visitTableCellClickHandler);
     // Visit table cell click handler
     $('#visit_table').on('click-row.bs.table', visitTableRowClickHandler);
+    $('#visit_title').on('input', visitValidationInputHandler);
+    $('#visit_visited_at').on('input', visitValidationInputHandler);
     
-    $('#visit_started_at').datetimepicker({ format: 'YYYY-MM-DD' });
-    $('#visit_finished_at').datetimepicker({ format: 'YYYY-MM-DD' });
+    $('#visit_visited_at').datetimepicker({ format: 'YYYY-MM-DD' });
 
 });
   
@@ -107,6 +108,8 @@ function visitTableCellClickHandler(field, column, row, rec) {
         $('#visit_started_at').val(rec.started_at);
         $('#visit_paster').val(rec.paster_visitation);
         $('#visit_memo').val(rec.memo);
+        $('#visit_dialog_title').text(i18n.messages.memberdetail.visit_updatetitle);
+        $('#btnMemberVisitSave').removeAttr('disabled');
         $('#memberVisitDialog').modal('show');
     } else if (column === 'delete') {
         $('#visit_id').val(rec.id);
@@ -133,7 +136,6 @@ function visitTableRowClickHandler(e, row, $tr, field) {
 function saveVisitBtnClickHandler(e) {
     var visitUrl = memberVisitUrl;
     e.preventDefault();
-    // TODO:validation check
 
     var paramData = {
         member_id: currentMemberId,
@@ -141,8 +143,7 @@ function saveVisitBtnClickHandler(e) {
         paster_visitation: $('#visit_paster').val(),
         title: $('#visit_title').val(),
         memo: $('#visit_memo').val(),
-        // TODO update real user id
-        updated_by: 1
+        updated_by: USER_ID
     };
 
     var method = 'POST';
@@ -180,6 +181,7 @@ function retrieveMemberVisitSuccessHandler(response) {
 }
 
 function createVisitBtnClickHandler(e) {
+    $('#visit_dialog_title').text(i18n.messages.memberdetail.visit_createtitle);
     resetVisitForm();
 }
 
@@ -187,5 +189,38 @@ function resetVisitForm() {
     $('#frmVisit')[0].reset();
     $('#visit_id').val('');
     $('#visit_memberId').val('');
+    $('#btnMemberVisitSave').prop("disabled", true);
 }
 
+function visitValidationInputHandler () {
+    var error = memberVisitValidation();
+    if (error == true) {
+        $('#btnMemberVisitSave').prop("disabled", true);
+    } else {
+        $('#btnMemberVisitSave').removeAttr('disabled');
+    }
+}
+
+function memberVisitValidation() {
+    var error_flag = false;
+    // check title
+    var title = $('#visit_title').val();
+    var title_error = $('#visit_title_error');
+	if (title.trim()) {
+		title_error.removeClass("validation_error_show").addClass("validation_error");
+    } else {
+        title_error.removeClass("validation_error").addClass("validation_error_show");
+        error_flag = true;
+    }
+
+    // check visit date
+    var visited_at = $('#visit_visited_at').val();
+    var visited_error = $('#visit_visited_error');
+	if (visited_at.trim()) {
+		visited_error.removeClass("validation_error_show").addClass("validation_error");
+    } else {
+        visited_error.removeClass("validation_error").addClass("validation_error_show");
+        error_flag = true;
+    }
+    return error_flag;
+}

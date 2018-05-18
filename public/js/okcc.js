@@ -97,6 +97,7 @@ function restCallFailureHandler(response, status, err) {
         case 403:
             break;
         case 400:
+            toastr.error( response.responseJSON.data, 'Bad Request' );
             break;
         default:
             toastr.error( response.responseJSON.data, 'Internal Error' );

@@ -30,6 +30,8 @@ $(document).ready(function () {
     $('#btnExport').on('click', exportBtnClickHandler);
     // Save As Excel button click event handler
     $('#btnSaveAsExcel').on('click', saveAsExportBtnClickHandler);
+    // Title input change event handler
+    $('#history_title').on('input', historyTitleInputHandler);
 
 
     // Show member category side bar as a default
@@ -302,4 +304,8 @@ function memberDetailVisitSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
     $('#visitTab').click();
+}
+
+function historyTitleInputHandler(e) {
+    
 }
