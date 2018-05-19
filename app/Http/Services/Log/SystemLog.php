@@ -31,7 +31,8 @@ class SystemLog {
         try {
             return System_Log::create($input);
         } catch (Exception $ex) {
-            return response()->json([ 'code' => 'exception', 'errors' => $e->getMessage(), 'status' => $e->getCode() ], 200);
+            LOG::error($ex);
+            return -1;
         }
     }
 

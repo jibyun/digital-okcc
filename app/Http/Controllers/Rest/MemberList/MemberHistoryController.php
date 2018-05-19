@@ -48,11 +48,13 @@ class MemberHistoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //$result = (object)array();
-        //$result->members = $this->memberHistoryService->createHistory($request);
         // Check validation
+        $result = $this->memberHistoryService->validate($request);
+        if ($result != 1) {
+            return $this->sendError("ERROR", $result, 400);
+        }
         $result = $this->memberHistoryService->createHistory($request);
-        if ($result == 0) {
+        if ($result > 0) {
             //LOG::debug("This is message from : " . $result->members);
             return $this->sendResponse("SUCCESS", "Member history created", 200);
         } else {
@@ -91,8 +93,14 @@ class MemberHistoryController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        // Check validation
+        $result = $this->memberHistoryService->validate($request);
+        if ($result != 1) {
+            return $this->sendError("ERROR", $result, 400);
+        }
+        // Update
         $result = $this->memberHistoryService->updateHistory($request, $id);
-        if ($result == 0) {
+        if ($result > 0) {
             //LOG::debug("This is message from : " . $result->members);
             return $this->sendResponse("SUCCESS", "Member history updated", 200);
         } else {

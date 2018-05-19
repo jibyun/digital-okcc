@@ -27,7 +27,7 @@
                         {{ csrf_field() }}
  
                         <div class="form-group row">
-                            <label for="new-password" class="col-md-4 col-form-label text-md-right">{{ __('messages.auth.currentpassword') }}</label>
+                            <label for="current-password" class="col-md-4 col-form-label text-md-right">{{ __('messages.auth.currentpassword') }}</label>
  
                             <div class="col-md-6">
                                 <input id="current-password" type="password" class="form-control{{ $errors->has('current-password') ? ' is-invalid' : '' }}" name="current-password" required>

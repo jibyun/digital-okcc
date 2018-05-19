@@ -55,6 +55,7 @@
             @auth
             // Get roles for current user
             var rols = "{{ Auth::user()->roles() }}";
+            var USER_ID = "{{ Auth::user()->id }}";
             var USER_ROLES = JSON.parse(rols.replace(/&quot;/g, '"'));
             @else
             var USER_ROLES = '';

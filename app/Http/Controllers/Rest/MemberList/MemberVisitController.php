@@ -49,9 +49,13 @@ class MemberVisitController extends BaseController
     public function store(Request $request)
     {
         // Check validation
+        $result = $this->memberVisitService->validate($request);
+        if ($result != 1) {
+            return $this->sendError("ERROR", $result, 400);
+        }
+        // Check validation
         $result = $this->memberVisitService->createVisit($request);
-        if ($result == 0) {
-            //LOG::debug("This is message from : " . $result->members);
+        if ($result > 0) {
             return $this->sendResponse("SUCCESS", "Member Visitation created", 200);
         } else {
             return $this->sendError("ERROR", "Error creating member visitation", 500);
@@ -89,9 +93,13 @@ class MemberVisitController extends BaseController
      */
     public function update(Request $request, $id)
     {
+        // Check validation
+        $result = $this->memberVisitService->validate($request);
+        if ($result != 1) {
+            return $this->sendError("ERROR", $result, 400);
+        }
         $result = $this->memberVisitService->updateVisit($request, $id);
-        if ($result == 0) {
-            //LOG::debug("This is message from : " . $result->members);
+        if ($result > 0) {
             return $this->sendResponse("SUCCESS", "Member visitation updated", 200);
         } else {
             return $this->sendError("ERROR", "Error updating member visitation", 500);
