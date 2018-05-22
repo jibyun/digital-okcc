@@ -30,9 +30,10 @@ $(document).ready(function () {
     $('#btnExport').on('click', exportBtnClickHandler);
     // Save As Excel button click event handler
     $('#btnSaveAsExcel').on('click', saveAsExportBtnClickHandler);
-    // Title input change event handler
-    $('#history_title').on('input', historyTitleInputHandler);
 
+    // This is override function
+    gj.tree.methods.displayClickHandler = newDisplayClickHandler;
+    
 
     // Show member category side bar as a default
     // TODO: move to function.
@@ -74,8 +75,6 @@ $(document).ready(function () {
         }
     });
     
-    
-
     // Get LandingPage bookmark
     restApiCall(memberListSettingsUrl, "GET", null, settingsSuccess, null);
     showLandingContent();
@@ -306,6 +305,25 @@ function memberDetailVisitSelectHandler(obj) {
     $('#visitTab').click();
 }
 
-function historyTitleInputHandler(e) {
-    
+
+/**
+ * This is overriden function from bootstrap tree
+ * It do not unselect when node is clicked again.
+ * @param {tree control}  
+ */
+function newDisplayClickHandler($tree) {
+    return function (e) {
+        var $display = $(this),
+            $node = $display.closest('li'),
+            cascade = $tree.data().cascadeSelection;
+        if ($node.attr('data-selected') === 'true') {
+            //gj.tree.methods.unselect($tree, $node, cascade);
+            // Do nothing.
+        } else {
+            if ($tree.data('selectionType') === 'single') {
+                gj.tree.methods.unselectAll($tree);
+            }
+            gj.tree.methods.select($tree, $node, cascade);
+        }
+    }
 }
