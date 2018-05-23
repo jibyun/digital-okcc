@@ -226,6 +226,150 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Member List Column info
+    |--------------------------------------------------------------------------
+    |
+    | This is the JSON string to define the table columns in member list
+    | You can edit it at https://jsoneditoronline.org/
+    |
+    */
+    'MemberList_ColumnInfos' => '[
+        {
+          "field": "",
+          "title": "",
+          "checkbox": true,
+          "visible": true
+        },
+        {
+          "field": "eng_name",
+          "title": "Name",
+          "checkbox": false,
+          "visible": true
+        },
+        {
+          "field": "first_name",
+          "title": "First Name",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "middle_name",
+          "title": "Middle Name",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "last_name",
+          "title": "Last Name",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "kor_name",
+          "title": "Korean Name",
+          "checkbox": false,
+          "visible": true
+        },
+        {
+          "field": "dob",
+          "title": "BirthDate",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "gender",
+          "title": "Gender",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_duty_id.txt",
+          "title": "Officers",
+          "checkbox": false,
+          "visible": true
+        },
+        {
+          "field": "email",
+          "title": "Email",
+          "checkbox": false,
+          "visible": true
+        },
+        {
+          "field": "tel_home",
+          "title": "Home phone",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "tel_office",
+          "title": "Office phone",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "tel_cell",
+          "title": "Cell phone",
+          "checkbox": false,
+          "visible": true
+        },
+        {
+          "field": "address",
+          "title": "Address",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "postal_code",
+          "title": "Postal Code",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_city_id.txt",
+          "title": "City",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_province_id.txt",
+          "title": "Province",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_country_id.txt",
+          "title": "Country",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_status_id.txt",
+          "title": "Church Member",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "code_by_level_id.txt",
+          "title": "Baptism",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "register_date",
+          "title": "Register Date",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "baptism_date",
+          "title": "Baptism Date",
+          "checkbox": false,
+          "visible": false
+        }
+      ]',
+    
+    /*
+    |--------------------------------------------------------------------------
     | Member List Landing page item list
     |--------------------------------------------------------------------------
     |

@@ -84,7 +84,7 @@ class MembersExport implements FromQuery, WithHeadings, WithMapping  {
             $member->codeByDutyId->txt,
             $member->register_at,
             $member->baptism_at
-            // need to add department and position
+            // TODO:need to add department and position
         ];
     }
 
