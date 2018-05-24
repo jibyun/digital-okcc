@@ -50,12 +50,13 @@ class MemberListService
         $category = $this->findCategoryByCode($code);
         $field = $this->findFieldByCode($code);
         $members = '';
+        $dependentCodes = $this->getAllCodes($code);
         //TODO: replace the 5, 10 to something else
         if ($category->code_category_id  == 5
             || $category->code_category_id == 10) {
             $members = CommonService::getMemberListWithCodeValue()
-                                ->whereHas('departmentId', function($query) use ($code) {
-                                    $query -> where('department_id', $code);
+                                ->whereHas('departmentId', function($query) use ($dependentCodes) {
+                                    $query -> wherein('department_id', $dependentCodes);
                                     })
                                 ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
                                 ->get();
@@ -398,6 +399,26 @@ class MemberListService
         $menu->selectable=false;
         $menu->children=null;
         return $menu;
+    }
+
+    private function getAllCodes($code) {
+        $codeObj = Code::where('id', $code)->first();
+        $dependentCodes = array();
+        $dependentCodes = $this->getDependentCodes($codeObj, $dependentCodes);
+        LOG::debug($dependentCodes);
+        return $dependentCodes;
+    }
+
+    private function getDependentCodes($code, $dependentCodes) {
+        $children = $code->children()->get();
+
+        if ($children->count() > 0) {
+            foreach ($children as $child) {
+                $dependentCodes = $this->getDependentCodes($child, $dependentCodes);
+            }
+        }
+        array_push($dependentCodes, $code->id);
+        return $dependentCodes;
     }
 }
 
