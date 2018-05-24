@@ -52,9 +52,11 @@ class MemberListService
         $members = '';
         $searchByDepartment = config('app.SearchByDepartment');
         if (in_array($category->code_category_id, $searchByDepartment)) {
+            // In case of department type, it looks up all dependent nodes.
+            $dependentCodes = $this->getDepartmentCodes($code);
             $members = CommonService::getMemberListWithCodeValue()
-                                ->whereHas('departmentId', function($query) use ($code) {
-                                    $query -> where('department_id', $code);
+                                ->whereHas('departmentId', function($query) use ($dependentCodes) {
+                                    $query -> wherein('department_id', $dependentCodes);
                                     })
                                 ->select('*', DB::raw("CONCAT(first_name,' ',last_name) as eng_name"))
                                 ->get();
@@ -239,6 +241,34 @@ class MemberListService
         $menu->selectable=false;
         $menu->children=null;
         return $menu;
+    }
+
+    /**
+     * Get all department codes including dependent
+     * 
+     * return array of code 
+     */
+    private function getDepartmentCodes($code) {
+        $codeObj = Code::where('id', $code)->first();
+        $dependentCodes = array();
+        $dependentCodes = $this->getDependentCodes($codeObj, $dependentCodes);
+        LOG::debug($dependentCodes);
+        return $dependentCodes;
+    }
+
+    /**
+     * Recursive function to get all dependent code
+     */
+    private function getDependentCodes($code, $dependentCodes) {
+        $children = $code->children()->get();
+
+        if ($children->count() > 0) {
+            foreach ($children as $child) {
+                $dependentCodes = $this->getDependentCodes($child, $dependentCodes);
+            }
+        }
+        array_push($dependentCodes, $code->id);
+        return $dependentCodes;
     }
 }
 
