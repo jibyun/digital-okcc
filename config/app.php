@@ -380,7 +380,29 @@ return [
     'MemberList_Bookmark' => '[{"title":"2","children":["20001","20002", "20003", "20004", "20005"]}, 
                               {"title":"5","children":["50001","50002", "50003", "50004", 
                               "50005", "50006", "50007", "50008", "50009", "50010"]}]',
-                                  
+
+    /*
+    |--------------------------------------------------------------------------
+    | Diaplayable categories
+    |--------------------------------------------------------------------------
+    |
+    | Thoes categories will be displayed in the side menu tree
+    | 2-> Officers, 5-> Department, 9 -> Gyogoo
+    |
+    */
+    'DisplayableCategories' => array(2, 5, 9),
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Department Type
+    |--------------------------------------------------------------------------
+    |
+    | This is the array of code whose type is department.
+    | 5-> Department, 9 -> Gyogoo
+    |
+    */
+    'SearchByDepartment' => array(5, 9),
+
     /*
     |--------------------------------------------------------------------------
     | Configuration used in Admin

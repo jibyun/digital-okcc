@@ -50,9 +50,8 @@ class MemberListService
         $category = $this->findCategoryByCode($code);
         $field = $this->findFieldByCode($code);
         $members = '';
-        //TODO: replace the 5, 10 to something else
-        if ($category->code_category_id  == 5
-            || $category->code_category_id == 10) {
+        $searchByDepartment = config('app.SearchByDepartment');
+        if (in_array($category->code_category_id, $searchByDepartment)) {
             $members = CommonService::getMemberListWithCodeValue()
                                 ->whereHas('departmentId', function($query) use ($code) {
                                     $query -> where('department_id', $code);
@@ -194,11 +193,8 @@ class MemberListService
         $allMember->txt = __('messages.memberlist.allmember');
         array_push($menuList, $this->makeMenu($allMember));
 
-
-        //전교인 메뉴는 관련 코드없이 카데고리에 생성하면 나올 수 있도록 처리
-       // $result=array();
-
-        $cates=Code_Category::with(['codes'])->whereIn('id',array(2,5,9))->get();
+        $displayableCategories = config('app.DisplayableCategories');
+        $cates=Code_Category::with(['codes'])->whereIn('id', $displayableCategories)->get();
 
 
         foreach($cates as $cate){
