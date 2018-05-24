@@ -30,6 +30,10 @@ $(document).ready(function () {
     $('#btnExport').on('click', exportBtnClickHandler);
     // Save As Excel button click event handler
     $('#btnSaveAsExcel').on('click', saveAsExportBtnClickHandler);
+    // Search button click event handler
+    $("#btnSearch").on('click', searchBtnClickHandler);
+    // Search Input keypress event handler
+    $("#inputSearch").on('keypress', searchInputKeypressHandler);
 
     // This is override function
     gj.tree.methods.displayClickHandler = newDisplayClickHandler;
@@ -61,24 +65,30 @@ $(document).ready(function () {
         treeSelectionChanged(id, data);
     });
 
-    // search button click
-    $("#btnSearch").button().click(function(){
-        searchMember($("#inputSearch").val());
-    });
-
-    // search button click
-    $("#inputSearch").keypress(function(e) {
-        if (e.which === 13) {
-            $(this).attr("disabled", "disabled");
-            searchMember($("#inputSearch").val());
-            $(this).removeAttr("disabled");
-        }
-    });
-    
     // Get LandingPage bookmark
     restApiCall(memberListSettingsUrl, "GET", null, settingsSuccess, null);
     showLandingContent();
 });
+
+/**
+ * Search Button Click event handler
+ */
+function searchBtnClickHandler() {
+    searchMember($("#inputSearch").val());
+}
+
+/**
+ * Search Input keypress event handler
+ * 
+ * @param {} e 
+ */
+function searchInputKeypressHandler(e) {
+    if (e.which === 13) {
+        $(this).attr("disabled", "disabled");
+        searchMember($("#inputSearch").val());
+        $(this).removeAttr("disabled");
+    }
+}
 
 
 /**
@@ -87,7 +97,8 @@ $(document).ready(function () {
  * @param {string} searchString 
  */
 function searchMember(searchString) {
-    // TODO: Unselect tree, update title
+    // Unselect tree, update title
+    sideMenuTree.unselectAll();
     updateTitle($('#pageTitle'), i18n.messages.memberlist.search_result);
     var url = searchUrl + "/" + searchString;
     currentSelectedCode = searchMemberCode;
@@ -200,6 +211,8 @@ function showMainConent() {
 }
 
 function treeSelectionChanged(id, data) {
+    // Remove any string in search box and update title
+    $("#inputSearch").val('')
     updateTitle($('#pageTitle'), data.text);
     // This is the special case for all member.
     if (data.code === allMemberCode) {
