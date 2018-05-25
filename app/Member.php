@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Member extends Model {
     // Table name: If table name is different from model name, it should need.
@@ -19,7 +20,10 @@ class Member extends Model {
     ];
 
     // The custom attributes 
-    protected $appends = ['english_name','duty_txt','level_txt','status_txt','city_txt','province_txt','country_txt'];
+    protected $appends = [
+        'english_name','duty_txt','level_txt','status_txt','city_txt','province_txt','country_txt',
+        'departments', 'positions'
+    ];
 
     // Relationship with between codes table and city_id
     public function codeByCityId() {
@@ -120,6 +124,36 @@ class Member extends Model {
 
     public function getDutyTxtAttribute() {
         return $this->duty()->first()->txt;
+    }
+
+    /**
+     * Return the comma seperated department string
+     */
+    public function getDepartmentsAttribute() {
+        $departments = array();
+        $member_department_maps = $this->member_department_maps()->get();
+        if ($member_department_maps !== null) {
+            foreach ($member_department_maps as $member_department_map) {
+                array_push($departments, $member_department_map->department_txt);
+            }
+        }
+        LOG::debug($departments);
+        return implode(", ", $departments);
+    }
+
+    /**
+     * Return the comma seperated position string
+     */
+    public function getPositionsAttribute() {
+        $positions = array();
+        $member_department_maps = $this->member_department_maps()->get();
+        if ($member_department_maps !== null) {
+            foreach ($member_department_maps as $member_department_map) {
+                array_push($positions, $member_department_map->position_txt);
+            }
+        }
+        LOG::debug($positions);
+        return implode(", ", $positions);
     }
 
 }

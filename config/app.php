@@ -343,6 +343,18 @@ return [
           "visible": false
         },
         {
+          "field": "departments",
+          "title": "Departments",
+          "checkbox": false,
+          "visible": false
+        },
+        {
+          "field": "positions",
+          "title": "Positions",
+          "checkbox": false,
+          "visible": false
+        },
+        {
           "field": "code_by_status_id.txt",
           "title": "Church Member",
           "checkbox": false,

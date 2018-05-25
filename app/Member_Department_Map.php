@@ -16,7 +16,7 @@ class Member_Department_Map extends Model {
         'id', 'member_id', 'department_id', 'position_id', 'enabled', 'updated_by', 'manager'
     ];
     // The custom attributes 
-    protected $appends = ['department_txt','is_manager_txt'];
+    protected $appends = ['department_txt', 'position_txt', 'is_manager_txt'];
     // Relationship with between members table and member_id
     public function memberByMemberId() {
         return $this->belongsTo('App\Member', 'member_id', 'id');
@@ -46,6 +46,11 @@ class Member_Department_Map extends Model {
     //department txt
     public function getDepartmentTxtAttribute() {
         return $this->codeByDepartmentId()->first()->txt;
+    }
+
+    //Position txt
+    public function getPositionTxtAttribute() {
+        return $this->codeByPositionId()->first() ? $this->codeByPositionId()->first()->txt : '';
     }
 
      //department txt
