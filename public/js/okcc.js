@@ -28,6 +28,9 @@ $(document).ready(function () {
                                         '<i class="fa fa-cog fa-lg mr-2"></i>' + i18n.messages.top_menu.admin + '</a>'));
     }
 
+    // Apply Block UI during the ajax call
+    $(document).ajaxStart($.blockUI({message: 'Loading...'})).ajaxStop($.unblockUI);
+
 });
 
 // When the user scrolls down 20px from the top of the document, show the button
@@ -67,6 +70,7 @@ function hasRole(roleName) {
  * @param {*} failureFunc failure function
  */
 function restApiCall(url, method, param, successFunc, failureFunc) {
+    $.blockUI({message: 'Loading...'})
     if (failureFunc == null) {
         failureFunc = restCallFailureHandler;
     }
