@@ -3,6 +3,7 @@ var codesURL = 'okcc/member/getCategory';
 var memberEditUrl='okcc/member/edit';
 var saveIndex; // Row index of the table
 var currentMemberId; // Current member Id
+var familyMember;
 var current_member;
 
 $( function() {
@@ -58,64 +59,48 @@ function memberGetSuccess(response) {
     
 }
 
+function memberFamilyGetSuccess(response) {
+    
+    familyMember = JSON.parse(response.data);
+    fillData("memberBasicInfoDialog",familyMember);  
+    $('#memberBasicInfoDialog').modal('show');
+    
+    
+}
+
 
 
 function fillFamily(familys){
-    var table = $('#family_table');
-    var tableColumn = [{
-        field: 'english_name',
-        width: '20%',
-        title: 'english_name',
-        color:'blue'
-    }, {
-        field: 'relation_txt',
-        width: '20%',
-        title: 'relation'
-    },{
-        field: 'id',
-        visible:false
-    }];
     
-   
+    $('#spanFamilys').children().remove();
+    var otherFamilis=0;
+    for(var i= 0; i < familys.length; i++) {
+        var item = familys[i];
+        var con=' '+otherFamilis>0?", ":"";
 
-    table.bootstrapTable({
-        columns: tableColumn,
-        pagination: false
-                
-    });
+        if(item.id==currentMemberId) continue;
+        otherFamilis++;
+        $('#spanFamilys').append($('<a/>', {
+            text: con+item.english_name+'('+item.relation_txt+')',
+            style: "display:inline-block;color:blue;",
+            id: 'family_' + item.id,
+            onclick:'GetFamilyInfo('+item.id+');'
+        }))
+        
+    }
+  
 
-    table.bootstrapTable('load', familys);
 }
 
-function fillWork(works){
-    var table = $('#work_table');
-    var tableColumn = [{
-        field: 'id',
-        visible:false
-    },{
-        field: 'department_txt',
-        width: '40%',
-        title: 'Department',
-        color:'blue'
-    }, {
-        field: 'code_by_position_id.txt',
-        width: '40%',
-        title: 'Position'
-    },{
-        field: 'is_manager_txt',
-        width: '20%',
-        title: 'IsManager'
-    }];
-    
+
+
+function fillWork(departments){
    
-
-    table.bootstrapTable({
-        columns: tableColumn,
-        pagination: false
-                
-    });
-
-    table.bootstrapTable('load', works);
+    $('#spanWorks').children().remove();
+        $('#spanWorks').append($('<span/>', {
+            text: departments,
+            style: "display:inline-block;"
+         }));
 }
 
 function openShowPanel(member) {
@@ -124,7 +109,7 @@ function openShowPanel(member) {
     fillFamily(member.familys);
     fillHistory(member.member_histories);
     fillVisit(member.visits);
-    fillWork(member.member_department_maps); 
+    fillWork(member.departments); 
 }
 
 
@@ -139,11 +124,28 @@ function fillData(parentId,rec){
 
 }
 
+function SubInfoView(id)
+{
+    $('#divVisit').hide();
+    $('#divHistory').hide();
+    $('#divBasic').hide();
+    $('#'+id).show();
+}
+
 function GetMemberInfo(memberId)
 {
     var url=memberUrl+"/"+memberId;
     restApiCall(url, "GET", null, memberGetSuccess, null);
     
 }
+
+function GetFamilyInfo(memberId)
+{
+    var url=memberUrl+"/"+memberId;
+    restApiCall(url, "GET", null, memberFamilyGetSuccess, null);
+    
+}
+
+
 
 

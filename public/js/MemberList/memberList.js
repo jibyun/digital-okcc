@@ -280,6 +280,7 @@ function memberDetailSelectHandler(obj) {
 
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
+    SubInfoView('divBasic');
 }
 
 /**
@@ -291,7 +292,7 @@ function memberDetailSelectHandler(obj) {
 function memberDetailBasicSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
-    $('#basicTab').click();
+    SubInfoView('divBasic');
 }
 
 /**
@@ -303,7 +304,7 @@ function memberDetailBasicSelectHandler(obj) {
 function memberDetailHistorySelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
-    $('#historyTab').click();
+    SubInfoView('divHistory');
 }
 
 /**
@@ -315,7 +316,7 @@ function memberDetailHistorySelectHandler(obj) {
 function memberDetailVisitSelectHandler(obj) {
     $('#divMainPanel').hide();
     $('#divMemberDetailPanel').show();
-    $('#visitTab').click();
+    SubInfoView('divVisit');
 }
 
 
