@@ -2,7 +2,7 @@
 <div class="d-flex">
     <nav class="sidebar bg-dark">
         <ul class="list-unstyled">
-            <li style="padding: 15px;">
+            <li>
                 <div class="input-group">
                     <input id="inputSearch" type="text" class="form-control" placeholder="Search by Name" aria-label="Search" aria-describedby="Search by name">
                     <div class="input-group-append">
@@ -10,7 +10,7 @@
                     </div>
                 </div>
             </li>
-            <li style="padding: 15px;">
+            <li>
                 @yield('sidePanel')
             </li>
         </ul>

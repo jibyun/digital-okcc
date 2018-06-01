@@ -1,51 +1,43 @@
 {{-- Floating Top Button --}}
 <button id="topButton" type="button" class="btn btn-primary btn-circle btn-lg" title="Go to top" onclick="topFunction()" style="display: none;"><i class="fa fa-arrow-up"></i></button>
 {{-- Navigation Bar --}}
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
     <div style="min-width:250px; max-width:250px;">
         @auth
         <a class="sidebar-toggle text-light mr-3"><i class="fa fa-bars"></i></a>
         @endauth
-        <a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
+        @if ( strpos(url()->current(), 'admin') !== false )
+            <a class="navbar-brand" href="{{ URL::to('/') }}/admin"><i class="fa fa-code-branch"></i>{{ str_replace('Office', 'Admin', config('app.name', 'Application Name')) }}</a>
+        @else
+            <a class="navbar-brand" href="{{ URL::to('/') }}"><i class="fa fa-code-branch"></i>{{ config('app.name', 'Application Name') }}</a>
+        @endif
     </div>
-
+    {{-- Collapse 되었을 때 나타날 버튼 --}}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="fa fa-bars"></span>
+            <span class="fa fa-bars"></span>
     </button>
     @auth
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        
-        <ul class="navbar-nav mr-auto">
-            
-            <li id="menu_members" class="nav-item">
-                <a class="nav-link" href="{{ route('memberList') }}">{{__('messages.top_menu.members')}}</a></li>
-            <!-- TODO: This is the temporary menu for member detail view.  It will be remvoed later -->
-            <li id="menu_member_detail" class="nav-item">
-                <a class="nav-link" href="#">{{__('messages.top_menu.member_details')}}</a></li>
-            <li id="menu_finance" class="nav-item hide">
-                <a class="nav-link" href="#">{{__('messages.top_menu.finance')}}</a></li>
-            <li id="menu_inventory" class="nav-item hide">
-                <a class="nav-link" href="#">{{__('messages.top_menu.inventory')}}</a></li>
-            
+        <ul id="topMenu" class="navbar-nav mr-auto">
+
         </ul>
+
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
+                <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                    <i class="fa fa-fw fa-user mr-1"></i>{{ Auth::user()->name }}
                 </a>
-                <!-- Dropdown menu for logout -->
-                <div id="userDropdownMenu" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="changePassword">
-                        <i class="fa fa-key fa-lg mr-2"></i>{{__('messages.auth.changepassword')}}
+                <div id="userDropdownMenu" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    @if ( strpos(url()->current(), 'admin') !== false )
+                        <a href="/" class="dropdown-item"><i class="fa fa-fw fa-cog fa-lg mr-1"></i>{{ trans('messages.adm_layout.goback_home') }}</a>
+                    @endif
+                    <a class="dropdown-item" href="/changePassword">
+                        <i class="fa fa-key fa-lg mr-2"></i>@lang('messages.auth.changepassword')
                     </a>
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out fa-lg mr-2"></i>{{ __('Log Out') }}
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fa fa-fw fa-sign-out fa-lg mr-1"></i>{{ trans('messages.adm_button.logout') }}
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </div>
             </li>
         </ul>

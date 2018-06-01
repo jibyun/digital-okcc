@@ -33,7 +33,7 @@ Route::get('admin/members', 'Admin\AdminPagesController@members')->name('admin.m
 Route::get('admin/finances', 'Admin\AdminPagesController@finances')->name('admin.finances'); // Finances landing page
 Route::get('admin/inventories', 'Admin\AdminPagesController@inventories')->name('admin.inventories'); // Inventories landing page
 Route::get('admin/tests', 'Admin\AdminPagesController@tests')->name('admin.tests'); // Inventories landing page
-Route::get('admin/getMenu', 'Admin\AdminPagesController@getMenu')->name('admin.getmenu'); 
+Route::get('admin/getMenu', 'MenuController@getMenu')->name('getmenu'); 
 
 /*
 |--------------------------------------------------------------------------
