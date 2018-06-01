@@ -92,7 +92,7 @@
             };
 
             $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
-            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" + "?id=main" })
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('getmenu') !!}" + "?id=main" })
             .done ( function(data, textStatus, jqXHR) { 
                 const $top = $("#topMenu");
                 $.each( data.menu, function ( index, top ) {
