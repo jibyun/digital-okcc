@@ -2,7 +2,7 @@
 <div class="d-flex">
     <nav class="sidebar bg-dark">
         <ul class="list-unstyled">
-            <li class="pb-3">
+            <li>
                 <div class="input-group">
                     <input id="inputSearch" type="text" class="form-control" placeholder="Search by Name" aria-label="Search" aria-describedby="Search by name">
                     <div class="input-group-append">

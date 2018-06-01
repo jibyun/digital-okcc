@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {{-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --}}
 
-        <meta name="description" content="OKCC Cloud Office">
+        <meta name="description" content="{{ config('app.name', 'Application Name') }}">
         <meta name="author" content="IT team of Ottawa Korean Community Church">
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
@@ -23,15 +23,14 @@
         {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         {{-- Custom styles for this template --}}
-        <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+        <link href="{{ asset('css/okcc.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800|Roboto:300,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
         {{-- for additional styles --}}
         @yield('styles')
     </head>
     <body style="height: 100%">
 
-        @include('admin.layouts.header')
+        @include('layouts.header')
         @include('admin.layouts.side')
         @include('layouts.footer')
 
@@ -40,7 +39,7 @@
         <script src="{{ asset('js/admin.js') }}" defer></script>
         {{-- Using Laravel localization with JavaScript and VueJS https://medium.com/@serhii.matrunchyk/using-laravel-localization-with-javascript-and-vuejs-23064d0c210e
              I just need to pull this route in our HTML to make this object globally visible --}}
-        <script src="/js/lang.js"></script>
+        <script src="{{ asset('js/lang.js') }}"></script>
         {{-- Latest compiled and minified JavaScript, Locales for Bootstrap Table --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
         {{-- jQuery idle timer --}}
@@ -62,6 +61,7 @@
             // Get roles for current user
             @auth
                 var roles = "{{ Auth::user()->roles() }}";
+                var USER_ID = "{{ Auth::user()->id }}";
                 var USER_ROLES = JSON.parse(roles.replace(/&quot;/g, '"'));
             @else
                 var USER_ROLES = '';
@@ -127,7 +127,7 @@
             };
 
             $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
-            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" })
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" + "?id=admin" })
             .done ( function(data, textStatus, jqXHR) { 
                 const $top = $("#topMenu");
                 $.each( data.menu, function ( index, top ) {

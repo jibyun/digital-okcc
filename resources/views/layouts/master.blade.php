@@ -23,8 +23,9 @@
         {{-- Custom styles for this template --}}
         <link href="{{ asset('css/okcc.css') }}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-        
-
+        {{-- Custom styles for this template --}}
+        <link href="{{ asset('css/okcc.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800|Roboto:300,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">       
         {{-- for additional styles --}}
         @yield('styles')
     </head>
@@ -60,6 +61,52 @@
             @else
             var USER_ROLES = '';
             @endauth
+
+            function menu( $menuStr = '/' ) {
+                return window.location.pathname.includes( $menuStr );
+            }
+
+            // TODO: 아래를 okcc.js에 통합해 주세요.
+            // TODO: MemberDetail에 접근할 수 있는 router 만들어 주세요
+            // Callback: create top menu
+            var getTopMenuItem = function ( key, itemData ) {
+                if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes(itemData.roles) === true) {
+                    const item = $("<li class='nav-item rounded px-2'>").append(
+                        $("<a>", {
+                            'class': 'nav-link',
+                            'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                            'html': itemData.text,
+                        })
+                    );
+                    item.attr('name', key);
+                    if ( menu(key) ) { 
+                        item.addClass( 'active' ); 
+                        // Create Side menu
+                        // const $sidemenu = $("#sidemenu");
+                        // $sidemenu.append( getSideMenuItem( itemData ) ); // create TOP menu of header
+                    }
+                    return item;
+                } else {
+                    return;
+                }
+            };
+
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+            $.ajax({ dataType: 'json', timeout: 3000, url: "{!! route('admin.getmenu') !!}" + "?id=main" })
+            .done ( function(data, textStatus, jqXHR) { 
+                const $top = $("#topMenu");
+                $.each( data.menu, function ( index, top ) {
+                    $top.append( getTopMenuItem( top.key, top.data[0] ) ); // create TOP menu of header
+                });
+                // toggle sidebar when button clicked
+                // $('.sidebar-toggle').on('click', function () {
+                //     $('.sidebar').toggleClass('toggled');
+                // });
+            }) 
+            .fail ( function(jqXHR, textStatus, errorThrown) { 
+                // TODO: 본인의 에러메시지 만들어야 함.
+                // errorMessage( jqXHR );
+            });
         </script>
         
     </body>

@@ -14,14 +14,6 @@ $(document).ready(function () {
         parent.addClass('show');
     }
 
-    // Hide/Show the Finance and Inventory menu
-    if(hasRole("FINANCE_ACCESS_ROLE") === true) {
-        $('#menu_finance').show();
-    }
-    if(hasRole("INVENTORY_ACCESS_ROLE") === true) {
-        $('#menu_inventory').show();
-    }
-
     // Display the Admin page
     if (hasRole("ADMIN_ACCESS_ROLE") === true) {
         $('#userDropdownMenu').prepend($('<a href="admin" class="dropdown-item">' + 
@@ -112,3 +104,36 @@ function showConfirmMessage(title, message, buttonTitle, handler) {
     $('#confirmDialog_btn').on('click', handler);
     $('#confirmDialog').modal('show');
 }
+
+// Contact Email Modal -----------------------
+$('.contact-email').on( 'click', function(e) {
+    $("#contact-email").modal('show').draggable({ handle: ".modal-header" });
+});
+
+$(".contact-email-ok").on( 'click', function(e) {
+    e.preventDefault();
+    const formId = $("#contactForm");
+    const formAction = formId.attr("action");
+    const postData = { 
+        'full_name': formId.find("input[name='full-name']").val(),
+        'email': formId.find("input[name='email']").val(),
+        'content': formId.find("textarea[name='content']").val(), 
+    };
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+    $.ajax({ dataType: 'json', timeout: 3000, method:'POST', data: postData, url: formAction })
+    .done ( function(data) {
+        if (data.code == 'validation') {
+            validationMessage( data.errors );
+        } else if (data.code == 'exception') {
+            exceptionMessage( data.status, data.errors );
+        } else {
+            sendSuccessMessage();
+            formId[0].reset(); // Clear create form 
+            $(".modal").modal('hide'); // hide model form
+        }
+    })
+    .fail ( function(jqXHR, textStatus, errorThrown) { 
+        errorMessage( jqXHR );
+    });
+});
+// End of Contact Email Modal

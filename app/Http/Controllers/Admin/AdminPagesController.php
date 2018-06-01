@@ -75,18 +75,29 @@ class AdminPagesController extends Controller {
         }
     }
 
-    public function getMenu() {
-        $menu = array(
-            [ 'key' => 'users', 'data' => $this->getUsersMenu(), ],
-            [ 'key' => 'members', 'data' => $this->getMembersMenu(), ],
-            [ 'key' => 'finances', 'data'=> $this->getFinancesMenu(), ],
-            [ 'key' => 'inventories', 'data'=> $this->getInventoriesMenu(), ],
-            [ 'key' => 'tests', 'data' => $this->getTestsMenu(), ],
-        );
+    public function getMenu(Request $request) {
+        $id = $request->id;
+        if ($id === "admin") {
+            $menu = array(
+                [ 'key' => 'users', 'data' => $this->getUsersMenu(), ],
+                [ 'key' => 'members', 'data' => $this->getMembersMenu(), ],
+                [ 'key' => 'finances', 'data'=> $this->getFinancesMenu(), ],
+                [ 'key' => 'inventories', 'data'=> $this->getInventoriesMenu(), ],
+                [ 'key' => 'tests', 'data' => $this->getTestsMenu(), ],
+            );
+        } else {
+            $menu = array(
+                [ 'key' => 'members', 'data' => $this->getMainMembersMenu(), ],
+                [ 'key' => 'membersdetail', 'data' => $this->getMainMembersDetailMenu(), ],
+                [ 'key' => 'finances', 'data'=> $this->getMainFinancesMenu(), ],
+                [ 'key' => 'inventories', 'data'=> $this->getMainInventoriesMenu(), ],
+            );
+        }
         $result = array( "menu" => json_decode( json_encode($menu), true ) );
         return response()->json( $result );
     }
 
+    // Admin User Menu
     private function getUsersMenu() {
         return array([
             'icon' => 'fa-user',
@@ -271,6 +282,54 @@ class AdminPagesController extends Controller {
                     'sub_menu' => null,
                 ],
             ),
+        ]);
+    }
+
+    private function getMainMembersMenu() {
+        return array([
+            'icon' => 'fa-users',
+            'id' => 'menu_members',
+            'text' => trans('messages.top_menu.members'),
+            'route' => route('memberList'),
+            'isOpened' => true,
+            'roles' => 'MEMBER_ACCESS_ROLE',
+            'sub_menu' => null,
+        ]);
+    }
+
+    private function getMainMembersDetailMenu() {
+        return array([
+            'icon' => 'fa-users',
+            'id' => 'menu_member_detail',
+            'text' => trans('messages.top_menu.member_details'),
+            'route' => null,
+            'isOpened' => true,
+            'roles' => 'MEMBER_ACCESS_ROLE',
+            'sub_menu' => null,
+        ]);
+    }
+
+    private function getMainFinancesMenu() {
+        return array([
+            'icon' => 'fa-usd',
+            'id' => 'menu_finance',
+            'text' => trans('messages.top_menu.finance'),
+            'route' => null,
+            'isOpened' => false,
+            'roles' => 'FINANCE_ACCESS_ROLE',
+            'sub_menu' => null,
+        ]);
+    }
+
+    private function getMainInventoriesMenu() {
+        return array([
+            'icon' => 'fa-server',
+            'id' => 'menu_inventory',
+            'text' => trans('messages.top_menu.inventory'),
+            'route' => null,
+            'isOpened' => false,
+            'roles' => 'INVENTORY_ACCESS_ROLE',
+            'sub_menu' => null,
         ]);
     }
 }
