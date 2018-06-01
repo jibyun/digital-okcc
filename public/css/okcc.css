@@ -1,9 +1,10 @@
 /* Global Style */
 
 body {
-    font-size: 16px;    
+    font-size: 14px;    
     font-weight: 400;
     background-color: #f8f8f8;
+    font-family: 'Roboto', 'Nanum Gothic', sans-serif;
 }
 
 .h1-font-size { font-size: 4.5em;   font-weight: 900; }
@@ -31,48 +32,60 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     color: rgba(255, 255, 255, .75);
 }
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
-    color: rgba(255, 255, 255, 1);
+    color: rgb(250, 203, 49);
 }
 .navbar.bg-dark {
     color: #fefefe;
     background-color: #040404 !important;
     border: 1px solid #282828;
 }
+.navbar-dark .navbar-nav > li.active {
+    color: #f8f8f8;
+    background: #101010 !important;
+}
+.navbar-dark .navbar-nav > li.active > a,
+.navbar-dark .navbar-nav > li.active > a:hover,
+.navbar-dark .navbar-nav > li.active > a:focus {
+    color: #f8f8f8;
+}
 
 /* Side menu */
 .sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: calc(100vh - 102px);
-    transition: all 0.3s;
-    font-size: 0.85em;
+    min-height: calc(100vh - 96px);
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    font-size: 1em;
+    background-color: rgb(27, 34, 94);
+    padding: 15px;
 }
 .sidebar ul li a {
     display: block;
-    padding: .5rem 1rem;
+    padding: .15rem 0.85rem;
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
+    background: rgba(0, 0, 0, .25);
 }
-
+.sidebar ul li a:hover, .sidebar ul li.active a {
+    color: rgba(255, 255, 255, 1.0);
+    background: rgba(0, 0, 0, .9);
+}
 .sidebar ul.memberDetail {
     display: block;
     padding: .5rem .5rem;
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
 }
-.sidebar ul li a:hover, .sidebar ul .active a {
-    color: rgba(255, 255, 255, 1.0);
-    background: rgba(0, 0, 0, .25);
-}
-
-.sidebar ul.memberDetail:hover, .sidebar ul.memberDetail .active {
-    color: rgba(255, 255, 255, 1.0);
-    background: rgba(0, 0, 0, .25);
-    cursor: pointer;
-}
 .sidebar ul ul a {
-    padding-left: 2.5rem;
-    background: rgba(0, 0, 0, .25);
+    padding-left: 2.1rem;
+    background: rgba(0, 0, 0, .55);
+}
+.sidebar ul ul ul a {
+    padding-left: 3rem;
+    background: rgba(0, 0, 0, .8);
 }
 .sidebar [data-toggle="collapse"] {
     position: relative;
@@ -84,8 +97,14 @@ h5 { font-size: 1.8em;   font-weight: 500; }
     position: absolute;
     right: 1rem;
 }
-.sidebar [aria-expanded="true"] {
+.sidebar ul [aria-expanded="true"] {
     background: rgba(0, 0, 0, .25);
+}
+.sidebar ul ul [aria-expanded="true"] {
+    background: rgba(0, 0, 0, .55);
+}
+.sidebar ul ul ul [aria-expanded="true"] {
+    background: rgba(0, 0, 0, .8);
 }
 .sidebar [aria-expanded="true"]:before {
     content: "\f0d8";
@@ -191,9 +210,6 @@ thead {
 /**
 * Get rid of bootstrap table detail view plus icon
 */
-body {
-    margin: 10px;
-}
   
 #history_table thead > tr > th.detail,
 #visit_table thead > tr > th.detail,
@@ -220,4 +236,12 @@ body {
 .validation_error_show{
 	color: red;
 	margin-left: 10px;
+}
+
+.modal {
+    overflow: hidden;
+}
+
+.modal-header {      /* not necessary but imo important for user */
+    cursor: move;
 }
