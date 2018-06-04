@@ -45,15 +45,11 @@ $(document).ready(function () {
     $('#sideMenuProfile').hide();
     $('#sideMenuMemberDetail').hide();
 
-    var onSuccessFunc = function (response) {
-        sideMenuTree.render(response.data);
-        sideMenuTree.expandAll();
-    };
     
     sideMenuTree = $('#sideMenuCategory').tree({
         uiLibrary: 'bootstrap4',
         iconsLibrary: 'fontawesome',
-        dataSource: { url: categoryUrl, success: onSuccessFunc },
+        dataSource: { url: categoryUrl, success: updateCategoryTree },
         icons: {
             expand: '<i class="fa fa-chevron-right"></i>',
             collapse: '<i class="fa fa-chevron-down"></i>'
@@ -69,6 +65,16 @@ $(document).ready(function () {
     restApiCall(memberListSettingsUrl, "GET", null, settingsSuccess, null);
     showLandingContent();
 });
+
+/**
+ * Update Tree
+ * 
+ * @param response JSON string contains category info
+ */
+function updateCategoryTree(response) {
+    sideMenuTree.render(response.data);
+    sideMenuTree.expandAll();
+}
 
 /**
  * Search Button Click event handler
@@ -334,10 +340,14 @@ function newDisplayClickHandler($tree) {
             //gj.tree.methods.unselect($tree, $node, cascade);
             // Do nothing.
         } else {
-            if ($tree.data('selectionType') === 'single') {
-                gj.tree.methods.unselectAll($tree);
+            var $nodeId = $node.data('id');
+            var $nodeData = $tree.getDataById($nodeId);
+            if ($nodeData.selectable === true) {
+                if ($tree.data('selectionType') === 'single') {
+                    gj.tree.methods.unselectAll($tree);
+                }
+                gj.tree.methods.select($tree, $node, cascade);
             }
-            gj.tree.methods.select($tree, $node, cascade);
         }
     }
 }
