@@ -52,7 +52,7 @@ function fillShowPanel(rec) {
 
 
 function memberGetSuccess(response) {
-    
+    $.unblockUI();
     current_member = JSON.parse(response.data);
     openShowPanel(current_member);   
     memberDetailSelectHandler();
@@ -60,7 +60,7 @@ function memberGetSuccess(response) {
 }
 
 function memberFamilyGetSuccess(response) {
-    
+    $.unblockUI();
     familyMember = JSON.parse(response.data);
     fillData("memberBasicInfoDialog",familyMember);  
     $('#memberBasicInfoDialog').modal('show');

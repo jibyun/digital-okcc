@@ -16,6 +16,7 @@ $(document).ready(function () {
 
     // Display the Admin page
     if (hasRole("ADMIN_ACCESS_ROLE") === true) {
+        // TODO: hide it in admin page
         $('#userDropdownMenu').prepend($('<a href="admin" class="dropdown-item">' + 
                                         '<i class="fa fa-cog fa-lg mr-2"></i>' + i18n.messages.top_menu.admin + '</a>'));
     }
@@ -32,6 +33,7 @@ window.onscroll = function() {
 }
 
 function menuSuccess(data, textStatus) {
+    $.unblockUI();
     const $top = $("#topMenu");
     $.each( data.menu, function ( index, top ) {
         $top.append( getTopMenuItem( top.key, top.data[0] ) ); // create TOP menu of header
@@ -43,6 +45,7 @@ function menuSuccess(data, textStatus) {
 }
 
 function menuFailure(jqXHR, textStatus, errorThrown) {
+    $.unblockUI();
     errorMessage( jqXHR );
 }
 
@@ -77,6 +80,7 @@ function restApiCall(url, method, param, successFunc, failureFunc) {
     if (failureFunc == null) {
         failureFunc = restCallFailureHandler;
     }
+    $.blockUI({message: ''});
     $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
     $.ajax({
         url: url,
@@ -97,6 +101,7 @@ function restApiCall(url, method, param, successFunc, failureFunc) {
  * @param {*} err 
  */
 function restCallFailureHandler(response, status, err) {
+    $.unblockUI();
     // TOOD: Message handling.
     switch (response.status) {
         case 404:

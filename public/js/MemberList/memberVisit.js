@@ -159,6 +159,7 @@ function saveVisitBtnClickHandler(e) {
 }
 
 function memberVisitSuccessHandler(response) {
+    $.unblockUI();
     $('#memberVisitDialog').modal('hide');
     toastr.success( response.data );
     resetVisitForm();
@@ -175,6 +176,7 @@ function reloadMemberVisit() {
 }
 
 function retrieveMemberVisitSuccessHandler(response) {
+    $.unblockUI();
     var tableData = JSON.parse(response.data);
     var table = $('#visit_table');
     table.bootstrapTable('load', tableData.visit);
