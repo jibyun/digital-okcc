@@ -31,6 +31,21 @@ window.onscroll = function() {
     }
 }
 
+function menuSuccess(data, textStatus) {
+    const $top = $("#topMenu");
+    $.each( data.menu, function ( index, top ) {
+        $top.append( getTopMenuItem( top.key, top.data[0] ) ); // create TOP menu of header
+    });
+    // toggle sidebar when button clicked
+    $('.sidebar-toggle').on('click', function () {
+        $('.sidebar').toggleClass('toggled');
+    });
+}
+
+function menuFailure(jqXHR, textStatus, errorThrown) {
+    errorMessage( jqXHR );
+}
+
 // When the user clicks on the button, scroll to the top of the document
 function topFunction() {
     document.body.scrollTop = 0;
@@ -66,6 +81,7 @@ function restApiCall(url, method, param, successFunc, failureFunc) {
     $.ajax({
         url: url,
         type: method,
+        timeout: 1200,
         // At this moment, we set "json" as default
         datatype: "json",
         data: param,
@@ -103,6 +119,62 @@ function showConfirmMessage(title, message, buttonTitle, handler) {
     $('#confirmDialog_btn').text(buttonTitle);
     $('#confirmDialog_btn').on('click', handler);
     $('#confirmDialog').modal('show');
+}
+
+function getTopMenuItem(key, itemData) {
+    if(typeof USER_ROLES !== 'undefined' !== undefined && USER_ROLES.includes(itemData.roles) === true) {
+        const item = $("<li class='nav-item rounded px-2'>").append(
+            $("<a>", {
+                'class': 'nav-link',
+                'href': (itemData.route) ? itemData.route : '#' + itemData.text,
+                'html': itemData.text,
+            })
+        );
+        item.attr('name', key);
+        if (hasLocation(key)) { 
+            item.addClass( 'active' ); 
+            // Create Side menu
+            const $sidemenu = $("#sidemenu");
+            $sidemenu.append( getSideMenuItem( itemData ) ); // create TOP menu of header
+        }
+        return item;
+    } else {
+        return;
+    }
+};
+
+function getSideMenuItem(itemData) {
+    var item = $("<li>").append(
+        $("<a>", {
+            'href': itemData.sub_menu ? ('#' + itemData.text) : (itemData.route ? itemData.route : '#' + itemData.text),
+            'html': '<i class="fa fa-fw ' + itemData.icon + ' mr-1"></i>' + itemData.text,
+            'data-toggle': (itemData.sub_menu) ? 'collapse' : '',
+        })
+    );
+    if ( itemData.sub_menu ) {
+        var subList = $("<ul>").attr('id', itemData.text).attr('aria-expanded', false).addClass('list-unstyled collapse');
+        itemData.isOpened ? subList.addClass('show') : '';
+        $.each( itemData.sub_menu, function ( index, submenu ) {
+            subList.append( getSideMenuItem( submenu ) );
+        });
+        item.append(subList);
+    } else {
+        if (itemData.route) {
+            urlRoute = itemData.route.replace(/^https?:\/\//,'');
+            urlPage = location.href.replace(/^https?:\/\//,'');
+            if (urlRoute == urlPage) {
+                item.addClass('active');
+            }
+        }
+        if(!USER_ROLES.includes(itemData.roles)) {
+            item.hide();
+        }
+    }
+    return item;
+};
+
+function hasLocation($menuStr = '/') {
+    return window.location.pathname.includes($menuStr);
 }
 
 // Contact Email Modal -----------------------

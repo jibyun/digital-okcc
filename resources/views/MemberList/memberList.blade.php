@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.memberList.master')
 @section('styles')
 <link href="{{ asset('css/gj-tree.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -11,7 +11,7 @@
     {{-- toastr is a Javascript library for non-blocking notifications. jQuery is required. https://github.com/CodeSeven/toastr --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    @endsection
+@endsection
 
 @section('sidePanel')
 <div id="sideMenuCategory">
