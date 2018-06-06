@@ -166,6 +166,7 @@ function saveHistoryBtnClickHandler(e) {
 }
 
 function memberHistorySuccessHandler(response) {
+    $.unblockUI();
     $('#memberHistoryDialog').modal('hide');
     toastr.success( response.data );
     resetHistoryForm();
@@ -182,6 +183,7 @@ function reloadMemberHistory() {
 }
 
 function retrieveMemberHistorySuccessHandler(response) {
+    $.unblockUI();
     var tableData = JSON.parse(response.data);
     var table = $('#history_table');
     table.bootstrapTable('load', tableData.history);

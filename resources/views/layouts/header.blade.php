@@ -31,7 +31,7 @@
                     @if ( strpos(url()->current(), 'admin') !== false )
                         <a href="/" class="dropdown-item"><i class="fa fa-fw fa-cog fa-lg mr-1"></i>{{ trans('messages.adm_layout.goback_home') }}</a>
                     @endif
-                    <a class="dropdown-item" href="/changePassword">
+                    <a class="dropdown-item" href="{{ route('changePasswordForm') }}">
                         <i class="fa fa-key fa-lg mr-2"></i>@lang('messages.auth.changepassword')
                     </a>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

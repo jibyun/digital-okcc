@@ -118,6 +118,7 @@ function loadTable(code, url) {
 }
 
 function memberListSuccess(response) {
+    $.unblockUI();
     var tableData = JSON.parse(response.data);
     var table = $('#bt_table');
     table.bootstrapTable('load', tableData.members);
@@ -130,6 +131,7 @@ function memberListSuccess(response) {
  * Retrieve Settings Success handler
  */
 function settingsSuccess(response) {
+    $.unblockUI();
     var settingsData = JSON.parse(response.data);
     var bookmarkData = settingsData.bookmark;
     var columnInfoData = settingsData.columninfos;
